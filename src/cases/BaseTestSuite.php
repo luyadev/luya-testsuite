@@ -12,9 +12,16 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     public $app;
 
     abstract public function getConfigArray();
+    
+    public function beforeSetup()
+    {
+        
+    }
 
     public function setUp()
     {
+        $this->beforeSetup();
+        
         $boot = new Boot();
         $boot->setConfigArray($this->getConfigArray());
         $boot->mockOnly = true;
