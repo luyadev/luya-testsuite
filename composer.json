@@ -1,0 +1,32 @@
+{
+    "name" : "luyadev/luya-testsuite",
+    "description" : "TestCases and Data for LUYA Modules and Components. Makes testing less pain.",
+    "type" : "luya-module",
+    "keywords" : ["php", "luya", "module"],
+    "license": "MIT",
+    "homepage" : "http://luya.io",
+    "authors" : [
+        {
+            "name" : "Basil Suter",
+            "email" : "git@nadar.io",
+            "homepage" : "https://github.com/nadar"
+        }
+    ],
+    "require-dev" : {
+        "phpunit/phpunit" : "~6.0",
+        "luyadev/luya-core" : "^1.0@dev"
+    },
+    "support" : {
+        "issues" : "https://github.com/luyadev/luya/issues"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "luya\\testsuite\\" : "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

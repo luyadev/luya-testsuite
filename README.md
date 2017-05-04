@@ -1,2 +1,28 @@
-# luya-testsuite
-TestCases and Data for LUYA Modules and Components. Makes testing less pain.
+# LUYA TESTCASE
+
+Setup TestCases for your Modules, Components and Classes.
+
+```php
+
+use Yii;
+
+class MyTest extends \luya\testsuite\cases\WebApplicationTestCase
+{
+    public function getConfigArray()
+    {
+        return [
+            'id' => 'mytestapp',
+            'basePath' => dirname(__DIR__),
+        ];
+    }
+    
+    // add your tests here:
+    
+    public function testInstance()
+    {
+        $this->assertInstanceOf('luya\web\Application', Yii::$app);
+        $this->assertInstanceOf('luya\base\Boot', $this->boot);
+        $this->assertInstanceOf('luya\web\Application', $this->app);
+    }
+}
+```
