@@ -6,7 +6,7 @@ use luya\Boot;
 
 require_once 'vendor/autoload.php';
 
-abstract class TestCase extends \PHPUnit\Framework\TestCase
+abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
 {
     public $boot;
     public $app;

@@ -24,6 +24,11 @@
             "luya\\testsuite\\" : "src/"
         }
     },
+    "autoload-dev" : {
+        "psr-4" : {
+            "luya\\testsuite\\tests\\" : "tests/"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
