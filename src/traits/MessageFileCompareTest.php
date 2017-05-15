@@ -1,32 +1,21 @@
 <?php
 
-namespace luya\testsuite\tests;
+namespace luya\testsuite\traits;
 
-use luya\testsuite\cases\BaseTestSuite;
 
 /**
  * 
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.1
  */
-abstract class MessageFileCompareTest extends BaseTestSuite
+trait MessageFileCompareTrait
 {
     /**
-     * @return string `en` Which is the default language folder in `getMessagesFolder()`
+     * 
+     * @param string $folder `en`
+     * @param string $masterLang `/admin/src/message` Path to the message file folders.
      */
-    abstract public function getMasterLanguage();
-    
-    /**
-     * @return string `@admin/messages`
-     */
-    abstract public function getMessagesFolder();
-    
-    public function testMessageFilesCompare()
-    {
-        $this->compare(Yii::getAlias($this->getMessagesFolder()), $this->getMasterLanguage());
-    }
-    
-    public function compare($folder, $masterLang)
+    public function compareMessages($folder, $masterLang)
     {
         $folders = [];
         
