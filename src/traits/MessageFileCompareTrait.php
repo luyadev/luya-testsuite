@@ -2,6 +2,7 @@
 
 namespace luya\testsuite\traits;
 
+use Yii;
 use yii\helpers\FileHelper;
 
 /**
@@ -30,6 +31,7 @@ trait MessageFileCompareTrait
      */
     public function compareMessages($folder, $masterLang)
     {
+        $folder = Yii::getAlias($folder);
         $folders = [];
         
         foreach (scandir($folder) as $item) {
