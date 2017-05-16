@@ -27,4 +27,16 @@ class MyTest extends \luya\testsuite\cases\WebApplicationTestCase
 }
 ```
 
-To run the unit tests while assuming your tests are in directory `tests/`: execute `./vendor/bin/phpunit tests/` in your shell.
+To run the unit tests while assuming your tests are in directory `tests/` run
+
+```sh
+./vendor/bin/phpunit tests/
+```
+
+in your shell.
+
+In order to support sqlite Fixture install
+
+```sh
+sudo apt-get install php-sqlite3 
+```
