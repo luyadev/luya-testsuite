@@ -26,3 +26,5 @@ class MyTest extends \luya\testsuite\cases\WebApplicationTestCase
     }
 }
 ```
+
+To run the unit tests while assuming your tests are in directory `tests/`: execute `./vendor/bin/phpunit tests/` in your shell.
