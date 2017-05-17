@@ -4,6 +4,7 @@ namespace luya\testsuite\tests;
 
 use Yii;
 use luya\testsuite\cases\BaseTestSuite;
+use luya\base\Boot;
 
 class BaseTestSuiteTest extends BaseTestSuite
 {
@@ -13,6 +14,11 @@ class BaseTestSuiteTest extends BaseTestSuite
             'id' => 'basetestcase',
             'basePath' => dirname(__DIR__),
         ];
+    }
+    
+    public function bootApplication(Boot $boot)
+    {
+        $boot->applicationWeb();
     }
     
     public function testInstance()

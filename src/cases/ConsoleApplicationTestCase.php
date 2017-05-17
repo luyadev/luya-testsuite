@@ -12,7 +12,7 @@ use luya\base\Boot;
  * Usage:
  * 
  * ```php
- * class MyTestCase extends WebApplicationTestCase
+ * class MyTestCase extends ConsoleApplicationTestCase
  * {
  *     public function getConfigArray()
  *     {
@@ -25,23 +25,10 @@ use luya\base\Boot;
  * ```
  * 
  * @author Basil Suter <basil@nadar.io>
- * @since 1.0.0
+ * @since 1.0.2
  */
-abstract class WebApplicationTestCase extends BaseTestSuite
+abstract class ConsoleApplicationTestCase extends BaseTestSuite
 {
-    /**
-     * {@inheritDoc}
-     * @see \luya\testsuite\cases\BaseTestSuite::beforeSetup()
-     */
-    public function beforeSetup()
-    {
-        parent::beforeSetup();
-        
-        $_SERVER['SCRIPT_FILENAME'] = 'index.php';
-        $_SERVER['SCRIPT_NAME'] =  '/index.php';
-        $_SERVER['REQUEST_URI'] = '/';
-    }
-    
     /**
      * 
      * {@inheritDoc}
@@ -49,6 +36,6 @@ abstract class WebApplicationTestCase extends BaseTestSuite
      */
     public function bootApplication(Boot $boot)
     {
-        $boot->applicationWeb();
+        $boot->applicationConsole();
     }
 }

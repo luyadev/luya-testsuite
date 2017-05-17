@@ -5,6 +5,7 @@ namespace luya\testsuite\cases;
 use Curl\Curl;
 use Exception;
 use Yii;
+use luya\base\Boot;
 
 /**
  * Generates a local Server in order to Test URLs.
@@ -39,11 +40,16 @@ abstract class ServerTestCase extends BaseTestSuite
 {
     public $host = 'localhost';
     
-    public $port = '1342';
+    public $port = '1549';
     
     public $documentRoot = '@app/public_html';
     
     private $_pid = 0;
+    
+    public function bootApplication(Boot $boot)
+    {
+        $boot->applicationConsole();
+    }
     
     /**
      * 

@@ -21,6 +21,11 @@ require_once 'vendor/autoload.php';
  *            'basePath' => dirname(__DIR__),
  *         ];
  *     }
+ *     
+ *     public function bootApplication(Boot $boot)
+ *     {
+ *          $boot->applicationWeb();
+ *     }
  * }
  * ```
  * 
@@ -45,6 +50,12 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     abstract public function getConfigArray();
     
     /**
+     * @param \luya\base\Boot $boot
+     * @since 1.0.2
+     */
+    abstract public function bootApplication(\luya\base\Boot $boot);
+    
+    /**
      * Method which is executed before the setUp() method in order to inject data on before Setup.
      * 
      * Make sure to call the parent beforeSetup() method.
@@ -62,7 +73,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      */
     public function afterSetup()
     {
-    }    
+    }
 
     /**
      * 
@@ -77,7 +88,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
         $boot->setConfigArray($this->getConfigArray());
         $boot->mockOnly = true;
         $boot->setBaseYiiFile('vendor/yiisoft/yii2/Yii.php');
-        $boot->applicationWeb();
+        $this->bootApplication($boot);
         $this->boot = $boot;
         $this->app = $boot->app;
         
