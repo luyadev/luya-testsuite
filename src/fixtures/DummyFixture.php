@@ -5,11 +5,39 @@ namespace luya\testsuite\fixtures;
 use yii\test\ActiveFixture;
 
 /**
+ * Dummy Fixture Model.
  * 
- * $r = Yii::$app->sqllite->createCommand()->createTable('mytest', ['name' => 'varchar(120)', 'value' => 'varchar(120)'])->execute();
- *
- * @author nadar
- *
+ * Prepare config to enable sqlite3:
+ * 
+ * ```php
+ * 'components' => [
+ *     'db' => [
+ *   		'class' => 'yii\db\Connection',
+ *   		'dsn' => 'sqlite::memory:',
+ *     ]
+ * ]
+ * ```
+ * 
+ * Create the database Schema
+ * 
+ * ```php
+ * Yii::$app->db->createCommand()->createTable('dummy_fixture', [
+ *     'id' => 'INT(11) PRIMARY KEY',
+ *     'string' => 'varchar(250)',
+ *     'integer' => 'int(11)',
+ *     'float' => 'float(2)',
+ *     'boolean' => 'tinyint(1)',
+ * ])->execute();
+ * ```
+ * 
+ * 
+ * ```php
+ * $fixture = new DummyFixture();
+ * $fixture->load();
+ * $model = $fixture->getModel('data1');
+ * ```
+ * 
+ * @author Basil Suter <basil@nadar.io>
  */
 class DummyFixture extends ActiveFixture
 {
