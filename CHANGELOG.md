@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file. This projec
 1.0.2 (in progress)
 ------------------
 
++ Added `luya\testsuite\cases\ServerTestCase` in order to make http request on the current Website. "Browser Testing"
+
 1.0.1 (17. May 2017)
 -------------------
 

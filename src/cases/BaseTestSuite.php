@@ -45,20 +45,31 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     abstract public function getConfigArray();
     
     /**
-     * Method which is executed beofre Setup in order to inject data on before Setup.
+     * Method which is executed before the setUp() method in order to inject data on before Setup.
      * 
-     * Make sure to call the parent before Setup.
+     * Make sure to call the parent beforeSetup() method.
      */
     public function beforeSetup()
     {  
     }
+    
+    /**
+     * Method which is executed after the setUp() metho in order to trigger post setup functions.
+     * 
+     * Make sure to call the parent afterSetup() method.
+     * 
+     * @since 1.0.2
+     */
+    public function afterSetup()
+    {
+    }    
 
     /**
      * 
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::setUp()
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->beforeSetup();
         
@@ -69,15 +80,28 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
         $boot->applicationWeb();
         $this->boot = $boot;
         $this->app = $boot->app;
+        
+        $this->afterSetup();
     }
 
+    /**
+     * This methode is triggered before the application test case tearDown() method is running.
+     * 
+     * @since 1.0.2
+     */
+    public function beforeTearDown()
+    {
+    }
+    
     /**
      * 
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
-    public function tearDown()
+    protected function tearDown()
     {
+        $this->beforeTearDown();
+        
         unset($this->app, $this->boot);
     }
 }
