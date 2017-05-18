@@ -6,6 +6,7 @@ use Curl\Curl;
 use Exception;
 use Yii;
 use luya\base\Boot;
+use yii\helpers\Json;
 
 /**
  * Generates a local Server in order to Test URLs.
@@ -38,14 +39,60 @@ use luya\base\Boot;
  */
 abstract class ServerTestCase extends BaseTestSuite
 {
+    /**
+     * @var string
+     */
     public $host = 'localhost';
+   
+    /**
+     * @var integer
+     */
+    public $port = 1549;
     
-    public $port = '1549';
-    
+    /**
+     * 
+     * @var string
+     */
     public $documentRoot = '@app/public_html';
+    
+    /**
+     * @var boolean
+     */
+    public $debug = false;
     
     private $_pid = 0;
     
+    /**
+     * @deprecated Since 1.0.3 will be removed in 1.0.4
+     */
+    public function isHomepageOK()
+    {
+        trigger_error('use assertUrlHomepageIsOk() instead.', E_USER_DEPRECATED);
+        $this->assertUrlHomepageIsOk();
+    }
+    
+    /**
+     * @deprecated Since 1.0.3 will be removed in 1.0.4
+     */
+    public function isUrlOK($url)
+    {
+        trigger_error('use assertUrlIsOk() instead.', E_USER_DEPRECATED);
+        $this->assertUrlIsOk($url);
+    }
+    
+    /**
+     * @deprecated Since 1.0.3 will be removed in 1.0.4
+     */
+    public function isUrlNOK($url)
+    {
+        trigger_error('use assertUrlIsError() instead.', E_USER_DEPRECATED);
+        $this->assertUrlIsError($url);
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see \luya\testsuite\cases\BaseTestSuite::bootApplication()
+     */
     public function bootApplication(Boot $boot)
     {
         $boot->applicationConsole();
@@ -73,9 +120,9 @@ abstract class ServerTestCase extends BaseTestSuite
     /**
      * Check whether homage is online and OK response.
      */
-    public function isHomepageOK()
+    public function assertUrlHomepageIsOk()
     {
-        $this->isUrlOK(null);
+        $this->assertUrlIsOk(null);
     }
     
     /**
@@ -83,34 +130,155 @@ abstract class ServerTestCase extends BaseTestSuite
      *
      * @param string $url
      */
-    public function isUrlOK($url)
+    public function assertUrlIsOk($url, array $params = [])
     {
-        $this->assertTrue($this->curlUrl($url)->isSuccess(), "URL '{$url}' does not return OK (200).");
+        $curl = $this->createGetCurl($url, $params);
+        $this->assertTrue($curl->isSuccess(), "GET URL '{$url}' return {$curl->http_status_code} instead of 200 (OK).");
     }
     
     /**
      * Test an URL whether a page has response code 400
-     * 
+     *
      * @param string $url
      */
-    public function isUrlNOK($url)
+    public function assertUrlIsError($url, array $params = [])
     {
-        $this->assertTrue($this->curlUrl($url)->isError(), "URL '{$url}' does not return NOK (400).");
+        $curl = $this->createGetCurl($url, $params);
+        $this->assertTrue($curl->isError(), "GET URL '{$url}' return {$curl->http_status_code} instead of 400 (Error).");
     }
 
+    /**
+     * Test whether url is redirect.
+     * @param unknown $url
+     */
+    public function assertUrlIsRedirect($url, array $params = [])
+    {
+        $curl = $this->createGetCurl($url, $params);
+        $this->assertTrue($curl->isRedirect(), "GET URL '{$url}' return {$curl->http_status_code} instead of 300 (Error).");
+    }
+    
+    /**
+     * 
+     * @param unknown $url
+     * @param string|array $contains If its an array it will be json encoded by default and the first and last char (wrapping)
+     * brackets are cute off, so you can easy search for a key value parining inside the json response.
+     */
+    public function assertUrlGetResponseContains($url, $contains, array $params = [])
+    {
+        $curl = $this->createGetCurl($url, $params);
+        $this->assertContains($this->buildPartialJson($contains, true), $curl->response);
+    }
+    
+    /**
+     * 
+     * @param unknown $url
+     * @param unknown $same
+     */
+    public function assertUrlGetResponseSame($url, $same, array $params = [])
+    {
+        $curl = $this->createGetCurl($url, $params);
+        $this->assertSame($this->buildPartialJson($same), $curl->response);
+    }
+    
+    /**
+     * 
+     * @param unknown $url
+     * @param string|array $contains If its an array it will be json encoded by default and the first and last char (wrapping)
+     * brackets are cute off, so you can easy search for a key value parining inside the json response.
+     * @param array $data
+     */
+    public function assertUrlPostResponseContains($url, $contains, array $data = [])
+    {
+        $curl = $this->createPostCurl($url, $data);
+        $this->assertContains($this->buildPartialJson($contains, true), $curl->response);
+    }
+
+    /**
+     * 
+     * @param unknown $url
+     * @param unknown $same
+     * @param array $data
+     */
+    public function assertUrlPostResponseSame($url, $same, array $data = [])
+    {
+        $curl = $this->createPostCurl($url, $data);
+        $this->assertSame($this->buildPartialJson($same), $curl->response);
+    }
+    
+    /**
+     * 
+     * @param unknown $contains
+     * @param string $removeBrackets
+     * @return string
+     */
+    protected function buildPartialJson($contains, $removeBrackets = false)
+    {
+        if (is_array($contains)) {
+            $contains = Json::encode($contains);
+            if ($removeBrackets) {
+                $contains = substr(substr($contains, 1), 0, -1);
+            }
+        }
+        
+        return $contains;
+    }
+    
+    /**
+     * 
+     * @param unknown $url
+     * @return string
+     */
+    protected function buildCallUrl($url, array $params = [])
+    {
+        $url = "{$this->host}:{$this->port}/" . ltrim($url, '/');
+        
+        if (!empty($params)) {
+            $url .= '?' . http_build_query($params);
+        }
+        
+        return $url;
+    }
+    
     /**
      * @param unknown $url
      * @return \Curl\Curl
      */
-    protected function curlUrl($url)
+    protected function createGetCurl($url, array $params = [])
     {
-        $url = "{$this->host}:{$this->port}/" . ltrim($url, '/');
-        $curl = new Curl();
-        $curl->get($url);
+        $curl = (new Curl())->get($this->buildCallUrl($url, $params));
+        
+        if ($this->debug) {
+            echo "GET DEBUG '$url': " . $curl->response;
+        }
         
         return $curl;
     }
     
+    /**
+     * 
+     * @param unknown $url
+     * @param array $data
+     * @return \Curl\Curl
+     */
+    protected function createPostCurl($url, array $data = [])
+    {
+        $curl = (new Curl())->post($url, $data);
+        
+        if ($this->debug) {
+            echo "POST DEBUG '$url': " . $curl->response;
+        }
+        
+        return $curl;
+    }
+    
+    /**
+     * 
+     * @param unknown $host
+     * @param unknown $port
+     * @param unknown $documentRoot
+     * @throws Exception
+     * @return number
+     */
     protected function bootstrapServer($host, $port, $documentRoot)
     {
         $documentRoot = Yii::getAlias($documentRoot);
@@ -143,6 +311,12 @@ abstract class ServerTestCase extends BaseTestSuite
         return (int) $output[0];
     }
     
+    /**
+     * 
+     * @param unknown $host
+     * @param unknown $port
+     * @return boolean
+     */
     protected function waitForServer($host, $port)
     {
         $start = microtime(true);
@@ -155,6 +329,12 @@ abstract class ServerTestCase extends BaseTestSuite
         return true;
     }
     
+    /**
+     * 
+     * @param unknown $host
+     * @param unknown $port
+     * @return boolean
+     */
     protected function connectToServer($host, $port)
     {
         $fp = @fsockopen($host, $port, $errno, $errstr, 3);
@@ -165,6 +345,10 @@ abstract class ServerTestCase extends BaseTestSuite
         return true;
     }
     
+    /**
+     * 
+     * @param unknown $pid
+     */
     protected function killServer($pid)
     {
         exec('kill -9 ' . (int) $pid);
