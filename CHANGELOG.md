@@ -3,11 +3,13 @@ LUYA TEST SUITE
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
-1.0.3 (in progress)
+1.0.3 (19. May 2017)
+-------------------
 
 + Added new methods for `luya\testsuite\cases\ServerTestCase`.
 + Renamed `isUrlNOK` to `assertUrlIsError` in `luya\testsuite\cases\ServerTestCase`
 + Renamed `isUrlOK` to `assertUrlIsOk` in `luya\testsuite\cases\ServerTestCase`
++ Make ServerTesteCase available for multiple tests (kill timeout bug).
 
 1.0.2 (17. May 2017)
 ------------------

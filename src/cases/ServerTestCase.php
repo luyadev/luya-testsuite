@@ -120,6 +120,7 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      * Check whether homage is online and OK response.
+     * @since 1.0.3
      */
     public function assertUrlHomepageIsOk()
     {
@@ -130,6 +131,8 @@ abstract class ServerTestCase extends BaseTestSuite
      * Test an URL whether a page has response code 200
      *
      * @param string $url
+     * @param array $params Optional params to build the http queries for the given url.
+     * @since 1.0.3
      */
     public function assertUrlIsOk($url, array $params = [])
     {
@@ -141,6 +144,8 @@ abstract class ServerTestCase extends BaseTestSuite
      * Test an URL whether a page has response code 400
      *
      * @param string $url
+     * @param array $params Optional params to build the http queries for the given url.
+     * @since 1.0.3
      */
     public function assertUrlIsError($url, array $params = [])
     {
@@ -151,6 +156,8 @@ abstract class ServerTestCase extends BaseTestSuite
     /**
      * Test whether url is redirect.
      * @param unknown $url
+     * @param array $params 
+     * @since 1.0.3
      */
     public function assertUrlIsRedirect($url, array $params = [])
     {
@@ -163,6 +170,8 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $url
      * @param string|array $contains If its an array it will be json encoded by default and the first and last char (wrapping)
      * brackets are cute off, so you can easy search for a key value parining inside the json response.
+     * @param array $params
+     * @since 1.0.3
      */
     public function assertUrlGetResponseContains($url, $contains, array $params = [])
     {
@@ -174,6 +183,8 @@ abstract class ServerTestCase extends BaseTestSuite
      * 
      * @param unknown $url
      * @param unknown $same
+     * @param array $params
+     * @since 1.0.3
      */
     public function assertUrlGetResponseSame($url, $same, array $params = [])
     {
@@ -187,6 +198,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param string|array $contains If its an array it will be json encoded by default and the first and last char (wrapping)
      * brackets are cute off, so you can easy search for a key value parining inside the json response.
      * @param array $data
+     * @since 1.0.3
      */
     public function assertUrlPostResponseContains($url, $contains, array $data = [])
     {
@@ -199,6 +211,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $url
      * @param unknown $same
      * @param array $data
+     * @since 1.0.3
      */
     public function assertUrlPostResponseSame($url, $same, array $data = [])
     {
@@ -211,6 +224,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $contains
      * @param string $removeBrackets
      * @return string
+     * @since 1.0.3
      */
     protected function buildPartialJson($contains, $removeBrackets = false)
     {
@@ -228,6 +242,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * 
      * @param unknown $url
      * @return string
+     * @since 1.0.3
      */
     protected function buildCallUrl($url, array $params = [])
     {
@@ -243,6 +258,7 @@ abstract class ServerTestCase extends BaseTestSuite
     /**
      * @param unknown $url
      * @return \Curl\Curl
+     * @since 1.0.3
      */
     protected function createGetCurl($url, array $params = [])
     {
@@ -260,6 +276,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $url
      * @param array $data
      * @return \Curl\Curl
+     * @since 1.0.3
      */
     protected function createPostCurl($url, array $data = [])
     {
@@ -279,6 +296,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $documentRoot
      * @throws Exception
      * @return number
+     * @since 1.0.2
      */
     protected function bootstrapServer($host, $port, $documentRoot)
     {
@@ -300,6 +318,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $port
      * @param unknown $documentRoot
      * @param integer PID (process id)
+     * @since 1.0.2
      */
     protected function createServer($host, $port, $documentRoot)
     {
@@ -317,6 +336,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $host
      * @param unknown $port
      * @return boolean
+     * @since 1.0.2
      */
     protected function waitForServer($host, $port)
     {
@@ -335,6 +355,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $host
      * @param unknown $port
      * @return boolean
+     * @since 1.0.3
      */
     protected function waitForServerShutdown($host, $port)
     {
@@ -353,6 +374,7 @@ abstract class ServerTestCase extends BaseTestSuite
      * @param unknown $host
      * @param unknown $port
      * @return boolean
+     * @since 1.0.2
      */
     protected function connectToServer($host, $port)
     {
@@ -367,6 +389,7 @@ abstract class ServerTestCase extends BaseTestSuite
     /**
      * 
      * @param unknown $pid
+     * @since 1.0.2
      */
     protected function killServer($pid)
     {
