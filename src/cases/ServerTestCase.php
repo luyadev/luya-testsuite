@@ -63,33 +63,6 @@ abstract class ServerTestCase extends BaseTestSuite
     private $_pid = 0;
     
     /**
-     * @deprecated Since 1.0.3 will be removed in 1.0.4
-     */
-    public function isHomepageOK()
-    {
-        trigger_error('use assertUrlHomepageIsOk() instead.', E_USER_DEPRECATED);
-        $this->assertUrlHomepageIsOk();
-    }
-    
-    /**
-     * @deprecated Since 1.0.3 will be removed in 1.0.4
-     */
-    public function isUrlOK($url)
-    {
-        trigger_error('use assertUrlIsOk() instead.', E_USER_DEPRECATED);
-        $this->assertUrlIsOk($url);
-    }
-    
-    /**
-     * @deprecated Since 1.0.3 will be removed in 1.0.4
-     */
-    public function isUrlNOK($url)
-    {
-        trigger_error('use assertUrlIsError() instead.', E_USER_DEPRECATED);
-        $this->assertUrlIsError($url);
-    }
-    
-    /**
      * {@inheritDoc}
      * @see \luya\testsuite\cases\BaseTestSuite::bootApplication()
      */
