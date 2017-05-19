@@ -26,10 +26,10 @@ use yii\helpers\Json;
  *   
  *   public function testSites()
  *   {
- *       $this->isHomepageOK();
- *       $this->isUrlOK('about');
- *       $this->isUrlOK('about/me');
- *       $this->isUrlNOK('errorpage');
+ *       $this->assertUrlHomepageIsOk();
+ *       $this->assertUrlIsOk('about');
+ *       $this->assertUrlGetResponseContains('about/me', 'Hello World');
+ *       $this->assertUrlIsError('errorpage');
  *   }
  * }
  * ```
@@ -115,6 +115,7 @@ abstract class ServerTestCase extends BaseTestSuite
     public function beforeTearDown()
     {
         $this->killServer($this->_pid);
+        $this->waitForServerShutdown($this->host, $this->port);
     }
     
     /**
@@ -322,6 +323,24 @@ abstract class ServerTestCase extends BaseTestSuite
         $start = microtime(true);
         while (microtime(true) - $start <= (int) 200) {
             if ($this->connectToServer($host, $port)) {
+                break;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 
+     * @param unknown $host
+     * @param unknown $port
+     * @return boolean
+     */
+    protected function waitForServerShutdown($host, $port)
+    {
+        $start = microtime(true);
+        while (microtime(true) - $start <= (int) 200) {
+            if (!$this->connectToServer($host, $port)) {
                 break;
             }
         }
