@@ -1,8 +1,24 @@
-# LUYA TESTCASE
+# LUYA Test Suite
 
-Setup TestCases for your Modules, Components and Classes.
+[![LUYA](https://img.shields.io/badge/Powered%20by-LUYA-brightgreen.svg)](https://luya.io)
+[![Total Downloads](https://poser.pugx.org/luyadev/luya-testsuite/downloads)](https://packagist.org/packages/luyadev/luya-testsuite)
+[![Latest Stable Version](https://poser.pugx.org/luyadev/luya-testsuite/v/stable)](https://packagist.org/packages/luyadev/luya-testsuite)
+[![Join the chat at https://gitter.im/luyadev/luya](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/luyadev/luya)
+
+Providing PHPUnit Testcases to test your Application, Modules, Components or Classes.
+
+## Install
+
+Add the `luyadev/luya-testsuite` package to the require-dev section of your composer.json file:
+
+```
+composer require luyadev/luya-testsuite:~1.0.0 --dev
+```
+
+Create a new folder `tests` inside your appliation folder and create a test classes:
 
 ```php
+namepsace app\tests;
 
 use Yii;
 
@@ -16,8 +32,6 @@ class MyTest extends \luya\testsuite\cases\WebApplicationTestCase
         ];
     }
     
-    // add your tests here:
-    
     public function testInstance()
     {
         $this->assertInstanceOf('luya\web\Application', Yii::$app);
@@ -27,15 +41,13 @@ class MyTest extends \luya\testsuite\cases\WebApplicationTestCase
 }
 ```
 
-To run the unit tests while assuming your tests are in directory `tests/` run
+To run the unit tests while (assuming your tests are in directory `tests/`) run in your terminal:
 
 ```sh
 ./vendor/bin/phpunit tests/
 ```
 
-in your shell.
-
-In order to support sqlite Fixture install
+In order to support sqlite fixtures install:
 
 ```sh
 sudo apt-get install php-sqlite3 
