@@ -5,7 +5,7 @@
 [![Latest Stable Version](https://poser.pugx.org/luyadev/luya-testsuite/v/stable)](https://packagist.org/packages/luyadev/luya-testsuite)
 [![Join the chat at https://gitter.im/luyadev/luya](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/luyadev/luya)
 
-Providing PHPUnit Testcases to test your Application, Modules, Components or Classes.
+Providing PHPUnit Testcases and a built in Webserver to test your Application, Modules, Components or Classes.
 
 ## Install
 
@@ -54,6 +54,39 @@ sudo apt-get install php-sqlite3
 ```
 
 ## Example Test Cases
+
+Some example in how to use the LUYA Testsuite for different scenarios.
+
+## Testing API and Application
+
+When working with APIs or Customer Websites somtimes you just want to test the Website itself, what is the response, does all the pages still work after my update? There fore we have `luya\testsuite\cases\ServerTestCase`.
+
+This example will run your LUYA application within a PHP Webserver and test the response status codes or contents for a set of given pages. In order to run this example create a `MyWebsite.php` file inside the `tests` folder.
+
+```php
+namespace app\tests;
+
+class MyWebsite extends ServerTestCase
+{
+   public function getConfigArray()
+   {
+      return [
+          'id' => 'mytestapp',
+          'basePath' => dirname(__DIR__),
+      ];
+  }
+  
+  public function testSites()
+  {
+      $this->assertUrlHomepageIsOk();
+      $this->assertUrlIsOk('about');
+      $this->assertUrlGetResponseContains('about/me', 'Hello World');
+      $this->assertUrlIsError('errorpage');
+  }
+}
+```
+
+> As the Webserver process may run from a different permission level you have to ensure the assets/runtime folder has the required permissions.
 
 ### Registered Module and Function Test
 
