@@ -6,11 +6,11 @@ use luya\base\Boot;
 
 /**
  * Web Application Test Case.
- * 
+ *
  * Provdides basic setup for Script paths in order make the urlManager work.
- * 
+ *
  * Usage:
- * 
+ *
  * ```php
  * class MyTestCase extends WebApplicationTestCase
  * {
@@ -23,7 +23,7 @@ use luya\base\Boot;
  *     }
  * }
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */
@@ -43,7 +43,7 @@ abstract class WebApplicationTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * {@inheritDoc}
      * @see \luya\testsuite\cases\BaseTestSuite::bootApplication()
      */

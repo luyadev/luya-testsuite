@@ -10,9 +10,9 @@ use yii\helpers\Json;
 
 /**
  * Generates a local Server in order to Test URLs.
- * 
+ *
  * An example usage:
- * 
+ *
  * ```php
  * class MyWebsite extends ServerTestCase
  * {
@@ -23,7 +23,7 @@ use yii\helpers\Json;
  *           'basePath' => dirname(__DIR__),
  *       ];
  *   }
- *   
+ *
  *   public function testSites()
  *   {
  *       $this->assertUrlHomepageIsOk();
@@ -33,7 +33,7 @@ use yii\helpers\Json;
  *   }
  * }
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.2
  */
@@ -50,7 +50,6 @@ abstract class ServerTestCase extends BaseTestSuite
     public $port = 1549;
     
     /**
-     * 
      * @var string
      */
     public $documentRoot = '@app/public_html';
@@ -59,8 +58,6 @@ abstract class ServerTestCase extends BaseTestSuite
      * @var boolean
      */
     public $debug = false;
-    
-    private $_pid = 0;
     
     /**
      * {@inheritDoc}
@@ -71,8 +68,10 @@ abstract class ServerTestCase extends BaseTestSuite
         $boot->applicationConsole();
     }
     
+    private $_pid = 0;
+    
     /**
-     * 
+     *
      * {@inheritDoc}
      * @see \luya\testsuite\cases\BaseTestSuite::afterSetup()
      */
@@ -93,6 +92,7 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      * Check whether homage is online and OK response.
+     *
      * @since 1.0.3
      */
     public function assertUrlHomepageIsOk()
@@ -103,8 +103,9 @@ abstract class ServerTestCase extends BaseTestSuite
     /**
      * Test an URL whether a page has response code 200
      *
-     * @param string $url
-     * @param array $params Optional params to build the http queries for the given url.
+     * @param string|array $url The base path on the current server. If array provided the first key is used as path and other values
+     * are merged with $params attribte.
+     * @param array $params Optional parameters to bind url with.
      * @since 1.0.3
      */
     public function assertUrlIsOk($url, array $params = [])
@@ -116,8 +117,9 @@ abstract class ServerTestCase extends BaseTestSuite
     /**
      * Test an URL whether a page has response code 400
      *
-     * @param string $url
-     * @param array $params Optional params to build the http queries for the given url.
+     * @param string|array $url The base path on the current server. If array provided the first key is used as path and other values
+     * are merged with $params attribte.
+     * @param array $params Optional parameters to bind url with.
      * @since 1.0.3
      */
     public function assertUrlIsError($url, array $params = [])
@@ -128,8 +130,10 @@ abstract class ServerTestCase extends BaseTestSuite
 
     /**
      * Test whether url is redirect.
-     * @param unknown $url
-     * @param array $params 
+     *
+     * @param string|array $url The base path on the current server. If array provided the first key is used as path and other values
+     * are merged with $params attribte.
+     * @param array $params Optional parameters to bind url with.
      * @since 1.0.3
      */
     public function assertUrlIsRedirect($url, array $params = [])
@@ -139,11 +143,13 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
-     * @param unknown $url
+     * Test an url and see if the response contains.
+     *
+     * @param string|array $url The base path on the current server. If array provided the first key is used as path and other values
+     * are merged with $params attribte.
      * @param string|array $contains If its an array it will be json encoded by default and the first and last char (wrapping)
      * brackets are cute off, so you can easy search for a key value parining inside the json response.
-     * @param array $params
+     * @param array $params Optional parameters to bind url with
      * @since 1.0.3
      */
     public function assertUrlGetResponseContains($url, $contains, array $params = [])
@@ -153,10 +159,14 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
-     * @param unknown $url
-     * @param unknown $same
-     * @param array $params
+     * Make a GET request and see if the response is the same as.
+     *
+     * @param string|array $url The base path on the current server. If array provided the first key is used as path and other values
+     * are merged with $params attribte.
+     * @param string|array $contains If its an array it will be json encoded by default and the first and last char (wrapping).a
+     * brackets are cute off, so you can easy search for a key value parining inside the json response.
+     * @param array $data The data to post on the $url ($_POST data).
+     * @param array $params Optional parameters to bind url with.
      * @since 1.0.3
      */
     public function assertUrlGetResponseSame($url, $same, array $params = [])
@@ -166,34 +176,37 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
-     * @param unknown $url
+     * Make a POST request and see if the response contains in.
+     *
+     * @param string|array $url The base path on the current server. If array provided the first key is used as path and other values
+     * are merged with $params attribte.
      * @param string|array $contains If its an array it will be json encoded by default and the first and last char (wrapping)
      * brackets are cute off, so you can easy search for a key value parining inside the json response.
-     * @param array $data
+     * @param array $data The data to post on the $url ($_POST data)
+     * @param array $params Optional parameters to bind url with
      * @since 1.0.3
      */
-    public function assertUrlPostResponseContains($url, $contains, array $data = [])
+    public function assertUrlPostResponseContains($url, $contains, array $data = [], array $params = [])
     {
-        $curl = $this->createPostCurl($url, $data);
+        $curl = $this->createPostCurl($url, $data, $params);
         $this->assertContains($this->buildPartialJson($contains, true), $curl->response);
     }
 
     /**
-     * 
+     *
      * @param unknown $url
      * @param unknown $same
      * @param array $data
      * @since 1.0.3
      */
-    public function assertUrlPostResponseSame($url, $same, array $data = [])
+    public function assertUrlPostResponseSame($url, $same, array $data = [], array $params = [])
     {
-        $curl = $this->createPostCurl($url, $data);
+        $curl = $this->createPostCurl($url, $data, $params);
         $this->assertSame($this->buildPartialJson($same), $curl->response);
     }
     
     /**
-     * 
+     *
      * @param unknown $contains
      * @param string $removeBrackets
      * @return string
@@ -210,16 +223,38 @@ abstract class ServerTestCase extends BaseTestSuite
         
         return $contains;
     }
-    
+   
     /**
-     * 
-     * @param unknown $url
+     * Build the url to call with current local host and port.
+     *
+     * If the url is an array the key is the path and the later key value paired are used for params.
+     *
+     * ```php
+     * buildCallUrl(['path/to/api', 'access-token' => 123]);
+     * ```
+     *
+     * is equals to:
+     *
+     * ```php
+     * buildCallUrl('path/to/api', ['access-tokne' => 123]);
+     * ```
+     *
+     * @param string|array $url The local base path to build the url from. If an array the first key is used for the path defintion.
+     * @param array $params Optional key value paired arguments to build the url from.
      * @return string
      * @since 1.0.3
      */
     protected function buildCallUrl($url, array $params = [])
     {
-        $url = "{$this->host}:{$this->port}/" . ltrim($url, '/');
+        if (is_array($url)) {
+            $path = $url[0];
+            unset($url[0]);
+            $params = array_merge($url, $params);
+        } else {
+            $path = $url;
+        }
+        
+        $url = "{$this->host}:{$this->port}/" . ltrim($path, '/');
         
         if (!empty($params)) {
             $url .= '?' . http_build_query($params);
@@ -245,15 +280,15 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * @param unknown $url
      * @param array $data
      * @return \Curl\Curl
      * @since 1.0.3
      */
-    protected function createPostCurl($url, array $data = [])
+    protected function createPostCurl($url, array $data = [], array $params = [])
     {
-        $curl = (new Curl())->post($url, $data);
+        $curl = (new Curl())->post($this->buildCallUrl($url, $params), $data);
         
         if ($this->debug) {
             echo "POST DEBUG '$url': " . $curl->response;
@@ -263,7 +298,7 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * @param unknown $host
      * @param unknown $port
      * @param unknown $documentRoot
@@ -286,7 +321,7 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * @param unknown $host
      * @param unknown $port
      * @param unknown $documentRoot
@@ -295,7 +330,7 @@ abstract class ServerTestCase extends BaseTestSuite
      */
     protected function createServer($host, $port, $documentRoot)
     {
-        $command = sprintf(PHP_BINARY . ' -S %s:%d -t %s >/dev/null 2>&1 & echo $!', $host, $port,  $documentRoot);
+        $command = sprintf(PHP_BINARY . ' -S %s:%d -t %s >/dev/null 2>&1 & echo $!', $host, $port, $documentRoot);
         
         // Execute the command and store the process ID
         $output = [];
@@ -305,7 +340,7 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * @param unknown $host
      * @param unknown $port
      * @return boolean
@@ -324,7 +359,7 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * @param unknown $host
      * @param unknown $port
      * @return boolean
@@ -343,7 +378,7 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * @param unknown $host
      * @param unknown $port
      * @return boolean
@@ -360,7 +395,7 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * 
+     *
      * @param unknown $pid
      * @since 1.0.2
      */

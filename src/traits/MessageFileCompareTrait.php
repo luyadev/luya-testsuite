@@ -7,25 +7,25 @@ use yii\helpers\FileHelper;
 
 /**
  * Check messages files for missing keys.
- * 
+ *
  * Example
- * 
+ *
  * ```php
  * use MessageFileCompareTrait;
- *  
+ *
  * public function compare()
  * {
  *     $this->compareMessages(Yii::getAlias('@admin/messages'), 'en');
  * }
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.1
  */
 trait MessageFileCompareTrait
 {
     /**
-     * 
+     *
      * @param string $folder `en`
      * @param string $masterLang `/admin/src/message` Path to the message file folders.
      */

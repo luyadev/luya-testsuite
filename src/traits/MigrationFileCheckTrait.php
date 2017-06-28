@@ -7,24 +7,24 @@ use luya\helpers\FileHelper;
 
 /**
  * Ensure Migration Files.
- * 
+ *
  * Check Singe File:
- * 
+ *
  * ```php
  * use MigrationFileCheckTrait;
- *   
+ *
  * public function testMigrationFiles()
  * {
  *     $this->checkMigrationFile('@estoreadmin/migrations/m170515_115236_basetables.php');
  * }
  * ```
- * 
+ *
  * Check folder with migration Files:
- * 
+ *
  * ```php
  * $this->checkMigrationFolder('@estoreadmin/migrations');
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.1
  */
@@ -60,7 +60,7 @@ trait MigrationFileCheckTrait
     }
     
     /**
-     * 
+     *
      * @param string $folder Path to the folder `@estoreadmin/migrations`.
      */
     public function checkMigrationFolder($folder)
@@ -73,7 +73,7 @@ trait MigrationFileCheckTrait
     }
     
     /**
-     * 
+     *
      * @param unknown $file
      * @param unknown $className
      * @return unknown

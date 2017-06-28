@@ -3,8 +3,11 @@ LUYA TEST SUITE
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
-1.0.4 (in progress)
+1.0.4 (28. Jun 2017)
 -------------------
++ Fixed problem with post request where urls are not handled.
++ Added array notation for path with params `['path/', 'foo' => 'bar']`.
++ Added phpdocs
 
 1.0.3 (19. May 2017)
 -------------------

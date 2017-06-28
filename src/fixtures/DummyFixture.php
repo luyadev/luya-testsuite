@@ -6,9 +6,9 @@ use yii\test\ActiveFixture;
 
 /**
  * Dummy Fixture Model.
- * 
+ *
  * Prepare config to enable sqlite3:
- * 
+ *
  * ```php
  * 'components' => [
  *     'db' => [
@@ -17,9 +17,9 @@ use yii\test\ActiveFixture;
  *     ]
  * ]
  * ```
- * 
+ *
  * Create the database Schema
- * 
+ *
  * ```php
  * Yii::$app->db->createCommand()->createTable('dummy_fixture', [
  *     'id' => 'INT(11) PRIMARY KEY',
@@ -29,14 +29,14 @@ use yii\test\ActiveFixture;
  *     'boolean' => 'tinyint(1)',
  * ])->execute();
  * ```
- * 
- * 
+ *
+ *
  * ```php
  * $fixture = new DummyFixture();
  * $fixture->load();
  * $model = $fixture->getModel('data1');
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  */
 class DummyFixture extends ActiveFixture
@@ -47,11 +47,11 @@ class DummyFixture extends ActiveFixture
     {
         return [
             'data1' => [
-            	'id' => 1,
-            	'string' => 'Lorem Ipsum',
-            	'integer' => 10,
-            	'float' => 10.00,
-            	'boolean' => true,
+                'id' => 1,
+                'string' => 'Lorem Ipsum',
+                'integer' => 10,
+                'float' => 10.00,
+                'boolean' => true,
             ]
         ];
     }
