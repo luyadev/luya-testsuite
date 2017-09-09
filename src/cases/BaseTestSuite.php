@@ -118,4 +118,21 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
         
         unset($this->app, $this->boot);
     }
+    
+    /**
+     * Trims the given text. Remove whitespaces, tabs and other chars in order to compare readable formated texts.
+     * 
+     */
+    protected function trimContent($text)
+    {
+        return str_replace(['> ', ' <'], ['>', '<'], trim(preg_replace('/\s+/', ' ', $text)));
+    }
+    
+    /**
+     * Same as assertContains but trims the needle and haystack content in order to compare.
+     */
+    public function assertContainsTrimmed($needle, $haystack)
+    {
+        return $this->assertContains($this->trimContent($needle), $this->trimContent($haystack));
+    }
 }
