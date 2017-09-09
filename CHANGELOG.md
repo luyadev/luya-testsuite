@@ -3,8 +3,11 @@ LUYA TEST SUITE
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
-1.0.5 (in progress)
+1.0.5 (9. September 2017)
 -------------------
++ Added Yii default debug informations (print exceptions by default now).
++ Added trim compare function to base test suite.
++ Removed LUYA Core RC3 depencie which allows to used in other releases and version.
 
 1.0.4 (28. Jun 2017)
 -------------------
