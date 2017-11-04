@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file. This projec
 
 1.0.6 (in progress)
 -------------------
++ Fixed issue with wrong formatted debug url.
 
 1.0.5 (9. September 2017)
 -------------------
