@@ -270,10 +270,11 @@ abstract class ServerTestCase extends BaseTestSuite
      */
     protected function createGetCurl($url, array $params = [])
     {
-        $curl = (new Curl())->get($this->buildCallUrl($url, $params));
+        $callUrl = $this->buildCallUrl($url, $params);
+        $curl = (new Curl())->get($callUrl);
         
         if ($this->debug) {
-            echo "GET DEBUG '$url': " . $curl->response;
+            echo "GET DEBUG '$callUrl': " . $curl->response;
         }
         
         return $curl;
@@ -288,10 +289,11 @@ abstract class ServerTestCase extends BaseTestSuite
      */
     protected function createPostCurl($url, array $data = [], array $params = [])
     {
-        $curl = (new Curl())->post($this->buildCallUrl($url, $params), $data);
+        $callUrl = $this->buildCallUrl($url, $params);
+        $curl = (new Curl())->post($callUrl, $data);
         
         if ($this->debug) {
-            echo "POST DEBUG '$url': " . $curl->response;
+            echo "POST DEBUG '$callUrl': " . $curl->response;
         }
         
         return $curl;
