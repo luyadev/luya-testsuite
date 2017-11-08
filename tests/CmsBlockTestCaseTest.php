@@ -18,5 +18,6 @@ final class CmsBlockTestCaseTest extends CmsBlockTestCase
     public function testBlockObject()
     {
         $this->assertNotNull($this->block);
+        $this->assertSame('Hello World', $this->block->sayHelloWorld());
     }
 }
