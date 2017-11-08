@@ -5,7 +5,7 @@ namespace luya\testsuite\tests;
 use Yii;
 use luya\testsuite\cases\WebApplicationTestCase;
 
-class WebApplicationTestCaseTest extends WebApplicationTestCase
+final class WebApplicationTestCaseTest extends WebApplicationTestCase
 {
     public function getConfigArray()
     {

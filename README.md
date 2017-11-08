@@ -7,6 +7,21 @@
 
 Providing PHPUnit Testcases and a built in Webserver to test your Application, Modules, Components, APIs or Classes.
 
+Whats included?
+
+Test Cases
++ Web application test case
++ Console application test case
++ Server (for APIs) test case
++ CMS Block test case
+
+Traits
++ Message file compare trait
++ Migration file check trait
+
+Fixtures
++ Dummy fixture model
+
 ## Install
 
 Add the `luyadev/luya-testsuite` package to the require-dev section of your composer.json file:

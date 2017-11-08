@@ -17,6 +17,9 @@
         "curl/curl" : "^1.0",
         "twig/twig" : "^1.0"
     },
+    "require-dev" : {
+        "luyadev/luya-core" : "^1.0@dev"
+    },
     "support" : {
         "issues" : "https://github.com/luyadev/luya/issues"
     },

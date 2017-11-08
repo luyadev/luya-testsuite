@@ -4,7 +4,7 @@ namespace luya\testsuite\tests;
 
 use luya\testsuite\cases\ServerTestCase;
 
-class ServerTestCaseTest extends ServerTestCase
+final class ServerTestCaseTest extends ServerTestCase
 {
     public $port = 1337;
     

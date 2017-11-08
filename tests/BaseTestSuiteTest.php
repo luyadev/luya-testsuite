@@ -3,10 +3,10 @@
 namespace luya\testsuite\tests;
 
 use Yii;
-use luya\testsuite\cases\BaseTestSuite;
 use luya\base\Boot;
+use luya\testsuite\cases\BaseTestSuite;
 
-class BaseTestSuiteTest extends BaseTestSuite
+final class BaseTestSuiteTest extends BaseTestSuite
 {
     public function getConfigArray()
     {
