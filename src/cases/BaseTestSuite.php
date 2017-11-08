@@ -122,6 +122,8 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     /**
      * Trims the given text. Remove whitespaces, tabs and other chars in order to compare readable formated texts.
      * 
+     * @param string $text
+     * @return string The trimmed text.
      */
     protected function trimContent($text)
     {
@@ -130,6 +132,10 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     
     /**
      * Same as assertContains but trims the needle and haystack content in order to compare.
+     * 
+     * @param string $needle
+     * @param string $haystack
+     * @return boolean
      */
     public function assertContainsTrimmed($needle, $haystack)
     {
