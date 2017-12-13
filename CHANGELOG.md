@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
+1.0.7 (in progress)
+-------------------
+
 1.0.6 (13. December 2017)
 -------------------
 + [#4](https://github.com/luyadev/luya-testsuite/issues/4) Added luya core dependency.
