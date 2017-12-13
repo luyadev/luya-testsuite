@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file. This projec
 -------------------
 - [#5](https://github.com/luyadev/luya-testsuite/issues/5) Added test case for cms blocks.
 + Fixed issue with wrong formatted debug url.
++ [#4](https://github.com/luyadev/luya-testsuite/issues/4) Added luya core dependency.
 
 1.0.5 (9. September 2017)
 -------------------
