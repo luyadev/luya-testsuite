@@ -33,7 +33,7 @@ composer require luyadev/luya-testsuite:~1.0.0 --dev
 Create a new folder `tests` inside your appliation folder and create a test classes:
 
 ```php
-namepsace app\tests;
+namespace app\tests;
 
 use Yii;
 
