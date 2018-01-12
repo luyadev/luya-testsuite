@@ -111,7 +111,8 @@ abstract class ServerTestCase extends BaseTestSuite
     public function assertUrlIsOk($url, array $params = [])
     {
         $curl = $this->createGetCurl($url, $params);
-        $this->assertTrue($curl->isSuccess(), "GET URL '{$url}' return {$curl->http_status_code} instead of 200 (OK).");
+        $printUrl = $this->buildCallUrl($url, $params);
+        $this->assertTrue($curl->isSuccess(), "GET URL '{$printUrl}' return {$curl->http_status_code} instead of 200 (OK).");
     }
     
     /**
@@ -125,7 +126,8 @@ abstract class ServerTestCase extends BaseTestSuite
     public function assertUrlIsError($url, array $params = [])
     {
         $curl = $this->createGetCurl($url, $params);
-        $this->assertTrue($curl->isError(), "GET URL '{$url}' return {$curl->http_status_code} instead of 400 (Error).");
+        $printUrl = $this->buildCallUrl($url, $params);
+        $this->assertTrue($curl->isError(), "GET URL '{$printUrl}' return {$curl->http_status_code} instead of 400 (Error).");
     }
 
     /**
@@ -139,7 +141,8 @@ abstract class ServerTestCase extends BaseTestSuite
     public function assertUrlIsRedirect($url, array $params = [])
     {
         $curl = $this->createGetCurl($url, $params);
-        $this->assertTrue($curl->isRedirect(), "GET URL '{$url}' return {$curl->http_status_code} instead of 300 (Error).");
+        $printUrl = $this->buildCallUrl($url, $params);
+        $this->assertTrue($curl->isRedirect(), "GET URL '{$printUrl}' return {$curl->http_status_code} instead of 300 (Error).");
     }
     
     /**
@@ -264,7 +267,7 @@ abstract class ServerTestCase extends BaseTestSuite
     }
     
     /**
-     * @param unknown $url
+     * @param string $url
      * @return \Curl\Curl
      * @since 1.0.3
      */
@@ -282,7 +285,7 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $url
+     * @param string $url
      * @param array $data
      * @return \Curl\Curl
      * @since 1.0.3
@@ -301,9 +304,9 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $host
-     * @param unknown $port
-     * @param unknown $documentRoot
+     * @param string $host
+     * @param string $port
+     * @param string $documentRoot
      * @throws Exception
      * @return number
      * @since 1.0.2
@@ -324,9 +327,9 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $host
-     * @param unknown $port
-     * @param unknown $documentRoot
+     * @param string $host
+     * @param string $port
+     * @param string $documentRoot
      * @param integer PID (process id)
      * @since 1.0.2
      */
@@ -343,8 +346,8 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $host
-     * @param unknown $port
+     * @param string $host
+     * @param string $port
      * @return boolean
      * @since 1.0.2
      */
@@ -362,8 +365,8 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $host
-     * @param unknown $port
+     * @param string $host
+     * @param string $port
      * @return boolean
      * @since 1.0.3
      */
@@ -381,8 +384,8 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $host
-     * @param unknown $port
+     * @param string $host
+     * @param string $port
      * @return boolean
      * @since 1.0.2
      */
@@ -398,7 +401,7 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $pid
+     * @param string $pid
      * @since 1.0.2
      */
     protected function killServer($pid)
