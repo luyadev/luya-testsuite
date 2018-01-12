@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
+1.0.8 (in progress)
+-------------------
+
 1.0.7 (12. January 2018)
 -------------------
 + Fixed bug where debug message could not handle array input.
