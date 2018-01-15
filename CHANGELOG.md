@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 1.0.8 (in progress)
 -------------------
++ Added invokeMethod function to call protected and private methods.
 
 1.0.7 (12. January 2018)
 -------------------
