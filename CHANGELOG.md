@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
-1.0.8 (in progress)
+1.0.8 (31. January 2018)
 -------------------
 + Added invokeMethod function to call protected and private methods.
 + Added new assertSameNoSpace(), assertContainsNoSpace() and assertSameTrimmed() methods in BaseTestSuite.
