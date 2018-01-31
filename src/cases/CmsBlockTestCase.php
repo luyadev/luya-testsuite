@@ -6,14 +6,14 @@ use yii\base\InvalidConfigException;
 
 /**
  * LUYA Cms Block TestCase.
- * 
+ *
  * Testing a CMS Block for the CMS Layout. Example usage:
- * 
+ *
  * ```php
  * class TextBlockTest extends GenericBlockTestCase
  * {
  *     public $blockClass = 'luya\generic\blocks\TextBlock';
- *     
+ *
  *     public function getConfigArray()
  *     {
  *         return [
@@ -21,30 +21,30 @@ use yii\base\InvalidConfigException;
  *             'basePath' => dirname(__DIR__),
  *         ];
  *     }
- *     
+ *
  *     public function testAdminAndFrontendRender()
  *     {
  *         $this->assertSame('<p>Removes spaces and br from frontend view.</p>', $this->renderFrontendNoSpace());
  *         $this->assertSame('<p>Admin View</p>', $this->renderAdminNoSpace());
  *     }
- *     
+ *
  *     public function testFrontendWithVars()
  *     {
  *         $this->block->setVarValues([
  *              'text' => 'Hello World',
  *         ]);
- *         
+ *
  *         $this->assertSame('<p>Hello World', $this->renderFrontendNoSpace());
  *     }
- * } 
+ * }
  * ```
- * 
+ *
  * On order to test an image object from storage you could use
- * 
+ *
  * ```php
  * $this->block->setVarValues(['image' => (object) ['source' => 'image.jpg', 'caption' => 'image caption']]);
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.6
  */
@@ -77,7 +77,7 @@ abstract class CmsBlockTestCase extends WebApplicationTestCase
     
     /**
      * Renders the frontend view of a block.
-     * 
+     *
      * @return string
      */
     public function renderFrontend()
@@ -94,19 +94,23 @@ abstract class CmsBlockTestCase extends WebApplicationTestCase
     
     /**
      * Renders the admin view of a blockl.
-     * 
+     *
      * @return string
      */
     public function renderAdmin()
     {
         $twig = new \Twig_Environment(new \Twig_Loader_Filesystem());
         $temp = $twig->createTemplate($this->block->renderAdmin());
-        return $temp->render(['cfgs' => $this->block->getCfgValues(), 'vars' => $this->block->getVarValues()]);
+        return $temp->render([
+            'cfgs' => $this->block->getCfgValues(),
+            'vars' => $this->block->getVarValues(),
+            'extras' => $this->block->getExtraVarValues(),
+        ]);
     }
     
     /**
      * Render the admin view, but auto remove all spaces.
-     * 
+     *
      * @return mixed
      */
     public function renderAdminNoSpace()
@@ -116,7 +120,7 @@ abstract class CmsBlockTestCase extends WebApplicationTestCase
     
     /**
      * Render the frontend view, but auto remove all spaces.
-     * 
+     *
      * @return string
      */
     public function renderFrontendNoSpace()

@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file. This projec
 -------------------
 + Added invokeMethod function to call protected and private methods.
 + Added new assertSameNoSpace(), assertContainsNoSpace() and assertSameTrimmed() methods in BaseTestSuite.
++ Fixed issue where extra vars where not assigned to the admin view in CmsBlockTestcase.
 
 1.0.7 (12. January 2018)
 -------------------

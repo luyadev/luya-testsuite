@@ -121,7 +121,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     
     /**
      * Trims the given text. Remove whitespaces, tabs and other chars in order to compare readable formated texts.
-     * 
+     *
      * @param string $text
      * @return string The trimmed text.
      */
@@ -132,26 +132,26 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     
     /**
      * Removes tabs and spaces from a string. But keeps newlines.
-     * 
+     *
      * @param string $text
      * @return string
      */
     protected function trimSpaces($text)
     {
         $lines = null;
-        foreach (preg_split("/((\r?\n)|(\r\n?))/", $text) as $line){
+        foreach (preg_split("/((\r?\n)|(\r\n?))/", $text) as $line) {
             if (!empty($line)) {
                 $lines .= $this->trimContent($line) . PHP_EOL;
             }
-        } 
+        }
         return $lines;
     }
     
     /**
      * Same as assertContains but trims the needle and haystack content in order to compare.
-     * 
+     *
      * This will also remove newlines.
-     * 
+     *
      * @param string $needle
      * @param string $haystack
      * @return boolean
@@ -163,7 +163,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     
     /**
      * Assert Same but trim content (remove, double spaces, tabs and newlines.
-     * 
+     *
      * @param string $needle
      * @param string $haystack
      * @return boolean
@@ -177,9 +177,9 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     /**
      * This assert Same option allows you to compare two strings but removing spaces and tabes, so its more easy to work with readable
      * contents but better comparing.
-     * 
+     *
      * This wont remove new lines.
-     * 
+     *
      * @param string $needle
      * @param string $haystack
      * @return boolean
@@ -192,7 +192,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     
     /**
      * Assert Contains without spaces but with newlines.
-     * 
+     *
      * @param string $needle
      * @param string $haystack
      * @return boolean
@@ -205,7 +205,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     
     /**
      * Call a private or protected method from an object and return the value.
-     * 
+     *
      * ```php
      * public function testProtectedMethod()
      * {
@@ -215,11 +215,11 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      *     //     return $title;
      *     // }
      *     $object = new MyObject();
-     *     
+     *
      *     $this->assertSame('Hello World', $this->invokeMethod($object, 'hello', ['Hello World']));
      * }
      * ```
-     * 
+     *
      * @param object $object The object the method exists from.
      * @param string $methodName  The name of the method which should be called.
      * @param array $parameters An array of paremters which should be passed to the method.
