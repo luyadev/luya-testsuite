@@ -27,4 +27,47 @@ final class BaseTestSuiteTest extends BaseTestSuite
         $this->assertInstanceOf('luya\base\Boot', $this->boot);
         $this->assertInstanceOf('luya\web\Application', $this->app);
     }
+    
+    public function testTrimContent()
+    {
+        $this->assertSame('Foo Bar Bar Foo', $this->trimContent('
+Foo
+    Bar
+
+Bar Foo
+'));
+        
+        $this->assertSameTrimmed('Key Value', 'Key             Value');
+        $this->assertContainsTrimmed('Key Value', 'Start Key    Value     End');
+    }
+    
+    public function testTrimSpaces()
+    {
+        $this->assertSame('Hello
+World
+It\'s LUYA
+', $this->trimSpaces('
+Hello
+        World
+            It\'s LUYA
+'));
+        
+        $this->assertSameNoSpace('
+Yes
+    YES! YES!
+', '
+Yes
+    YES! YES!
+');
+        
+        $this->assertContainsNoSpace('
+Foo Bar
+    Bar Foo
+', '
+BEFORE
+Foo Bar
+Bar Foo
+AFTER
+');
+    }
 }

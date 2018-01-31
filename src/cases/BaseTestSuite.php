@@ -131,7 +131,26 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     }
     
     /**
+     * Removes tabs and spaces from a string. But keeps newlines.
+     * 
+     * @param string $text
+     * @return string
+     */
+    protected function trimSpaces($text)
+    {
+        $lines = null;
+        foreach (preg_split("/((\r?\n)|(\r\n?))/", $text) as $line){
+            if (!empty($line)) {
+                $lines .= $this->trimContent($line) . PHP_EOL;
+            }
+        } 
+        return $lines;
+    }
+    
+    /**
      * Same as assertContains but trims the needle and haystack content in order to compare.
+     * 
+     * This will also remove newlines.
      * 
      * @param string $needle
      * @param string $haystack
@@ -140,6 +159,48 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     public function assertContainsTrimmed($needle, $haystack)
     {
         return $this->assertContains($this->trimContent($needle), $this->trimContent($haystack));
+    }
+    
+    /**
+     * Assert Same but trim content (remove, double spaces, tabs and newlines.
+     * 
+     * @param string $needle
+     * @param string $haystack
+     * @return boolean
+     * @since 1.0.8
+     */
+    public function assertSameTrimmed($needle, $haystack)
+    {
+        return $this->assertSame($this->trimContent($needle), $this->trimContent($haystack));
+    }
+    
+    /**
+     * This assert Same option allows you to compare two strings but removing spaces and tabes, so its more easy to work with readable
+     * contents but better comparing.
+     * 
+     * This wont remove new lines.
+     * 
+     * @param string $needle
+     * @param string $haystack
+     * @return boolean
+     * @since 1.0.8
+     */
+    public function assertSameNoSpace($needle, $haystack)
+    {
+        return $this->assertSame($this->trimSpaces($needle), $this->trimSpaces($haystack));
+    }
+    
+    /**
+     * Assert Contains without spaces but with newlines.
+     * 
+     * @param string $needle
+     * @param string $haystack
+     * @return boolean
+     * @since 1.0.8
+     */
+    public function assertContainsNoSpace($needle, $haystack)
+    {
+        return $this->assertContains($this->trimSpaces($needle), $this->trimSpaces($haystack));
     }
     
     /**

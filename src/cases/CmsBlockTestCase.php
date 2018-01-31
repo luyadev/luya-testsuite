@@ -39,6 +39,12 @@ use yii\base\InvalidConfigException;
  * } 
  * ```
  * 
+ * On order to test an image object from storage you could use
+ * 
+ * ```php
+ * $this->block->setVarValues(['image' => (object) ['source' => 'image.jpg', 'caption' => 'image caption']]);
+ * ```
+ * 
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.6
  */
