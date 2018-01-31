@@ -209,7 +209,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      * ```php
      * public function testProtectedMethod()
      * {
-     *     // assuming MyObject as a protected method like:
+     *     // assuming MyObject has a protected method like:
      *     // protected function hello($title)
      *     // {
      *     //     return $title;
