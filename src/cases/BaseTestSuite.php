@@ -224,6 +224,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      * @param string $methodName  The name of the method which should be called.
      * @param array $parameters An array of paremters which should be passed to the method.
      * @return mixed
+     * @since 1.0.8
      */
     public function invokeMethod(&$object, $methodName, array $parameters = [])
     {
