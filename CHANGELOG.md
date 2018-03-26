@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
+## 1.1.1 (in progress)
+
 ## 1.1.0 (26. March 2018)
 
 + Update to luya admin version 1.1.x
