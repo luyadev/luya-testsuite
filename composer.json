@@ -9,7 +9,8 @@
 	],
 	"license" : "MIT",
 	"homepage" : "http://luya.io",
-	"authors" : [{
+	"authors" : [
+		{
 			"name" : "Basil Suter",
 			"email" : "git@nadar.io",
 			"homepage" : "https://github.com/nadar"
@@ -21,7 +22,7 @@
 		"twig/twig" : "^1.0",
 		"luyadev/luya-core" : "~1.0.0",
 		"luyadev/luya-module-cms" : "~1.0.0",
-		"luyadev/luya-module-admin" : "~1.0.0"
+		"luyadev/luya-module-admin" : "~1.1.0"
 	},
 	"support" : {
 		"issues" : "https://github.com/luyadev/luya/issues"
