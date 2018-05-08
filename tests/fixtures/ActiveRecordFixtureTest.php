@@ -39,7 +39,6 @@ class ActiveRecordFixtureTest extends BaseTestSuite
         ]);
 
         $this->assertSame([
-            'id' => 'INT(11) PRIMARY KEY',
             'user_id' => 'text',
             'group_id' => 'text',
         ], $model->getSchema());

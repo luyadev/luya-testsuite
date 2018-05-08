@@ -3,37 +3,38 @@
 namespace luya\testsuite\fixtures;
 
 use yii\test\ActiveFixture;
+use luya\helpers\ArrayHelper;
 
 /**
  * Active Record Fixture.
- * 
+ *
  * Provides a very basic way in order to generate a database schema for the given table and rules.
- * 
+ *
  * So you don't have to create migrations or sql files, just apply the fixture for a given model like.
- * 
+ *
  * Example Usage to retrieve active record fixture:
- * 
+ *
  * ```php
  * $fixture = new ActiveRecordFixture([
  *     'modelClass' => 'luya\testsuite\tests\data\TestModel', // path to the model
- *     'data' => ['model1' => [ 
+ *     'data' => ['model1' => [
  *         'id' => 1,
  *         'user_id' => 1,
  *         'group_id' => 1,
  *     ]]
  * ]);
- * 
+ *
  * // insert new model
  * $newModel = $fixture->getNewModel();
  * $newModel->attributes = ['user_id' => 1, 'group_id' => '1];
  * $newModel->save();
- * 
+ *
  * // or retrieve model
  * $model = $fixture->getModel('model1'); // definde in `$data`
  * ```
- * 
+ *
  * When your primary key is not the default value use:
- * 
+ *
  * ```php
  * $model = new ActiveRecordFixture([
  *     'modelClass' => 'luya\testsuite\tests\data\TestModel',
@@ -45,9 +46,9 @@ use yii\test\ActiveFixture;
  *     ]]
  * ]);
  * ```
- * 
+ *
  * Make sure to enable sqlite memory database:
- * 
+ *
  * ```php
  * public function getConfigArray()
  * {
@@ -63,11 +64,11 @@ use yii\test\ActiveFixture;
  *       ];
  * }
  * ```
- * 
+ *
  * @property array $schema
  * @property array $primaryKey
  * @property array $data
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.9
  */
@@ -80,36 +81,37 @@ class ActiveRecordFixture extends ActiveFixture
     {
         parent::init();
         $this->createTable();
+        $this->createColumns();
     }
     
     /**
      * Create instance of the model class.
-     * 
+     *
      * @return \yii\db\ActiveRecord
      */
     public function getNewModel()
     {
         $class = $this->modelClass;
         
-        return new $class;
+        return new $class();
     }
     
     private $_primaryKey;
     
     /**
      * Example
-     * 
+     *
      * ```
      * 'primaryKey' => ['id' => 'INT(11) PRIMARY KEY],
      * ```
-     * 
+     *
      * @param array $primaryKey
      */
     public function setPrimaryKey(array $primaryKey)
     {
         $this->_primaryKey = $primaryKey;
     }
-
+    
     /**
      * Returns the primary key name(s) for this AR class.
      * The default implementation will return the primary key(s) as declared
@@ -135,7 +137,7 @@ class ActiveRecordFixture extends ActiveFixture
     private $_data;
     
     /**
-     * 
+     *
      * @param array $data
      */
     public function setData(array $data)
@@ -144,7 +146,7 @@ class ActiveRecordFixture extends ActiveFixture
     }
     
     /**
-     * 
+     *
      * {@inheritDoc}
      * @see \yii\test\ActiveFixture::getData()
      */
@@ -156,7 +158,7 @@ class ActiveRecordFixture extends ActiveFixture
     private $_schema;
     
     /**
-     * 
+     *
      * @param array $schema
      */
     public function setSchema(array $schema)
@@ -180,7 +182,7 @@ class ActiveRecordFixture extends ActiveFixture
     public function createSchemaFromRules()
     {
         $object = $this->getNewModel();
-
+        
         $fields = [];
         foreach ($object->rules() as $row) {
             list ($attributes, $rule) = $row;
@@ -190,8 +192,9 @@ class ActiveRecordFixture extends ActiveFixture
             }
         }
         
-        foreach ($this->getPrimaryKey() as $key => $value) {
-            $fields[$key] = $value;
+        // remove primary keys
+        foreach ($this->primaryKey as $key => $value) {
+            ArrayHelper::remove($fields, $key);
         }
         
         // try to find from labels
@@ -203,6 +206,28 @@ class ActiveRecordFixture extends ActiveFixture
      */
     public function createTable()
     {
-        $this->db->createCommand()->createTable($this->getNewModel()->tableName(), $this->schema)->execute();
+        $fields = [];
+        
+        foreach ($this->getPrimaryKey() as $key => $value) {
+            $fields[$key] = $value;
+        }
+        $class = $this->modelClass;
+        $this->db->createCommand()->createTable($class::tableName(), $fields)->execute();
+    }
+    
+    /**
+     * Add columns to table.
+     */
+    public function createColumns()
+    {
+        $class = $this->modelClass;
+        $tableName = $class::tableName();
+        
+        foreach ($this->getSchema() as $column => $type) {
+            $tableColumns = $this->db->schema->getTableSchema($tableName, true);
+            if (!$tableColumns->getColumn($column)) {
+                $this->db->createCommand()->addColumn($tableName, $column, $type)->execute();
+            }
+        }
     }
 }
