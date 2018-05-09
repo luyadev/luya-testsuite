@@ -6,7 +6,9 @@ use Yii;
 use yii\helpers\FileHelper;
 
 /**
- * Check messages files for missing keys.
+ * Migration File Compare.
+ * 
+ * Checks migrations files for missing keys based on a default language.
  *
  * Example
  *
@@ -25,7 +27,11 @@ use yii\helpers\FileHelper;
 trait MessageFileCompareTrait
 {
     /**
-     *
+     * Compare migration files inside the language folder against the main language defined with $masterLang.
+     * 
+     * The compareMessages() methods assumes that you are providing a folder which has languages, where the languages contain the translations
+     * files itself. The $masterLang is the main message file to compare to others with.
+     * 
      * @param string $folder `en`
      * @param string $masterLang `/admin/src/message` Path to the message file folders.
      */

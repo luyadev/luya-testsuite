@@ -20,7 +20,7 @@ Traits
 + Migration file check trait
 
 Fixtures
-+ Dummy fixture model
++ ActiveRecord fixture creates the table on loading based from array or rule definition.
 
 ## Install
 

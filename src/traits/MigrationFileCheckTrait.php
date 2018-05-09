@@ -6,9 +6,11 @@ use Yii;
 use luya\helpers\FileHelper;
 
 /**
- * Ensure Migration Files.
+ * Migration File Check.
+ * 
+ * This trait allows you to check a given folder or file of migrations whether each create table statement has a drop table statement.
  *
- * Check Singe File:
+ * Check a single migration file.
  *
  * ```php
  * use MigrationFileCheckTrait;
@@ -19,7 +21,7 @@ use luya\helpers\FileHelper;
  * }
  * ```
  *
- * Check folder with migration Files:
+ * Check folder with migration files:
  *
  * ```php
  * $this->checkMigrationFolder('@estoreadmin/migrations');
@@ -36,7 +38,8 @@ trait MigrationFileCheckTrait
     public $dbMigrationInstance = 'yii\\db\\Migration';
     
     /**
-     * The file to check.
+     * Check a given migration file based on its path.
+     * 
      * @param string $filePath Path to the migration file.
      */
     public function checkMigrationFile($filePath)
@@ -60,7 +63,10 @@ trait MigrationFileCheckTrait
     }
     
     /**
-     *
+     * Check a folder with migrations files. 
+     * 
+     * Each migration will be checked by {{checkMigrationFile()}}.
+     * 
      * @param string $folder Path to the folder `@estoreadmin/migrations`.
      */
     public function checkMigrationFolder($folder)
@@ -73,10 +79,11 @@ trait MigrationFileCheckTrait
     }
     
     /**
-     *
-     * @param unknown $file
-     * @param unknown $className
-     * @return unknown
+     * Include the file and create the migration object.
+     * 
+     * @param string $file
+     * @param string $className
+     * @return object
      */
     private function createMigration($file, $className)
     {

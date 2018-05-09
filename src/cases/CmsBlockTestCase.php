@@ -5,12 +5,12 @@ namespace luya\testsuite\cases;
 use yii\base\InvalidConfigException;
 
 /**
- * LUYA Cms Block TestCase.
+ * Cms module block TestCase.
  *
  * Testing a CMS Block for the CMS Layout. Example usage:
  *
  * ```php
- * class TextBlockTest extends GenericBlockTestCase
+ * class TextBlockTest extends WebApplicationTestCase
  * {
  *     public $blockClass = 'luya\generic\blocks\TextBlock';
  *
