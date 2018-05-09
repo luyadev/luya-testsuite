@@ -17,7 +17,7 @@ use luya\helpers\ArrayHelper;
  * ```php
  * $fixture = new ActiveRecordFixture([
  *     'modelClass' => 'luya\testsuite\tests\data\TestModel', // path to the model
- *     'data' => ['model1' => [
+ *     'fixtureData' => ['model1' => [
  *         'id' => 1,
  *         'user_id' => 1,
  *         'group_id' => 1,
@@ -39,7 +39,7 @@ use luya\helpers\ArrayHelper;
  * $model = new ActiveRecordFixture([
  *     'modelClass' => 'luya\testsuite\tests\data\TestModel',
  *     'primaryKey' => ['user_id' => 'int(11)', 'group_id' => 'int(11)'],
- *     'data' => ['model1' => [
+ *     'fixtureData' => ['model1' => [
  *          'id' => 1,
  *          'user_id' => 1,
  *          'group_id1' => 1,
@@ -140,7 +140,7 @@ class ActiveRecordFixture extends ActiveFixture
      *
      * @param array $data
      */
-    public function setData(array $data)
+    public function setFixtureData(array $data)
     {
         $this->_data = $data;
     }
@@ -229,5 +229,7 @@ class ActiveRecordFixture extends ActiveFixture
                 $this->db->createCommand()->addColumn($tableName, $column, $type)->execute();
             }
         }
+        
+        $this->load();
     }
 }

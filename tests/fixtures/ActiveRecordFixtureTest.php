@@ -31,10 +31,10 @@ class ActiveRecordFixtureTest extends BaseTestSuite
     {
         $model = new ActiveRecordFixture([
             'modelClass' => 'luya\testsuite\tests\data\TestModel',
-            'data' => ['model1' => [
+            'fixtureData' => ['model1' => [
                 'id' => 1,
                 'user_id' => 1,
-                'group_id1' => 1,
+                'group_id' => 1,
             ]]
         ]);
 
@@ -46,7 +46,7 @@ class ActiveRecordFixtureTest extends BaseTestSuite
         // try to add new record
         
         $user = $model->getNewModel();
-        $user->attributes = ['id' => 1, 'user_id' => 1, 'group_id' => 1];
+        $user->attributes = ['id' => 2, 'user_id' => 1, 'group_id' => 1];
         $this->assertTrue($user->insert());
         
         // try to load data from model with fixture
