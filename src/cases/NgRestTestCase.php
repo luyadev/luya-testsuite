@@ -35,6 +35,14 @@ use luya\admin\models\Group;
  *   
  *     public $controllerClass = 'luya\testsuite\tests\data\NgRestTestController';
  *     
+ *     public $modelFixtureData = [
+ *         'model1' => [
+ *             'id' => 1,
+ *             'user_id' => 1,
+ *             'group_id' => 1,
+ *         ],
+ *     ];
+ *     
  *     public function getConfigArray()
  *     {
  *         return [
@@ -147,8 +155,12 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->mockBasicAdminModels();
     }
     
+    /**
+     * Basic admin module env model mocking.
+     */
     protected function mockBasicAdminModels()
     {
+        // user
         $this->userFixture = new NgRestModelFixture([
             'modelClass' => User::class,
             'schema' => [
@@ -173,10 +185,13 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->app->db->createCommand()->createTable('admin_group_auth', ['id' => 'INT(11) PRIMARY KEY', 'group_id' => 'int(11)', 'auth_id' => 'int(11)', 'crud_create' => 'int(11)', 'crud_update' => 'int(11)'])->execute();
         $this->app->db->createCommand()->createTable('admin_auth', ['id' => 'INT(11) PRIMARY KEY', 'alias_name' => 'text', 'module_name' => 'text', 'is_crud' => 'int(11)', 'route' => 'text', 'api' => 'text'])->execute();
         
+        // user group
         $this->userGroupFixture = new NgRestModelFixture(['modelClass' => Group::class]);
         
+        // login the user
         $this->app->adminuser->login($this->userFixture->getModel('user1'));
         
+        // user online table
         $this->userOnlineFixture = new ActiveRecordFixture(['modelClass' => UserOnline::class]);
     }
     
