@@ -134,7 +134,7 @@ class ActiveRecordFixture extends ActiveFixture
         return $this->_primaryKey;
     }
     
-    private $_data;
+    private $_data = [];
     
     /**
      *
