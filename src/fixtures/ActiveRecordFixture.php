@@ -71,7 +71,7 @@ use luya\helpers\ArrayHelper;
  * @property \yii\db\ActiveRecord $newModel
  *
  * @author Basil Suter <basil@nadar.io>
- * @since 1.0.9
+ * @since 1.0.10
  */
 class ActiveRecordFixture extends ActiveFixture
 {

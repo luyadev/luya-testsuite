@@ -2,10 +2,13 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
-## 1.0.9 (20. April 2018) and 1.1.0 (26. March 2018)
+## 1.0.10 (9. May 2018)
 
 + [#7](https://github.com/luyadev/luya-testsuite/issues/7) New ActiveRecordFixture with auto build of table schemas.
 + [#6](https://github.com/luyadev/luya-testsuite/issues/6) NgRest TestCase for Model, API and Controller.
+
+## 1.0.9 (20. April 2018) and 1.1.0 (26. March 2018)
+
 + Change dependencies for depending LUYA modules.
 
 ## 1.0.8 (31. January 2018)
