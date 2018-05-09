@@ -68,6 +68,7 @@ use luya\helpers\ArrayHelper;
  * @property array $schema
  * @property array $primaryKey
  * @property array $data
+ * @property \yii\db\ActiveRecord $newModel
  *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.9
@@ -168,7 +169,8 @@ class ActiveRecordFixture extends ActiveFixture
     
     public function getSchema()
     {
-        if ($this->_schema === null) {
+        // this allows even empty arrays to override.
+        if (empty($this->_schema)) {
             $this->_schema = $this->createSchemaFromRules();
         }
         

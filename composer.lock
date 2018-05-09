@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6141bd14227b5ad607f3ba1472fdb8dd",
+    "content-hash": "fd3a1589adf2cf715b01c50ebc21d3d5",
     "packages": [
         {
             "name": "bower-asset/inputmask",
@@ -224,16 +224,16 @@
         },
         {
             "name": "curl/curl",
-            "version": "1.8.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-mod/curl.git",
-                "reference": "16e8489b048ef57ffbf74591a201f7808155b2db"
+                "reference": "d4970cf3451de7688b90af77299548ada72b53dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-mod/curl/zipball/16e8489b048ef57ffbf74591a201f7808155b2db",
-                "reference": "16e8489b048ef57ffbf74591a201f7808155b2db",
+                "url": "https://api.github.com/repos/php-mod/curl/zipball/d4970cf3451de7688b90af77299548ada72b53dd",
+                "reference": "d4970cf3451de7688b90af77299548ada72b53dd",
                 "shasum": ""
             },
             "require": {
@@ -275,7 +275,7 @@
                 "curl",
                 "dot"
             ],
-            "time": "2017-08-12T11:44:08+00:00"
+            "time": "2018-05-02T16:32:35+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -540,16 +540,16 @@
         },
         {
             "name": "luyadev/luya-core",
-            "version": "1.0.6",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/luyadev/luya-core.git",
-                "reference": "1a6b6449632549b87797d9b4d637b9e4f4c10152"
+                "reference": "c1a35ea848f53f5d25437e58b1c70f8991218ed9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/luyadev/luya-core/zipball/1a6b6449632549b87797d9b4d637b9e4f4c10152",
-                "reference": "1a6b6449632549b87797d9b4d637b9e4f4c10152",
+                "url": "https://api.github.com/repos/luyadev/luya-core/zipball/c1a35ea848f53f5d25437e58b1c70f8991218ed9",
+                "reference": "c1a35ea848f53f5d25437e58b1c70f8991218ed9",
                 "shasum": ""
             },
             "require": {
@@ -593,20 +593,20 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2018-04-11T10:02:05+00:00"
+            "time": "2018-05-02T13:01:29+00:00"
         },
         {
             "name": "luyadev/luya-module-admin",
-            "version": "1.1.1.3",
+            "version": "1.1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/luyadev/luya-module-admin.git",
-                "reference": "81a51a3119d3ab0ab4bdf063b48092a14f0c8942"
+                "reference": "d742fad60a22a14fcae6816138ccbae80f720ad1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/luyadev/luya-module-admin/zipball/81a51a3119d3ab0ab4bdf063b48092a14f0c8942",
-                "reference": "81a51a3119d3ab0ab4bdf063b48092a14f0c8942",
+                "url": "https://api.github.com/repos/luyadev/luya-module-admin/zipball/d742fad60a22a14fcae6816138ccbae80f720ad1",
+                "reference": "d742fad60a22a14fcae6816138ccbae80f720ad1",
                 "shasum": ""
             },
             "require": {
@@ -666,7 +666,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2018-04-18T07:59:08+00:00"
+            "time": "2018-05-09T08:28:45+00:00"
         },
         {
             "name": "luyadev/luya-module-cms",

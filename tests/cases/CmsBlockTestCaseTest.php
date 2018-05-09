@@ -1,6 +1,6 @@
 <?php
 
-namespace luya\testsuite\tests;
+namespace luya\testsuite\tests\cases;
 
 use luya\testsuite\cases\CmsBlockTestCase;
 

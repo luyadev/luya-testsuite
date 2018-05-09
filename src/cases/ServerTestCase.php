@@ -9,6 +9,8 @@ use luya\base\Boot;
 use yii\helpers\Json;
 
 /**
+ * Webserver Test Case.
+ * 
  * Generates a local Server in order to Test URLs.
  *
  * An example usage:
@@ -197,8 +199,8 @@ abstract class ServerTestCase extends BaseTestSuite
 
     /**
      *
-     * @param unknown $url
-     * @param unknown $same
+     * @param string|array $url
+     * @param string|array $same
      * @param array $data
      * @since 1.0.3
      */
@@ -210,7 +212,7 @@ abstract class ServerTestCase extends BaseTestSuite
     
     /**
      *
-     * @param unknown $contains
+     * @param string|array $contains
      * @param string $removeBrackets
      * @return string
      * @since 1.0.3

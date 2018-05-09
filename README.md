@@ -14,6 +14,7 @@ Test Cases
 + Console application test case
 + Server (for APIs) test case
 + CMS Block test case
++ NgRest test case (for model, controller and API)
 
 Traits
 + Message file compare trait
