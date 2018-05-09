@@ -10,6 +10,7 @@ use luya\testsuite\fixtures\NgRestModelFixture;
 use luya\admin\models\User;
 use luya\admin\models\UserOnline;
 use luya\admin\models\Group;
+use luya\admin\models\NgrestLog;
 
 /**
  * NgRest Test Case.
@@ -128,6 +129,8 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      */
     protected $userGroupFixture;
     
+    protected $ngrestLogFixture;
+    
     public function afterSetup()
     {
         parent::afterSetup();
@@ -193,6 +196,9 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         
         // user online table
         $this->userOnlineFixture = new ActiveRecordFixture(['modelClass' => UserOnline::class]);
+        
+        // ngrest logger
+        $this->ngrestLogFixture = new ActiveRecordFixture(['modelClass' => NgrestLog::class]);
     }
     
     /**
@@ -274,5 +280,16 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             $this->assertInstanceOf('luya\admin\ngrest\base\NgRestModel', $this->controller->getModel());
             $this->assertContains('<script>zaa.bootstrap.register', $this->controller->actionIndex());
         }
+    }
+    
+    public function beforeTearDown()
+    {
+        parent::beforeTearDown();
+        
+        $this->modelFixture->cleanup();
+        $this->userFixture->cleanup();
+        $this->userGroupFixture->cleanup();
+        $this->userOnlineFixture->cleanup();
+        $this->ngrestLogFixture->cleanup();
     }
 }

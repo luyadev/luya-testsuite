@@ -234,4 +234,14 @@ class ActiveRecordFixture extends ActiveFixture
         
         $this->load();
     }
+    
+    /**
+     * Cleanup active record fixture.
+     */
+    public function cleanup()
+    {
+        $class = $this->modelClass;
+        $tableName = $class::tableName();
+        $this->db->createCommand()->dropTable($tableName);
+    }
 }

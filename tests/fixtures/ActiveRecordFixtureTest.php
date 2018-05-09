@@ -54,5 +54,7 @@ class ActiveRecordFixtureTest extends BaseTestSuite
         $select = $model->getModel('model1');
         
         $this->assertSame(1, $select->id);
+        
+        $model->cleanup();
     }
 }
