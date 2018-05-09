@@ -23,6 +23,8 @@ Traits
 Fixtures
 + ActiveRecord fixture creates the table on loading based from array or rule definition.
 
+See the [full Documentation](guide/README.md)
+
 ## Install
 
 Add the `luyadev/luya-testsuite` package to the require-dev section of your composer.json file:
