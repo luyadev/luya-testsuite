@@ -8,11 +8,28 @@ use luya\helpers\ArrayHelper;
 /**
  * Active Record Fixture.
  *
- * Provides a very basic way in order to generate a database schema for the given table and rules.
+ * Provides a very basic way to generate a database schema for the given table based on the rules or via
+ * $schema definition. So you don't have to create migrations or sql files. Just provide the $modelClass
+ * to the ActiveRecord you'd like to test.
  *
- * So you don't have to create migrations or sql files, just apply the fixture for a given model like.
+ * When working with NgRestModels you can also use {{luya\testsuite\fixtures\NgRestModelFixture}} or maybe
+ * checkout {{luya\testsuite\cases\NgRestTestCase}} which makes model testing even more easy, as it will auto
+ * setup the sqlite connection.
  *
- * Example Usage to retrieve active record fixture:
+ * The only requirement for the ActiveRecordFixture is to have the sqlite database
+ * connection enabled. You could use {{luya\testsuite\cases\NgRestTestCase}} which ensures
+ * this behavior by default.
+ *
+ * ```php
+ * 'components' => [
+ *     'db' => [
+ *         'class' => 'yii\db\Connection',
+ *         'dsn' => 'sqlite::memory:',
+ *     ]
+ * ]
+ * ```
+ *
+ * ActiveRecordFixture usage example:
  *
  * ```php
  * $fixture = new ActiveRecordFixture([
@@ -25,44 +42,27 @@ use luya\helpers\ArrayHelper;
  * ]);
  *
  * // insert new model
- * $newModel = $fixture->getNewModel();
+ * $newModel = $fixture->newModel;
  * $newModel->attributes = ['user_id' => 1, 'group_id' => '1];
  * $newModel->save();
  *
- * // or retrieve model
- * $model = $fixture->getModel('model1'); // definde in `$data`
+ * // or return the defined $fixtureData model
+ * $model = $fixture->getModel('model1'); // definde in `$fixtureData`
  * ```
  *
- * When your primary key is not the default value use:
+ * By default the primary key `id` is used as (in general) the primary key wont appear in the
+ * rules defintion. You can override the default primary key defintion with the $primarKey property:
  *
  * ```php
  * $model = new ActiveRecordFixture([
  *     'modelClass' => 'luya\testsuite\tests\data\TestModel',
- *     'primaryKey' => ['user_id' => 'int(11)', 'group_id' => 'int(11)'],
+ *     'primaryKey' => ['my_primary_key' => 'int(11) PRIMARY KEY'],
  *     'fixtureData' => ['model1' => [
  *          'id' => 1,
  *          'user_id' => 1,
  *          'group_id1' => 1,
  *     ]]
  * ]);
- * ```
- *
- * Make sure to enable sqlite memory database:
- *
- * ```php
- * public function getConfigArray()
- * {
- *       return [
- *           'id' => 'basetestcase',
- *           'basePath' => dirname(__DIR__),
- *           'components' => [
- *               'db' => [
- *                   'class' => 'yii\db\Connection',
- *                   'dsn' => 'sqlite::memory:',
- *               ]
- *           ]
- *       ];
- * }
  * ```
  *
  * @property array $schema
