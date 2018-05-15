@@ -15,17 +15,29 @@ use luya\admin\models\NgrestLog;
 /**
  * NgRest Test Case.
  * 
- * The NgRestTestCase allows you to test the 
+ * The NgRestTestCase extends the {{luya\testsuite\fixture\NgRestModelFixture}} by auto setup the right
+ * Database connection and allows you to test main components Model, API and Controller very easy.
  * 
- * + model
- * + api
- * + controller
+ * The API and Controller tests are optional, this means you don't have to provide {{$apiClass}} or
+ * {{$controllerClass}} in order to setup the test case correctly. The basic tests is just doing
+ * some basic execution test to see if properties and methods does have values and does not return any
+ * php exception, parse or runtime error.
+ *
+ * With this test case you can easy access the Model, API and Controller object in order to test your
+ * custom functionality. 
+ *
+ * ```php
+ * public function testSomeCustomFunctions()
+ * {
+ *     // accessing the controller object
+ *     $this->assertSame('FooBar', $this->controller->actionFooBar()); // runs the action method `actionFooBar`
+ *     
+ *     // accessing the api object
+ *     $this->assertSame('FooBar', $this->api->actionFooBar()); // runs the action method `actionFooBar`
+ * }
+ * ```
  * 
- * The api and controller tests are optional. The basic tests is just doing the some basic execution
- * test to see if properties and methods does have values and does not return any php exception or
- * parse error.
- * 
- * Example usage:
+ * Full example usage and definition:
  * 
  * ```php
  * class NgRestTestCaseTest extends NgRestTestCase
@@ -49,12 +61,6 @@ use luya\admin\models\NgrestLog;
  *         return [
  *             'id' => 'ngresttest',
  *             'basePath' => dirname(__DIR__),
- *             'components' => [
- *                 'db' => [
- *                         'class' => 'yii\db\Connection',
- *                         'dsn' => 'sqlite::memory:',
- *                     ]
- *             ]
  *         ];
  *     }
  *     
@@ -216,6 +222,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                 'session' => ['class' => 'yii\web\CacheSession'],
                 'cache' => ['class' => 'yii\caching\DummyCache'],
                 'adminuser' => ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false],
+                'db' => ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:'],
             ]
         ], $boot->getConfigArray());
         
