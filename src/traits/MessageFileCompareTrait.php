@@ -65,5 +65,7 @@ trait MessageFileCompareTrait
                 }
             }
         }
+        
+        return true;
     }
 }
