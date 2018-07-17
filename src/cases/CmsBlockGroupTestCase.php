@@ -17,9 +17,9 @@ use yii\base\InvalidConfigException;
  *
  * class ProjectGroupTest extends CmsBlockGroupTestCase
  * {
- *      $blockGroupClass = 'luya\cms\frontend\blockgroup\ProjectGroup';
+ *      public $blockGroupClass = 'luya\cms\frontend\blockgroup\ProjectGroup';
  *
- *      $blockGroupIdentifier = 'project-group';
+ *      public $blockGroupIdentifier = 'project-group';
  * }
  * ```
  *
