@@ -1,6 +1,7 @@
 <?php
 namespace luya\testsuite\cases;
 
+use luya\cms\base\BlockGroup;
 use yii\base\InvalidConfigException;
 
 /**
@@ -73,6 +74,15 @@ abstract class CmsBlockGroupTestCase extends WebApplicationTestCase
 
         $class = $this->blockGroupClass;
         $this->blockGroup = new $class();
+    }
+
+    /**
+     * Test if this block group is an instance of \luya\cms\base\BlockGroup
+     */
+    public function testIsBlockGroup()
+    {
+        $this->assertTrue($this->blockGroup instanceof BlockGroup);
+        return true;
     }
 
     /**

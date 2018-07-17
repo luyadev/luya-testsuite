@@ -2,7 +2,9 @@
 
 namespace luya\testsuite\tests\data;
 
-final class TestGroup
+use luya\cms\base\BlockGroup;
+
+final class TestGroup extends BlockGroup
 {
     public function identifier()
     {
