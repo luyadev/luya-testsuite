@@ -82,6 +82,8 @@ abstract class CmsBlockGroupTestCase extends WebApplicationTestCase
     {
         $this->assertNotEmpty($this->blockGroup->identifier());
         $this->assertSame($this->blockGroupIdentifier, $this->blockGroup->identifier());
+
+        return true;
     }
 
     /**
@@ -90,6 +92,8 @@ abstract class CmsBlockGroupTestCase extends WebApplicationTestCase
     public function testLabel()
     {
         $this->assertNotEmpty($this->blockGroup->label());
+
+        return true;
     }
 
     /**
@@ -99,5 +103,7 @@ abstract class CmsBlockGroupTestCase extends WebApplicationTestCase
     {
         $this->assertTrue(0 <= $this->blockGroup->getPosition());
         $this->assertTrue(100 >= $this->blockGroup->getPosition());
+
+        return true;
     }
 }
