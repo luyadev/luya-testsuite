@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 1.0.11 (in progress)
 
-+ [#8](https://github.com/luyadev/luya-testsuite/issues/8) Added class/new feature: CmsBlockGroupTestCase
++ [#8](https://github.com/luyadev/luya-testsuite/issues/8) Added new CmsBlockGroupTestCase
 
 ## 1.0.10 (9. May 2018)
 
