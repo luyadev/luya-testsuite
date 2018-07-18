@@ -187,7 +187,7 @@ class ActiveRecordFixture extends ActiveFixture
         
         $fields = [];
         foreach ($object->rules() as $row) {
-            list ($attributes, $rule) = $row;
+            list($attributes, $rule) = $row;
             
             foreach ((array) $attributes as $name) {
                 $fields[$name] = 'text';

@@ -14,40 +14,40 @@ use luya\admin\models\NgrestLog;
 
 /**
  * NgRest Test Case.
- * 
+ *
  * The NgRestTestCase extends the {{luya\testsuite\fixture\NgRestModelFixture}} by auto setup the right
  * Database connection and allows you to test main components Model, API and Controller very easy.
- * 
+ *
  * The API and Controller tests are optional, this means you don't have to provide {{$apiClass}} or
  * {{$controllerClass}} in order to setup the test case correctly. The basic tests is just doing
  * some basic execution test to see if properties and methods does have values and does not return any
  * php exception, parse or runtime error.
  *
  * With this test case you can easy access the Model, API and Controller object in order to test your
- * custom functionality. 
+ * custom functionality.
  *
  * ```php
  * public function testSomeCustomFunctions()
  * {
  *     // accessing the controller object
  *     $this->assertSame('FooBar', $this->controller->actionFooBar()); // runs the action method `actionFooBar`
- *     
+ *
  *     // accessing the api object
  *     $this->assertSame('FooBar', $this->api->actionFooBar()); // runs the action method `actionFooBar`
  * }
  * ```
- * 
+ *
  * Full example usage and definition:
- * 
+ *
  * ```php
  * class NgRestTestCaseTest extends NgRestTestCase
  * {
  *     public $modelClass = 'luya\testsuite\tests\data\NgRestTestModel';
- *     
+ *
  *     public $apiClass = 'luya\testsuite\tests\data\NgRestTestApi';
- *   
+ *
  *     public $controllerClass = 'luya\testsuite\tests\data\NgRestTestController';
- *     
+ *
  *     public $modelFixtureData = [
  *         'model1' => [
  *             'id' => 1,
@@ -55,7 +55,7 @@ use luya\admin\models\NgrestLog;
  *             'group_id' => 1,
  *         ],
  *     ];
- *     
+ *
  *     public function getConfigArray()
  *     {
  *         return [
@@ -63,18 +63,18 @@ use luya\admin\models\NgrestLog;
  *             'basePath' => dirname(__DIR__),
  *         ];
  *     }
- *     
+ *
  *     public function testAssertion()
  *     {
  *         $model1 = $this->modelFixture->getModel('model1');
  *         $this->assertSame(1, $model1->id);
- *         
+ *
  *         // do inserts, updates or deletions with the model
  *         // $model = $this->modelFixture->newModel;
  *     }
  * }
  * ```
- * 
+ *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.10
  */
@@ -146,7 +146,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         }
         
         $this->modelFixture = new ActiveRecordFixture([
-            'modelClass' => $this->modelClass, 
+            'modelClass' => $this->modelClass,
             'fixtureData' => $this->modelFixtureData,
             'schema' => $this->modelSchema,
         ]);
@@ -253,31 +253,31 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             /*
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionServices();
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionSearch('foo');
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionSearchProvider();
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionSearchHiddenFields();
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionFullResponse();
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionRelationCall(1, 'foo', 'none');
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionFilter('none');
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionActiveWindowCallback();
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionActiveWindowRender();
-            
+
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionExport();
             */

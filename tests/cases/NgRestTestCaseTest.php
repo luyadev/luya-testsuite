@@ -41,6 +41,5 @@ final class NgRestTestCaseTest extends NgRestTestCase
         
         // do inserts, updates or deletions with the model
         // $model = $this->modelFixture->newModel;
-        
     }
 }

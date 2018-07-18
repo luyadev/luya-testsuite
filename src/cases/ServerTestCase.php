@@ -10,7 +10,7 @@ use yii\helpers\Json;
 
 /**
  * Webserver Test Case.
- * 
+ *
  * Generates a local Server in order to Test URLs.
  *
  * An example usage:

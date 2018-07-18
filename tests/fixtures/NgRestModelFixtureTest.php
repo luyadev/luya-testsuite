@@ -25,7 +25,7 @@ class NgRestModelFixtureTest extends BaseTestSuite
     
     public function bootApplication(Boot $boot)
     {
-         $boot->applicationWeb();
+        $boot->applicationWeb();
     }
     
     public function testLoadSchemaFromRules()

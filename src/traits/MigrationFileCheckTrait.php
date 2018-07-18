@@ -7,7 +7,7 @@ use luya\helpers\FileHelper;
 
 /**
  * Migration File Check.
- * 
+ *
  * This trait allows you to check a given folder or file of migrations whether each create table statement has a drop table statement.
  *
  * Check a single migration file.
@@ -39,7 +39,7 @@ trait MigrationFileCheckTrait
     
     /**
      * Check a given migration file based on its path.
-     * 
+     *
      * @param string $filePath Path to the migration file.
      */
     public function checkMigrationFile($filePath)
@@ -63,10 +63,10 @@ trait MigrationFileCheckTrait
     }
     
     /**
-     * Check a folder with migrations files. 
-     * 
+     * Check a folder with migrations files.
+     *
      * Each migration will be checked by {{checkMigrationFile()}}.
-     * 
+     *
      * @param string $folder Path to the folder `@estoreadmin/migrations`.
      */
     public function checkMigrationFolder($folder)
@@ -80,7 +80,7 @@ trait MigrationFileCheckTrait
     
     /**
      * Include the file and create the migration object.
-     * 
+     *
      * @param string $file
      * @param string $className
      * @return object

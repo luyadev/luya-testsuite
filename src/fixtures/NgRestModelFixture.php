@@ -4,7 +4,7 @@ namespace luya\testsuite\fixtures;
 
 /**
  * NgRestModelFixture.
- * 
+ *
  * See {{ActiveRecordFixture}} for usage and documentation.
  *
  * @property array $schema
