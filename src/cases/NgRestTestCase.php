@@ -176,7 +176,8 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                 'firstname' => 'text',
                 'lastname' => 'text',
                 'email' => 'text',
-                'is_deleted' => 'int(11)'
+                'is_deleted' => 'int(11)',
+                'is_api_user' => 'boolean'
             ],
             'fixtureData' => [
                 'user1' => [
@@ -184,7 +185,8 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                     'firstname' => 'John',
                     'lastname' => 'Doe',
                     'email' => 'john@example.com',
-                    'is_deleted' => 0
+                    'is_deleted' => 0,
+                    'is_api_user' => true
                 ]
             ]
         ]);

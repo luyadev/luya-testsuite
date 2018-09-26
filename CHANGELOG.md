@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 1.0.12 (in progress)
 
++ [#12](https://github.com/luyadev/luya-testsuite/pull/12) Fixed issue with NgRestTestCase - Added missing is_api_user to User schema fixture
+
 ## 1.0.11 (18. July 2018)
 
 + [#8](https://github.com/luyadev/luya-testsuite/issues/8) Added new CmsBlockGroupTestCase
