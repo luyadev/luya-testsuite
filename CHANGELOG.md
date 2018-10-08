@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
+## 1.0.13 (in progress)
+
 ## 1.0.12 (8. October 2018)
 
 + [#12](https://github.com/luyadev/luya-testsuite/pull/12) Fixed issue with NgRestTestCase - Added missing is_api_user to User schema fixture
