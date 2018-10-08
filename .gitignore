@@ -5,3 +5,4 @@
 /vendor/
 /luya
 /.idea/
+/composer.lock
