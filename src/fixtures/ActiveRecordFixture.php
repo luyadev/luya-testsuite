@@ -4,6 +4,7 @@ namespace luya\testsuite\fixtures;
 
 use yii\test\ActiveFixture;
 use luya\helpers\ArrayHelper;
+use yii\db\sqlite\Schema;
 
 /**
  * Active Record Fixture.
@@ -132,7 +133,7 @@ class ActiveRecordFixture extends ActiveFixture
     public function getPrimaryKey()
     {
         if ($this->_primaryKey === null) {
-            $this->_primaryKey = ['id' => 'INT(11) PRIMARY KEY'];
+            $this->_primaryKey = ['id' => Schema::TYPE_PK];
         }
         
         return $this->_primaryKey;
@@ -195,13 +196,13 @@ class ActiveRecordFixture extends ActiveFixture
             foreach ((array) $attributes as $name) {
 
                 if ($rule == self::RULE_TYPE_BOOLEAN) {
-                    $fields[$name] = 'boolean';
+                    $fields[$name] = Schema::TYPE_BOOLEAN;
                 } elseif ($rule == self::RULE_TYPE_INTEGER) {
-                    $fields[$name] = 'integer';
+                    $fields[$name] = Schema::TYPE_INTEGER;
                 }
 
                 if (!isset($fields[$name])) {
-                    $fields[$name] = 'text';
+                    $fields[$name] = Schema::TYPE_TEXT;
                 }
             }
         }
