@@ -16,6 +16,13 @@ final class TestModel extends ActiveRecord
         return [
             ['id', 'integer'],
             [['user_id', 'group_id'], 'integer'],
+            [['text'], 'string'],
+            [['is_deleted'], 'boolean'],
+
+            // an attribute which is safe  first and integer afterars
+            [['switch'], 'safe'],
+            ['switch', 'integer'],
+            ['switch', 'string'],
         ];
     }
 }

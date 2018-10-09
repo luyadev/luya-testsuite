@@ -75,6 +75,9 @@ use luya\helpers\ArrayHelper;
  */
 class ActiveRecordFixture extends ActiveFixture
 {
+    const RULE_TYPE_BOOLEAN = 'boolean';
+    const RULE_TYPE_INTEGER = 'integer';
+
     /**
      * @inheritdoc
      */
@@ -190,7 +193,16 @@ class ActiveRecordFixture extends ActiveFixture
             list($attributes, $rule) = $row;
             
             foreach ((array) $attributes as $name) {
-                $fields[$name] = 'text';
+
+                if ($rule == self::RULE_TYPE_BOOLEAN) {
+                    $fields[$name] = 'boolean';
+                } elseif ($rule == self::RULE_TYPE_INTEGER) {
+                    $fields[$name] = 'integer';
+                }
+
+                if (!isset($fields[$name])) {
+                    $fields[$name] = 'text';
+                }
             }
         }
         

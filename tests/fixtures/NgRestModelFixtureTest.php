@@ -40,8 +40,11 @@ class NgRestModelFixtureTest extends BaseTestSuite
         ]);
 
         $this->assertSame([
-            'user_id' => 'text',
-            'group_id' => 'text',
+            'user_id' => 'integer',
+            'group_id' => 'integer',
+            'text' => 'text',
+            'is_deleted' => 'boolean',
+            'switch' => 'integer',
         ], $model->getSchema());
         
         // try to add new record
