@@ -19,10 +19,12 @@ final class TestModel extends ActiveRecord
             [['text'], 'string'],
             [['is_deleted'], 'boolean'],
 
-            // an attribute which is safe  first and integer afterars
+            // an attribute which is safe  first and integer afterawrds
             [['switch'], 'safe'],
             ['switch', 'integer'],
             ['switch', 'string'],
+
+            [['hidden'], 'safe'],
         ];
     }
 }

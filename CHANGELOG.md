@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 1.0.13 (in progress)
 
++ [#14](https://github.com/luyadev/luya-testsuite/issues/14) Remove safe validators from column creation.
 + [#13](https://github.com/luyadev/luya-testsuite/issues/13) Convert integer and boolean rule types into integer and boolean column types.
 
 ## 1.0.12 (8. October 2018)

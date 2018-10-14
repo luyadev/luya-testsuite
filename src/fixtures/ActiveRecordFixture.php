@@ -78,6 +78,7 @@ class ActiveRecordFixture extends ActiveFixture
 {
     const RULE_TYPE_BOOLEAN = 'boolean';
     const RULE_TYPE_INTEGER = 'integer';
+    const RULE_TYPE_SAFE = 'safe';
 
     /**
      * @inheritdoc
@@ -193,6 +194,8 @@ class ActiveRecordFixture extends ActiveFixture
         foreach ($object->rules() as $row) {
             list($attributes, $rule) = $row;
             
+            $rule = strtolower($rule);
+
             foreach ((array) $attributes as $name) {
 
                 if ($rule == self::RULE_TYPE_BOOLEAN) {
@@ -203,6 +206,13 @@ class ActiveRecordFixture extends ActiveFixture
 
                 if (!isset($fields[$name])) {
                     $fields[$name] = Schema::TYPE_TEXT;
+                }
+
+                if ($rule == self::RULE_TYPE_SAFE) {
+                    // remove safe validators fields as they are commonly used for setter getter
+                    if (isset($fields[$name])) {
+                        unset($fields[$name]);
+                    }
                 }
             }
         }
