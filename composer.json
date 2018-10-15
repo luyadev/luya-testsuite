@@ -20,7 +20,7 @@
 		"phpunit/phpunit" : "~6.0.0",
 		"curl/curl" : "^1.0",
 		"twig/twig" : "^1.0",
-		"luyadev/luya" : "^1.0",
+		"luyadev/luya-core" : "^1.0",
 		"luyadev/luya-module-cms" : "^1.0",
 		"luyadev/luya-module-admin" : "^1.0"
 	},
