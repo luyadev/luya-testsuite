@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
-## 1.0.13 (in progress)
+## 1.0.13 (15. October 2018)
 
 + [#15](https://github.com/luyadev/luya-testsuite/issues/15) Add travis CI and code climate coverage integrations.
 + [#14](https://github.com/luyadev/luya-testsuite/issues/14) Remove safe validators from column creation.
