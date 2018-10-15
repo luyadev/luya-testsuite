@@ -82,9 +82,13 @@ abstract class CmsBlockTestCase extends WebApplicationTestCase
      */
     public function renderFrontend()
     {
+        $icon = $this->block->icon();
+        if (empty($icon)) {
+            $icon = 'fa';
+        }
         $this->assertNotEmpty($this->block->blockGroup());
         $this->assertNotEmpty($this->block->name());
-        $this->assertNotEmpty($this->block->icon());
+        $this->assertTrue(is_string($icon));
         $this->assertTrue(is_array($this->block->config()));
         $this->assertTrue(is_array($this->block->extraVars()));
         $this->assertFalse(is_array($this->block->renderAdmin()));

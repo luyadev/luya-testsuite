@@ -70,4 +70,21 @@ Bar Foo
 AFTER
 ');
     }
+
+
+
+    public function testInvokeMthod()
+    {
+        $object = new TestInvokeClass;
+        $this->assertSame('bar', $this->invokeMethod($object, 'bar', ['bar']));
+    }
+}
+
+
+class TestInvokeClass
+{
+    protected function bar($foo)
+    {
+        return $foo;
+    }
 }
