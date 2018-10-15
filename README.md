@@ -1,6 +1,7 @@
 # LUYA Test Suite
 
-[![LUYA](https://img.shields.io/badge/Powered%20by-LUYA-brightgreen.svg)](https://luya.io)
+[![Build Status](https://travis-ci.org/luyadev/luya-testsuite.svg?branch=master)](https://travis-ci.org/luyadev/luya-testsuite)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/4495461ca5ff848e79a9/test_coverage)](https://codeclimate.com/github/luyadev/luya-testsuite/test_coverage)
 [![Total Downloads](https://poser.pugx.org/luyadev/luya-testsuite/downloads)](https://packagist.org/packages/luyadev/luya-testsuite)
 [![Latest Stable Version](https://poser.pugx.org/luyadev/luya-testsuite/v/stable)](https://packagist.org/packages/luyadev/luya-testsuite)
 [![Join the chat at https://gitter.im/luyadev/luya](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/luyadev/luya)
