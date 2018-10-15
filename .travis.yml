@@ -8,7 +8,6 @@ php:
   - nightly
 install:
   - travis_retry composer self-update && composer --version
-  - travis_retry composer global require "fxp/composer-asset-plugin:~1.4"
   - travis_retry composer clear-cache
   - travis_retry composer install --no-interaction
 before_script:
