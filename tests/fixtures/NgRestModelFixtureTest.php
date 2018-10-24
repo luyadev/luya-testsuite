@@ -32,6 +32,7 @@ class NgRestModelFixtureTest extends BaseTestSuite
     {
         $model = new NgRestModelFixture([
             'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'removeSafeAttributes' => true,
             'fixtureData' => ['model1' => [
                 'id' => 1,
                 'user_id' => 1,

@@ -31,6 +31,7 @@ class ActiveRecordFixtureTest extends BaseTestSuite
     {
         $model = new ActiveRecordFixture([
             'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'removeSafeAttributes' => true,
             'fixtureData' => ['model1' => [
                 'id' => 1,
                 'user_id' => 1,
@@ -57,6 +58,28 @@ class ActiveRecordFixtureTest extends BaseTestSuite
         $select = $model->getModel('model1');
         
         $this->assertSame(1, $select->id);
+        
+        $model->cleanup();
+    }
+
+    public function testLoadSchemaFromRulesWithSafe()
+    {
+        $model = new ActiveRecordFixture([
+            'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'ignoreColumns' => ['group_id'],
+            'fixtureData' => ['model1' => [
+                'id' => 1,
+                'user_id' => 1,
+            ]]
+        ]);
+
+        $this->assertSame([
+            'user_id' => 'integer',
+            'text' => 'text',
+            'is_deleted' => 'boolean',
+            'switch' => 'integer',
+            'hidden' => 'text',
+        ], $model->getSchema());
         
         $model->cleanup();
     }

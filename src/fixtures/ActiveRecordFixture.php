@@ -81,6 +81,19 @@ class ActiveRecordFixture extends ActiveFixture
     const RULE_TYPE_SAFE = 'safe';
 
     /**
+     * @var array An array with columns which will be ignored when creating the table columns.
+     * @since 1.0.13.1
+     */
+    public $ignoreColumns = [];
+
+    /**
+     * @var boolean Disabled the default behavior to remove safe attributes as wrongly introduced in 1.0.13. By default this behavior must be disable. If enabled
+     * all safe attribute rules column will ignored when creating the table.
+     * @since 1.0.13.1
+     */
+    public $removeSafeAttributes = false;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -89,6 +102,7 @@ class ActiveRecordFixture extends ActiveFixture
         $this->createTable();
         $this->createColumns();
     }
+    
     
     /**
      * Create instance of the model class.
@@ -178,7 +192,7 @@ class ActiveRecordFixture extends ActiveFixture
         if (empty($this->_schema)) {
             $this->_schema = $this->createSchemaFromRules();
         }
-        
+
         return $this->_schema;
     }
     
@@ -208,7 +222,7 @@ class ActiveRecordFixture extends ActiveFixture
                     $fields[$name] = Schema::TYPE_TEXT;
                 }
 
-                if ($rule == self::RULE_TYPE_SAFE) {
+                if ($this->removeSafeAttributes && $rule == self::RULE_TYPE_SAFE) {
                     // remove safe validators fields as they are commonly used for setter getter
                     if (isset($fields[$name])) {
                         unset($fields[$name]);
@@ -220,6 +234,12 @@ class ActiveRecordFixture extends ActiveFixture
         // remove primary keys
         foreach ($this->primaryKey as $key => $value) {
             ArrayHelper::remove($fields, $key);
+        }
+
+        foreach ($fields as $name => $type) {
+            if (in_array($name, $this->ignoreColumns)) {
+                unset($fields[$name]);
+            }
         }
         
         // try to find from labels
@@ -249,6 +269,7 @@ class ActiveRecordFixture extends ActiveFixture
         $tableName = $class::tableName();
         
         foreach ($this->getSchema() as $column => $type) {
+
             $tableColumns = $this->db->schema->getTableSchema($tableName, true);
             if (!$tableColumns->getColumn($column)) {
                 $this->db->createCommand()->addColumn($tableName, $column, $type)->execute();
