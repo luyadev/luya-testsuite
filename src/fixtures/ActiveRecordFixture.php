@@ -208,6 +208,11 @@ class ActiveRecordFixture extends ActiveFixture
         foreach ($object->rules() as $row) {
             list($attributes, $rule) = $row;
             
+            // if a none scalar value like callable or object, skip this rule
+            if (!is_scalar($rule)) {
+                continue;
+            }
+
             $rule = strtolower($rule);
 
             foreach ((array) $attributes as $name) {
