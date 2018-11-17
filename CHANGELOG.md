@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
+## 1.0.13.3 (17. November 2018)
+
++ Update version constraint for CURL library.
+
 ## 1.0.13.2 (25. October 2018)
 
 + [#17](https://github.com/luyadev/luya-testsuite/issues/17) Fixed issue with callable and not scalar rule defintions.
