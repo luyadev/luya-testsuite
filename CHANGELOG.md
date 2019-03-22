@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. This projec
 
 ## 1.0.14 (in progress)
 
-+ [#12](https://github.com/luyadev/luya-testsuite/pull/12) Added permissions control to NgRestTestCase, fixed basic api tests
++ [#19](https://github.com/luyadev/luya-testsuite/pull/19) Added permissions control to NgRestTestCase, fixed basic api tests
 
 ## 1.0.13.3 (17. November 2018)
 
