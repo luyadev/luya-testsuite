@@ -5,7 +5,11 @@ language: php
 php:
   - 7.1
   - 7.2
+  - 7.3
   - nightly
+matrix:
+  allow_failures:
+      - php: nightly
 install:
   - travis_retry composer self-update && composer --version
   - travis_retry composer clear-cache
