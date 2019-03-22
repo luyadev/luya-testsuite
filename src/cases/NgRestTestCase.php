@@ -81,6 +81,26 @@ use luya\admin\models\NgrestLog;
 abstract class NgRestTestCase extends WebApplicationTestCase
 {
     /**
+     * @const int
+     */
+    const ID_AUTH_API = 1;
+    
+    /**
+     * @const int
+     */
+    const ID_AUTH_CONTROLLER = 2;
+
+    /**
+     * @const int
+     */
+    const ID_USER_TESTER = 1;
+    
+    /**
+     * @const int
+     */
+    const ID_GROUP_TESTER = 1;
+    
+    /**
      * @var string The path to the ngrest model.
      */
     public $modelClass;
@@ -119,7 +139,12 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      * @var \luya\admin\ngrest\base\Controller
      */
     protected $controller;
-    
+
+    /**
+     * @var string
+     */
+    protected $controllerId;
+
     /**
      * @var \luya\testsuite\fixtures\NgRestModelFixture
      */
@@ -153,12 +178,15 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         
         if ($this->apiClass) {
             $class = $this->apiClass;
-            $this->api = new $class('api', $this->app);
+            $modelClass = $this->modelClass;
+            $this->api = new $class($modelClass::ngRestApiEndpoint(), $this->app);
         }
         
         if ($this->controllerClass) {
             $class = $this->controllerClass;
-            $this->controller = new $class('controller', $this->app);
+            $className = preg_replace('/^.*\\\/', '', $class::className());
+            $this->controllerId = strtolower(str_replace('Controller', '', $className));
+            $this->controller = new $class($this->controllerId, $this->app);
         }
         
         $this->mockBasicAdminModels();
@@ -181,7 +209,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             ],
             'fixtureData' => [
                 'user1' => [
-                    'id' => 1,
+                    'id' => self::ID_USER_TESTER,
                     'firstname' => 'John',
                     'lastname' => 'Doe',
                     'email' => 'john@example.com',
@@ -193,11 +221,19 @@ abstract class NgRestTestCase extends WebApplicationTestCase
        
         // generate raw tables for missing active records
         $this->app->db->createCommand()->createTable('admin_user_group', ['id' => 'INT(11) PRIMARY KEY', 'user_id' => 'int(11)', 'group_id' => 'int(11)'])->execute();
-        $this->app->db->createCommand()->createTable('admin_group_auth', ['id' => 'INT(11) PRIMARY KEY', 'group_id' => 'int(11)', 'auth_id' => 'int(11)', 'crud_create' => 'int(11)', 'crud_update' => 'int(11)'])->execute();
+        $this->app->db->createCommand()->createTable('admin_group_auth', ['id' => 'INT(11) PRIMARY KEY', 'group_id' => 'int(11)', 'auth_id' => 'int(11)', 'crud_create' => 'int(11)', 'crud_update' => 'int(11)', 'crud_delete' => 'int(11)'])->execute();
         $this->app->db->createCommand()->createTable('admin_auth', ['id' => 'INT(11) PRIMARY KEY', 'alias_name' => 'text', 'module_name' => 'text', 'is_crud' => 'int(11)', 'route' => 'text', 'api' => 'text'])->execute();
         
         // user group
-        $this->userGroupFixture = new NgRestModelFixture(['modelClass' => Group::class]);
+        $this->userGroupFixture = new NgRestModelFixture([
+            'modelClass' => Group::class,
+            'fixtureData' => [
+                'tester' => [
+                    'id' => self::ID_GROUP_TESTER,
+                    'name' => 'Tester',
+                ],
+            ],
+        ]);
         
         // login the user
         $this->app->adminuser->login($this->userFixture->getModel('user1'));
@@ -207,6 +243,30 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         
         // ngrest logger
         $this->ngrestLogFixture = new ActiveRecordFixture(['modelClass' => NgrestLog::class]);
+        $this->app->db->createCommand()->insert('admin_user_group', [
+            'user_id' => self::ID_USER_TESTER,
+            'group_id' => self::ID_GROUP_TESTER,
+        ])->execute();
+
+        $apiEndpoint = $this->modelClass::ngRestApiEndpoint();
+        list(, , $alias) = explode('-', $apiEndpoint);
+        
+        if ($this->api) {
+            $this->app->db->createCommand()->insert('admin_auth', [
+                'id' => self::ID_AUTH_API,
+                'alias_name' => $alias,
+                'module_name' => $this->app->id,
+                'is_crud' => 1,
+                'api' => $apiEndpoint,
+            ])->execute();
+            $this->app->db->createCommand()->insert('admin_group_auth', [
+                'group_id' => self::ID_GROUP_TESTER,
+                'auth_id' => self::ID_AUTH_API,
+                'crud_create' => 0,
+                'crud_update' => 0,
+                'crud_delete' => 0,
+            ])->execute();
+        }
     }
     
     /**
@@ -251,22 +311,14 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         if ($this->api) {
             $this->assertInstanceOf('luya\admin\ngrest\base\NgRestModel', $this->api->model);
             $this->assertNull($this->api->actionUnlock());
+
+            $this->removeApiPermissions();
             
-            /*
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionServices();
 
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionSearch('foo');
-
-            $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionSearchProvider();
-
-            $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionSearchHiddenFields();
-
-            $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionFullResponse();
 
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionRelationCall(1, 'foo', 'none');
@@ -282,7 +334,6 @@ abstract class NgRestTestCase extends WebApplicationTestCase
 
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionExport();
-            */
         }
         
         if ($this->controller) {
@@ -300,5 +351,77 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->userGroupFixture->cleanup();
         $this->userOnlineFixture->cleanup();
         $this->ngrestLogFixture->cleanup();
+        $this->app->db->createCommand()->dropTable('admin_auth')->execute();
+        $this->app->db->createCommand()->dropTable('admin_group_auth')->execute();
+        $this->app->db->createCommand()->dropTable('admin_user_group')->execute();
+    }
+
+    protected function removeApiPermissions()
+    {
+        $this->app->db->createCommand()->delete('admin_auth', ['id' => self::ID_AUTH_API])->execute();
+    }
+
+    protected function resetApiPermissions($create = false, $update = false, $delete = false)
+    {
+        $this->app->db->createCommand()->update('admin_group_auth',
+                                                [
+                                                    'crud_create' => (int)$create,
+                                                    'crud_update' => (int)$update,
+                                                    'crud_delete' => (int)$delete,
+                                                ],
+                                                [
+                                                    'group_id' => self::ID_GROUP_TESTER,
+                                                    'auth_id' => self::ID_AUTH_API,
+                                                ])->execute();
+        return $this;
+    }
+
+    private function setApiPermission($permission, $value)
+    {
+        $this->app->db->createCommand()->update('admin_group_auth',
+                                                [
+                                                    "crud_$permission" => (int)$value,
+                                                ],
+                                                [
+                                                    'group_id' => self::ID_GROUP_TESTER,
+                                                    'auth_id' => self::ID_AUTH_API,
+                                                ])->execute();
+    }
+
+    protected function apiCanCreate($value = true)
+    {
+        $this->setApiPermission('create', $value);
+        return $this;
+    }
+
+    protected function apiCanUpdate($value = true)
+    {
+        $this->setApiPermission('update', $value);
+        return $this;
+    }
+
+    protected function apiCanDelete($value = true)
+    {
+        $this->setApiPermission('delete', $value);
+        return $this;
+    }
+
+    protected function controllerActionAccess($actionId)
+    {
+        $this->app->db->createCommand()->delete('admin_auth', ['id' => self::ID_AUTH_CONTROLLER])->execute();
+        $this->app->db->createCommand()->delete('admin_group_auth', ['auth_id' => self::ID_AUTH_CONTROLLER])->execute();
+        $this->app->db->createCommand()->insert('admin_auth', [
+            'id' => self::ID_AUTH_CONTROLLER,
+            'alias_name' => $actionId,
+            'module_name' => $this->app->id,
+            'route' => implode('/', [$this->app->id, $this->controllerId, $actionId]),
+        ])->execute();
+        $this->app->db->createCommand()->insert('admin_group_auth', [
+            'group_id' => self::ID_GROUP_TESTER,
+            'auth_id' => self::ID_AUTH_CONTROLLER,
+            'crud_create' => 0,
+            'crud_update' => 0,
+            'crud_delete' => 0,
+        ])->execute();
     }
 }
