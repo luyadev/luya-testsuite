@@ -3,6 +3,7 @@
 namespace luya\testsuite\cases;
 
 use yii\base\InvalidConfigException;
+use yii\db\Exception as DbException;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use luya\base\Boot;
 use luya\helpers\ArrayHelper;
@@ -82,23 +83,45 @@ abstract class NgRestTestCase extends WebApplicationTestCase
 {
     /**
      * @const int
+     *
+     * @since 1.0.14
      */
     const ID_AUTH_API = 1;
     
     /**
      * @const int
+     *
+     * @since 1.0.14
      */
     const ID_AUTH_CONTROLLER = 2;
 
     /**
      * @const int
+     *
+     * @since 1.0.14
      */
     const ID_USER_TESTER = 1;
     
     /**
      * @const int
+     *
+     * @since 1.0.14
      */
     const ID_GROUP_TESTER = 1;
+
+    /**
+     * @const int
+     *
+     * @since 1.0.14
+     */
+    const ID_GROUP_AUTH_API = 1;
+    
+    /**
+     * @const int
+     *
+     * @since 1.0.14
+     */
+    const ID_GROUP_AUTH_CONTROLLER = 2;
     
     /**
      * @var string The path to the ngrest model.
@@ -142,6 +165,8 @@ abstract class NgRestTestCase extends WebApplicationTestCase
 
     /**
      * @var string
+     *
+     * @since 1.0.14
      */
     protected $controllerId;
 
@@ -251,22 +276,18 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $apiEndpoint = $this->modelClass::ngRestApiEndpoint();
         list(, , $alias) = explode('-', $apiEndpoint);
         
-        if ($this->api) {
-            $this->app->db->createCommand()->insert('admin_auth', [
-                'id' => self::ID_AUTH_API,
-                'alias_name' => $alias,
-                'module_name' => $this->app->id,
-                'is_crud' => 1,
-                'api' => $apiEndpoint,
-            ])->execute();
-            $this->app->db->createCommand()->insert('admin_group_auth', [
-                'group_id' => self::ID_GROUP_TESTER,
-                'auth_id' => self::ID_AUTH_API,
-                'crud_create' => 0,
-                'crud_update' => 0,
-                'crud_delete' => 0,
-            ])->execute();
-        }
+        $this->app->db->createCommand()->insert('admin_auth', [
+            'id' => self::ID_AUTH_API,
+            'alias_name' => $alias,
+            'module_name' => $this->app->id,
+            'is_crud' => 1,
+            'api' => $apiEndpoint,
+        ])->execute();
+        $this->app->db->createCommand()->insert('admin_auth', [
+            'id' => self::ID_AUTH_CONTROLLER,
+            'module_name' => $this->app->id,
+            'is_crud' => 0,
+        ])->execute();
     }
     
     /**
@@ -312,8 +333,6 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             $this->assertInstanceOf('luya\admin\ngrest\base\NgRestModel', $this->api->model);
             $this->assertNull($this->api->actionUnlock());
 
-            $this->removeApiPermissions();
-            
             $this->expectException('yii\web\ForbiddenHttpException');
             $this->api->actionServices();
 
@@ -356,72 +375,147 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->app->db->createCommand()->dropTable('admin_user_group')->execute();
     }
 
+    /**
+     * Disables api access for test user
+     * 
+     * @since 1.0.14
+     */
     protected function removeApiPermissions()
     {
-        $this->app->db->createCommand()->delete('admin_auth', ['id' => self::ID_AUTH_API])->execute();
+        $this->app->db->createCommand()->delete('admin_group_auth', ['id' => self::ID_GROUP_AUTH_API])->execute();
     }
 
+    /**
+     * Helps to initialize api access permissions
+     *
+     * @since 1.0.14
+     */
     protected function resetApiPermissions($create = false, $update = false, $delete = false)
     {
-        $this->app->db->createCommand()->update('admin_group_auth',
-                                                [
-                                                    'crud_create' => (int)$create,
-                                                    'crud_update' => (int)$update,
-                                                    'crud_delete' => (int)$delete,
-                                                ],
-                                                [
+        $state = [
+            'crud_create' => (int)$create,
+            'crud_update' => (int)$update,
+            'crud_delete' => (int)$delete,
+        ];
+
+        $this->app->db->createCommand()->upsert('admin_group_auth',
+                                                ArrayHelper::merge([
+                                                    'id' => self::ID_GROUP_AUTH_API,
                                                     'group_id' => self::ID_GROUP_TESTER,
                                                     'auth_id' => self::ID_AUTH_API,
-                                                ])->execute();
+                                                ], $state),
+                                                $state)->execute();
         return $this;
     }
 
-    private function setApiPermission($permission, $value)
+    /**
+     * Gives the test user list api permission or removes access
+     * 
+     * @since 1.0.14
+     */
+    protected function apiCanList($value = true)
     {
-        $this->app->db->createCommand()->update('admin_group_auth',
-                                                [
-                                                    "crud_$permission" => (int)$value,
-                                                ],
-                                                [
-                                                    'group_id' => self::ID_GROUP_TESTER,
-                                                    'auth_id' => self::ID_AUTH_API,
-                                                ])->execute();
+        if (! $value) {
+            return $this->removeApiPermissions();
+        }
+        try {
+            $this->app->db->createCommand()->insert('admin_group_auth', [
+                'id' => self::ID_GROUP_AUTH_API,
+                'group_id' => self::ID_GROUP_TESTER,
+                'auth_id' => self::ID_AUTH_API,
+                'crud_create' => 0,
+                'crud_update' => 0,
+                'crud_delete' => 0,
+            ])->execute();
+        } catch (DbException $e) {
+            // permission is initialized, so having list access already
+        }
+        return $this;
     }
 
+    /**
+     * Gives the test user create api permission or removes it
+     *
+     * @since 1.0.14
+     */
     protected function apiCanCreate($value = true)
     {
-        $this->setApiPermission('create', $value);
-        return $this;
-    }
-
-    protected function apiCanUpdate($value = true)
-    {
-        $this->setApiPermission('update', $value);
-        return $this;
-    }
-
-    protected function apiCanDelete($value = true)
-    {
-        $this->setApiPermission('delete', $value);
-        return $this;
-    }
-
-    protected function controllerActionAccess($actionId)
-    {
-        $this->app->db->createCommand()->delete('admin_auth', ['id' => self::ID_AUTH_CONTROLLER])->execute();
-        $this->app->db->createCommand()->delete('admin_group_auth', ['auth_id' => self::ID_AUTH_CONTROLLER])->execute();
-        $this->app->db->createCommand()->insert('admin_auth', [
-            'id' => self::ID_AUTH_CONTROLLER,
-            'alias_name' => $actionId,
-            'module_name' => $this->app->id,
-            'route' => implode('/', [$this->app->id, $this->controllerId, $actionId]),
-        ])->execute();
-        $this->app->db->createCommand()->insert('admin_group_auth', [
+        $this->app->db->createCommand()->upsert('admin_group_auth', [
+            'id' => self::ID_GROUP_AUTH_API,
             'group_id' => self::ID_GROUP_TESTER,
-            'auth_id' => self::ID_AUTH_CONTROLLER,
-            'crud_create' => 0,
+            'auth_id' => self::ID_AUTH_API,
+            'crud_create' => (int)$value,
             'crud_update' => 0,
             'crud_delete' => 0,
+        ], [
+            'crud_create' => (int)$value,
         ])->execute();
+        return $this;
+    }
+
+    /**
+     * Gives the test user update api permission or removes it
+     *
+     * @since 1.0.14
+     */
+    protected function apiCanUpdate($value = true)
+    {
+        $this->app->db->createCommand()->upsert('admin_group_auth', [
+            'id' => self::ID_GROUP_AUTH_API,
+            'group_id' => self::ID_GROUP_TESTER,
+            'auth_id' => self::ID_AUTH_API,
+            'crud_create' => 0,
+            'crud_update' => (int)$value,
+            'crud_delete' => 0,
+        ], [
+            'crud_update' => (int)$value,
+        ])->execute();
+        return $this;
+    }
+
+    /**
+     * Gives the test user delete api permission or removes it
+     *
+     * @since 1.0.14
+     */
+    protected function apiCanDelete($value = true)
+    {
+        $this->app->db->createCommand()->upsert('admin_group_auth', [
+            'id' => self::ID_GROUP_AUTH_API,
+            'group_id' => self::ID_GROUP_TESTER,
+            'auth_id' => self::ID_AUTH_API,
+            'crud_create' => 0,
+            'crud_update' => 0,
+            'crud_delete' => (int)$value,
+        ], [
+            'crud_delete' => (int)$value,
+        ])->execute();
+        return $this;
+    }
+
+    /**
+     * Gives the test user access to the controller action
+     *
+     * @since 1.0.14
+     */
+    protected function controllerCanAccess($actionId, $value = true)
+    {
+        $this->app->db->createCommand()->update('admin_auth', [
+            'alias_name' => $actionId,
+            'route' => implode('/', [$this->app->id, $this->controllerId, $actionId]),
+        ], [
+            'id' => self::ID_AUTH_CONTROLLER
+        ])->execute();
+        if ($value) {
+            $this->app->db->createCommand()->insert('admin_group_auth', [
+                'id' => self::ID_GROUP_AUTH_CONTROLLER,
+                'group_id' => self::ID_GROUP_TESTER,
+                'auth_id' => self::ID_AUTH_CONTROLLER,
+            ])->execute();
+        } else {
+            $this->app->db->createCommand()->delete('admin_group_auth', [
+                'id' => self::ID_GROUP_AUTH_CONTROLLER,
+            ])->execute();
+        }
     }
 }
