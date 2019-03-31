@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
+## 1.0.14 (in progress)
+
++ [#19](https://github.com/luyadev/luya-testsuite/pull/19) Added permissions control to NgRestTestCase, fixed basic api tests
+
 ## 1.0.13.3 (17. November 2018)
 
 + Update version constraint for CURL library.
