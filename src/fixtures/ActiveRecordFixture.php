@@ -106,10 +106,35 @@ class ActiveRecordFixture extends ActiveFixture
     public function init()
     {
         parent::init();
+        $this->build();
+    }
+
+    /**
+     * Create table, column and load fixture data.
+     * 
+     * @since 1.0.16
+     */
+    public function build()
+    {
+        // create table schema
         $this->createTable();
+        // create 
         $this->createColumns();
+        // load fixture data into the model
+        $this->load();
     }
     
+    /**
+     * Will first cleanup (drop) the tables and the rebuild (create) the table.
+     * 
+     * @since 1.0.14
+     */
+    public function rebuild()
+    {
+        $this->cleanup();
+        $this->build();
+    }
+
     /**
      * Create instance of the model class.
      *
@@ -258,7 +283,7 @@ class ActiveRecordFixture extends ActiveFixture
     }
     
     /**
-     * Create the table based on the schema.
+     * Create the table based on the schema with primary keys
      */
     public function createTable()
     {
@@ -269,7 +294,12 @@ class ActiveRecordFixture extends ActiveFixture
         }
         $class = $this->modelClass;
 
-        if ($this->skipIfExists && !$this->db->schema->getTableSchema($class::tableName())) {
+        // if skipIfExists is enabled, the table will only be created when the table does notexists.
+        if ($this->skipIfExists) {
+            if (!$this->db->schema->getTableSchema($class::tableName())) {
+                $this->db->createCommand()->createTable($class::tableName(), $fields)->execute();
+            }
+        } else {
             $this->db->createCommand()->createTable($class::tableName(), $fields)->execute();
         }
     }
@@ -289,8 +319,6 @@ class ActiveRecordFixture extends ActiveFixture
                 $this->db->createCommand()->addColumn($tableName, $column, $type)->execute();
             }
         }
-        
-        $this->load();
     }
     
     /**
@@ -304,17 +332,5 @@ class ActiveRecordFixture extends ActiveFixture
         if ($this->db->schema->getTableSchema($tableName)) {
             $this->db->createCommand()->dropTable($tableName)->execute();
         }
-    }
-    
-    /**
-     * Will first cleanup (drop) the tables and the rebuild (create) the table.
-     * 
-     * @since 1.0.14
-     */
-    public function rebuild()
-    {
-        $this->cleanup();
-        $this->createTable();
-        $this->createColumns();
     }
 }

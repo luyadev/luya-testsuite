@@ -100,6 +100,58 @@ class ActiveRecordFixtureTest extends BaseTestSuite
 
         
         $model->rebuild();
-        $this->assertNotNull($this->app->db->schema->getTableSchema(TestModel::tableName()));
+        $this->assertNotEmpty($this->app->db->schema->getTableSchema(TestModel::tableName()));
+    }
+
+    public function testSkipIfExists()
+    {
+        $model1 = new ActiveRecordFixture([
+            'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'ignoreColumns' => ['group_id'],
+            'fixtureData' => ['model1' => [
+                'id' => 1,
+                'user_id' => 1,
+            ]]
+        ]);
+
+        $this->assertNotEmpty($this->app->db->schema->getTableSchema(TestModel::tableName()));
+
+        $model2 = new ActiveRecordFixture([
+            'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'ignoreColumns' => ['group_id'],
+            'fixtureData' => ['model1' => [
+                'id' => 2,
+                'user_id' => 1,
+            ]]
+        ]);
+
+        $this->assertNotEmpty($this->app->db->schema->getTableSchema(TestModel::tableName()));
+
+        $model1->cleanup();
+        $model2->cleanup();
+        $this->assertNotEmpty($model1);
+        $this->assertNotEmpty($model2);
+    }
+
+    public function testSkipIfExistsException()
+    {
+        $model1 = new ActiveRecordFixture([
+            'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'ignoreColumns' => ['group_id'],
+            'fixtureData' => ['model1' => [
+                'id' => 1,
+                'user_id' => 1,
+            ]]
+        ]);
+        $this->expectException('\yii\db\Exception');
+        $model2 = new ActiveRecordFixture([
+            'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'ignoreColumns' => ['group_id'],
+            'skipIfExists' => false,
+            'fixtureData' => ['model1' => [
+                'id' => 2,
+                'user_id' => 1,
+            ]]
+        ]);
     }
 }

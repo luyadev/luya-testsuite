@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. This project make usage of the [Yii Versioning Strategy](https://github.com/yiisoft/yii2/blob/master/docs/internals/versions.md).
 
+## 1.0.16 (16. April 2019)
+
++ Added new skipIfExists property, now by default the table will only created if its not already existing.
+
 ## 1.0.15 (16. April 2019)
 
 + Fixed bug in cleanup() and added rebuild() option to first cleanup and then recreate tables.
