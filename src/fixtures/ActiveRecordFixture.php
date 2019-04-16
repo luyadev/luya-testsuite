@@ -94,6 +94,13 @@ class ActiveRecordFixture extends ActiveFixture
     public $removeSafeAttributes = false;
 
     /**
+     * @var boolean If the table already exists while creating, the creation process will be skipped. This can be the case if any other test
+     * created the table but cleanup was not executed therefore an "table exists already" exception can be prevented.
+     * @since 1.0.16
+     */
+    public $skipIfExists = true;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -261,7 +268,10 @@ class ActiveRecordFixture extends ActiveFixture
             $fields[$key] = $value;
         }
         $class = $this->modelClass;
-        $this->db->createCommand()->createTable($class::tableName(), $fields)->execute();
+
+        if ($this->skipIfExists && !$this->db->schema->getTableSchema($class::tableName())) {
+            $this->db->createCommand()->createTable($class::tableName(), $fields)->execute();
+        }
     }
     
     /**
