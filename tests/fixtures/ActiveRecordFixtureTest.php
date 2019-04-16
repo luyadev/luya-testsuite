@@ -5,6 +5,7 @@ namespace luya\testsuite\tests\fixtures;
 use luya\testsuite\cases\BaseTestSuite;
 use luya\base\Boot;
 use luya\testsuite\fixtures\ActiveRecordFixture;
+use luya\testsuite\tests\data\TestModel;
 
 class ActiveRecordFixtureTest extends BaseTestSuite
 {
@@ -82,5 +83,23 @@ class ActiveRecordFixtureTest extends BaseTestSuite
         ], $model->getSchema());
         
         $model->cleanup();
+    }
+
+    public function testRebuild()
+    {
+        $this->assertNull($this->app->db->schema->getTableSchema(TestModel::tableName()));
+        
+        $model = new ActiveRecordFixture([
+            'modelClass' => 'luya\testsuite\tests\data\TestModel',
+            'ignoreColumns' => ['group_id'],
+            'fixtureData' => ['model1' => [
+                'id' => 1,
+                'user_id' => 1,
+            ]]
+        ]);
+
+        
+        $model->rebuild();
+        $this->assertNotNull($this->app->db->schema->getTableSchema(TestModel::tableName()));
     }
 }

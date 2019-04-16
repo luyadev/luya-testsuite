@@ -103,7 +103,6 @@ class ActiveRecordFixture extends ActiveFixture
         $this->createColumns();
     }
     
-    
     /**
      * Create instance of the model class.
      *
@@ -291,6 +290,21 @@ class ActiveRecordFixture extends ActiveFixture
     {
         $class = $this->modelClass;
         $tableName = $class::tableName();
-        $this->db->createCommand()->dropTable($tableName);
+        // ensure the table exists before dropping
+        if ($this->db->schema->getTableSchema($tableName)) {
+            $this->db->createCommand()->dropTable($tableName)->execute();
+        }
+    }
+    
+    /**
+     * Will first cleanup (drop) the tables and the rebuild (create) the table.
+     * 
+     * @since 1.0.14
+     */
+    public function rebuild()
+    {
+        $this->cleanup();
+        $this->createTable();
+        $this->createColumns();
     }
 }
