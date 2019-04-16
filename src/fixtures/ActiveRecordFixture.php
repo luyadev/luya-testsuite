@@ -127,7 +127,7 @@ class ActiveRecordFixture extends ActiveFixture
     /**
      * Will first cleanup (drop) the tables and the rebuild (create) the table.
      * 
-     * @since 1.0.14
+     * @since 1.0.15
      */
     public function rebuild()
     {
