@@ -110,7 +110,7 @@ class ActiveRecordFixture extends ActiveFixture
     }
 
     /**
-     * Create table, column and load fixture data.
+     * Create table, create columns from schema and load fixture data.
      * 
      * @since 1.0.16
      */
@@ -125,9 +125,11 @@ class ActiveRecordFixture extends ActiveFixture
     }
     
     /**
-     * Will first cleanup (drop) the tables and the rebuild (create) the table.
+     * Cleanup (drop table) and then rebuild (create) the table.
      * 
      * @since 1.0.15
+     * @see {{build()}}
+     * @see {{cleanup()}}
      */
     public function rebuild()
     {
