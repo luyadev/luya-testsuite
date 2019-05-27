@@ -37,7 +37,8 @@ final class NgRestTestCaseTest extends NgRestTestCase
     public function testAssertion()
     {
         $model1 = $this->modelFixture->getModel('model1');
-        $this->assertSame(1, $model1->id);
+        $this->assertSame(1, $model1->user_id);
+        $this->assertSame(1, $model1->group_id);
         
         // do inserts, updates or deletions with the model
         // $model = $this->modelFixture->newModel;
