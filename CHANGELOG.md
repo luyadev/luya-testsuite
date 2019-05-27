@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.17 (27. May 2019)
+
++ Update version constraint to allow luya admin version 2.0
+
 ## 1.0.16 (16. April 2019)
 
 + Added new skipIfExists property, now by default the table will only created if its not already existing.
