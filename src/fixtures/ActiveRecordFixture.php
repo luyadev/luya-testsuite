@@ -65,6 +65,9 @@ use yii\db\sqlite\Schema;
  *     ]]
  * ]);
  * ```
+ * 
+ * > In order to support compisite primary keys on sqlite you have to define primaryKey property as followed:
+ * > `'primaryKey' => ['user_id' => 'int(11)', 'group_id' => 'int(11)', 'PRIMARY KEY (user_id, group_id)']`
  *
  * @property array $schema
  * @property array $primaryKey
