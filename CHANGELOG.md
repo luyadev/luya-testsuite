@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.17.2 (26. June 2019)
+
++ Added new CMS version 2.0 constraint.
+
 ## 1.0.17.1 (16. June 2019)
 
 + Fix LUYA admin dependency version constraint.
