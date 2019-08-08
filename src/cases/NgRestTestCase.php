@@ -424,13 +424,14 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      * Set the query parameter as auth token.
      * 
      * @param boolean $value
+     * @param string $token The token to set as query param, if not defined the token from user model user1 will be taken.
      * @since 1.0.18
      */
-    protected function setQueryAuthToken($value = true)
+    protected function setQueryAuthToken($value = true, $token = null)
     {
         if ($value) {
-            $token = $this->userFixture->getModel('user1')->auth_token;
-            $this->app->request->setQueryParams(['access-token' => $token]);
+            $accessToken = $token ? $token : $this->userFixture->getModel('user1')->auth_token;
+            $this->app->request->setQueryParams(['access-token' => $accessToken]);
         } else {
             $this->app->request->setQueryParams(['access-token' => null]);
         }
