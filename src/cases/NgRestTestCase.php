@@ -230,7 +230,9 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                 'lastname' => 'text',
                 'email' => 'text',
                 'is_deleted' => 'int(11)',
-                'is_api_user' => 'boolean'
+                'is_api_user' => 'boolean',
+                'api_last_activity' => 'int(11)',
+                'auth_token' => 'text',
             ],
             'fixtureData' => [
                 'user1' => [
@@ -239,7 +241,9 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                     'lastname' => 'Doe',
                     'email' => 'john@example.com',
                     'is_deleted' => 0,
-                    'is_api_user' => true
+                    'is_api_user' => true,
+                    'api_last_activity' => time(),
+                    'auth_token' => 'TestAuthToken',
                 ]
             ]
         ]);
@@ -376,6 +380,22 @@ abstract class NgRestTestCase extends WebApplicationTestCase
     }
 
     /**
+     * Set the query parameter as auth token.
+     * 
+     * @param boolean $value
+     * @since 1.0.18
+     */
+    protected function setQueryAuthToken($value = true)
+    {
+        if ($value) {
+            $token = $this->userFixture->getModel('user1')->auth_token;
+            $this->app->request->setQueryParams(['access-token' => $token]);
+        } else {
+            $this->app->request->setQueryParams(['access-token' => null]);
+        }
+    }
+
+    /**
      * Disables api access for test user
      * 
      * @since 1.0.14
@@ -399,12 +419,12 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         ];
 
         $this->app->db->createCommand()->upsert('admin_group_auth',
-                                                ArrayHelper::merge([
-                                                    'id' => self::ID_GROUP_AUTH_API,
-                                                    'group_id' => self::ID_GROUP_TESTER,
-                                                    'auth_id' => self::ID_AUTH_API,
-                                                ], $state),
-                                                $state)->execute();
+        ArrayHelper::merge([
+            'id' => self::ID_GROUP_AUTH_API,
+            'group_id' => self::ID_GROUP_TESTER,
+            'auth_id' => self::ID_AUTH_API,
+        ], $state),
+        $state)->execute();
         return $this;
     }
 
@@ -415,7 +435,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      */
     protected function apiCanList($value = true)
     {
-        if (! $value) {
+        if (!$value) {
             return $this->removeApiPermissions();
         }
         try {
