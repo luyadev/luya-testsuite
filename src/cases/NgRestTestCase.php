@@ -12,6 +12,7 @@ use luya\admin\models\User;
 use luya\admin\models\UserOnline;
 use luya\admin\models\Group;
 use luya\admin\models\NgrestLog;
+use yii\base\Controller;
 
 /**
  * NgRest Test Case.
@@ -390,6 +391,33 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->app->db->createCommand()->dropTable('admin_group_auth')->execute();
         $this->app->db->createCommand()->dropTable('admin_user_group')->execute();
         $this->app->db->createCommand()->dropTable('admin_user_auth_notification')->execute();
+    }
+
+    /**
+     * Run a certain action insdie a controller, whether its an api or "controller" context.
+     * 
+     * ```php
+     * $this->runControllerAction($this->api, 'index');
+     * ```
+     * 
+     * Would run the index action of the API Controller.
+     *
+     * @param Controller $controller
+     * @param string $action
+     * @param array $params
+     * @param boolean $permission
+     * @return mixed
+     * @since 1.0.18
+     */
+    protected function runControllerAction(Controller $controller, $action, array $params = [], $permission = true)
+    {
+        $this->app->controller = $controller;
+
+        if ($permission) {
+            $this->setQueryAuthToken();
+        }
+
+        return $controller->runAction($action, $params = []);
     }
 
     /**
