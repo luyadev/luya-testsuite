@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 1.0.18
+## 1.0.18 (9. August 2019)
 
 + [#20](https://github.com/luyadev/luya-testsuite/issues/20) Added NgRestTestCase table support for admin 2.0
 + [#21](https://github.com/luyadev/luya-testsuite/issues/21) Added option to run an action with auth headers `runControllerAction()`.
