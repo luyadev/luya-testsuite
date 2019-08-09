@@ -76,6 +76,20 @@ use yii\base\Controller;
  *     }
  * }
  * ```
+ * 
+ * How to call an API Endpoint:
+ * 
+ * ```php
+ * public function testMyEndpoints()
+ * {
+ *     // test a custom api endpoint (action) with auth checks
+ *     $this->runControllerAction($this->api, 'test'); // where test is the action name.
+ * 
+ *     // or you can access this action directly without auth checks.
+ *     $this->api->actionTest();
+ *     
+ * }
+ * ```
  *
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.10
@@ -148,11 +162,6 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      * @var string The path to the ngrest controller.
      */
     public $controllerClass;
-
-    /**
-     * @var \luya\testsuite\fixtures\NgRestModelFixture
-     */
-    protected $modelFixture;
     
     /**
      * @var \luya\admin\ngrest\base\Api
@@ -160,32 +169,39 @@ abstract class NgRestTestCase extends WebApplicationTestCase
     protected $api;
     
     /**
-     * @var \luya\admin\ngrest\base\Controller
+     * @var Controller
      */
     protected $controller;
 
     /**
      * @var string
-     *
      * @since 1.0.14
      */
     protected $controllerId;
 
     /**
-     * @var \luya\testsuite\fixtures\NgRestModelFixture
+     * @var NgRestModelFixture
+     */
+    protected $modelFixture;
+
+    /**
+     * @var NgRestModelFixture
      */
     protected $userFixture;
     
     /**
-     * @var \luya\testsuite\fixtures\ActiveRecordFixture
+     * @var ActiveRecordFixture
      */
     protected $userOnlineFixture;
     
     /**
-     * @var \luya\testsuite\fixtures\NgRestModelFixture
+     * @var ActiveRecordFixture
      */
     protected $userGroupFixture;
     
+    /**
+     * @var ActiveRecordFixture
+     */
     protected $ngrestLogFixture;
     
     public function afterSetup()
@@ -309,7 +325,6 @@ abstract class NgRestTestCase extends WebApplicationTestCase
     
     /**
      * {@inheritDoc}
-     * @see \luya\testsuite\cases\BaseTestSuite::bootApplication()
      */
     public function bootApplication(Boot $boot)
     {
@@ -378,6 +393,9 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         }
     }
     
+    /**
+     * {@inheritDoc}
+     */
     public function beforeTearDown()
     {
         parent::beforeTearDown();
@@ -417,7 +435,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             $this->setQueryAuthToken();
         }
 
-        return $controller->runAction($action, $params = []);
+        return $controller->runAction($action, $params);
     }
 
     /**

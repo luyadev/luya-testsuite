@@ -5,6 +5,9 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 1.0.18
 
++ [#20](https://github.com/luyadev/luya-testsuite/issues/20) Added NgRestTestCase table support for admin 2.0
++ [#21](https://github.com/luyadev/luya-testsuite/issues/21) Added option to run an action with auth headers `runControllerAction()`.
+
 ## 1.0.17.2 (26. June 2019)
 
 + Added new CMS version 2.0 constraint.
