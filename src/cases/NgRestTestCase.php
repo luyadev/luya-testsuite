@@ -76,18 +76,18 @@ use yii\base\Controller;
  *     }
  * }
  * ```
- * 
+ *
  * How to call an API Endpoint:
- * 
+ *
  * ```php
  * public function testMyEndpoints()
  * {
  *     // test a custom api endpoint (action) with auth checks
  *     $this->runControllerAction($this->api, 'test'); // where test is the action name.
- * 
+ *
  *     // or you can access this action directly without auth checks.
  *     $this->api->actionTest();
- *     
+ *
  * }
  * ```
  *
@@ -413,11 +413,11 @@ abstract class NgRestTestCase extends WebApplicationTestCase
 
     /**
      * Run a certain action insdie a controller, whether its an api or "controller" context.
-     * 
+     *
      * ```php
      * $this->runControllerAction($this->api, 'index');
      * ```
-     * 
+     *
      * Would run the index action of the API Controller.
      *
      * @param Controller $controller
@@ -440,7 +440,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
 
     /**
      * Set the query parameter as auth token.
-     * 
+     *
      * @param boolean $value
      * @param string $token The token to set as query param, if not defined the token from user model user1 will be taken.
      * @since 1.0.18
@@ -457,7 +457,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
 
     /**
      * Disables api access for test user
-     * 
+     *
      * @since 1.0.14
      */
     protected function removeApiPermissions()
@@ -478,19 +478,21 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             'crud_delete' => (int)$delete,
         ];
 
-        $this->app->db->createCommand()->upsert('admin_group_auth',
-        ArrayHelper::merge([
+        $this->app->db->createCommand()->upsert(
+            'admin_group_auth',
+            ArrayHelper::merge([
             'id' => self::ID_GROUP_AUTH_API,
             'group_id' => self::ID_GROUP_TESTER,
             'auth_id' => self::ID_AUTH_API,
         ], $state),
-        $state)->execute();
+            $state
+        )->execute();
         return $this;
     }
 
     /**
      * Gives the test user list api permission or removes access
-     * 
+     *
      * @since 1.0.14
      */
     protected function apiCanList($value = true)

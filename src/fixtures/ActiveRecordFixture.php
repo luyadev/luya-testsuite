@@ -65,7 +65,7 @@ use yii\db\sqlite\Schema;
  *     ]]
  * ]);
  * ```
- * 
+ *
  * > In order to support compisite primary keys on sqlite you have to define primaryKey property as followed:
  * > `'primaryKey' => ['user_id' => 'int(11)', 'group_id' => 'int(11)', 'PRIMARY KEY (user_id, group_id)']`
  *
@@ -114,14 +114,14 @@ class ActiveRecordFixture extends ActiveFixture
 
     /**
      * Create table, create columns from schema and load fixture data.
-     * 
+     *
      * @since 1.0.16
      */
     public function build()
     {
         // create table schema
         $this->createTable();
-        // create 
+        // create
         $this->createColumns();
         // load fixture data into the model
         $this->load();
@@ -129,7 +129,7 @@ class ActiveRecordFixture extends ActiveFixture
     
     /**
      * Cleanup (drop table) and then rebuild (create) the table.
-     * 
+     *
      * @since 1.0.15
      * @see {{build()}}
      * @see {{cleanup()}}
@@ -252,7 +252,6 @@ class ActiveRecordFixture extends ActiveFixture
             $rule = strtolower($rule);
 
             foreach ((array) $attributes as $name) {
-
                 if ($rule == self::RULE_TYPE_BOOLEAN) {
                     $fields[$name] = Schema::TYPE_BOOLEAN;
                 } elseif ($rule == self::RULE_TYPE_INTEGER) {
@@ -318,7 +317,6 @@ class ActiveRecordFixture extends ActiveFixture
         $tableName = $class::tableName();
         
         foreach ($this->getSchema() as $column => $type) {
-
             $tableColumns = $this->db->schema->getTableSchema($tableName, true);
             if (!$tableColumns->getColumn($column)) {
                 $this->db->createCommand()->addColumn($tableName, $column, $type)->execute();

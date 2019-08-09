@@ -4,7 +4,6 @@ namespace luya\testsuite\tests\data;
 
 use luya\cms\base\InternalBaseBlock;
 
-
 final class TestBlock extends InternalBaseBlock
 {
     public function sayHelloWorld()
