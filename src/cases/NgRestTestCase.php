@@ -250,6 +250,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                 'is_api_user' => 'boolean',
                 'api_last_activity' => 'int(11)',
                 'auth_token' => 'text',
+                'is_request_logger_enabled' => 'boolean',
             ],
             'fixtureData' => [
                 'user1' => [
@@ -261,6 +262,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                     'is_api_user' => true,
                     'api_last_activity' => time(),
                     'auth_token' => 'TestAuthToken',
+                    'is_request_logger_enabled' => false,
                 ]
             ]
         ]);
