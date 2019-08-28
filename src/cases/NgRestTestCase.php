@@ -366,6 +366,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         if ($this->api) {
             $this->assertInstanceOf('luya\admin\ngrest\base\NgRestModel', $this->api->model);
             
+            $this->expectException('yii\web\ForbiddenHttpException');
             $this->runControllerAction($this->api, 'unlock');
             //$this->assertNull($this->api->actionUnlock());
 
