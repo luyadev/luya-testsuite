@@ -363,28 +363,37 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         
         if ($this->api) {
             $this->assertInstanceOf('luya\admin\ngrest\base\NgRestModel', $this->api->model);
-            $this->assertNull($this->api->actionUnlock());
+            
+            $this->runControllerAction($this->api, 'unlock');
+            //$this->assertNull($this->api->actionUnlock());
 
             $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionServices();
+            $this->runControllerAction($this->api, 'services');
+            //$this->api->actionServices();
 
             $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionSearch('foo');
+            $this->runControllerAction($this->api, 'search', ['foo']);
+            //$this->api->actionSearch('foo');
 
             $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionRelationCall(1, 'foo', 'none');
+            $this->runControllerAction($this->api, 'relation-call', [1, 'foo', 'none']);
+            //$this->api->actionRelationCall(1, 'foo', 'none');
 
             $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionFilter('none');
+            $this->runControllerAction($this->api, 'filter', ['none']);
+            //$this->api->actionFilter('none');
 
             $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionActiveWindowCallback();
+            $this->runControllerAction($this->api, 'active-window-callback');
+            //$this->api->actionActiveWindowCallback();
 
             $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionActiveWindowRender();
+            $this->runControllerAction($this->api, 'active-window-render');
+            //$this->api->actionActiveWindowRender();
 
             $this->expectException('yii\web\ForbiddenHttpException');
-            $this->api->actionExport();
+            $this->runControllerAction($this->api, 'export');
+            //$this->api->actionExport();
         }
         
         if ($this->controller) {
