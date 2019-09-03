@@ -11,14 +11,14 @@ namespace luya\testsuite\traits;
  * class ControllerStub extend Controller
  * {
  *      use CommandStdStreamTrait;
- * }
+ * 
+ *      public function testUserAbort()
+ *      {
+ *          $controller = new ControllerStub();
+ *          $controller->actionIndex();
  *
- * public function testUserAbort()
- * {
- *      $controller = new ControllerStub();
- *      $controller->actionIndex();
- *
- *      $this->assertEquals('Abort by user.', $controller->readOutput());
+ *          $this->assertEquals('Abort by user.', $controller->readOutput());
+ *      }
  * }
  * ```
  *
@@ -46,7 +46,6 @@ trait CommandStdStreamTrait
      * Replace the {{\yii\console\Controller::stdin}} function.
      *
      * @param bool $raw
-     *
      * @return mixed|string
      */
     public function stdin($raw = false)

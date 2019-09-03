@@ -5,7 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 1.0.19 (in progress)
 
-+ Add trait to testing console output easier.
++ [#22](https://github.com/luyadev/luya-testsuite/pull/22) Add trait to testing console output easier.
 
 ## 1.0.18 (9. August 2019)
 
