@@ -3,9 +3,27 @@
 namespace luya\testsuite\traits;
 
 /**
- * Console trait for STDIN/STDOUT/STDERR replacement with a stack.
+ * Console trait for {{\luya\console\Command}} stubs to replacement STDIN/STDOUT/STDERR with a array stack.
+ *
+ * Example
+ *
+ * ```php
+ * class ControllerStub extend Controller
+ * {
+ *      use CommandStdStreamTrait;
+ * }
+ *
+ * public function testUserAbort()
+ * {
+ *      $controller = new ControllerStub();
+ *      $controller->actionIndex();
+ *
+ *      $this->assertEquals('Abort by user.', $controller->readOutput());
+ * }
+ * ```
  *
  * @author Bennet Klarhoelter <boehsermoe@me.com>
+ * @since 1.0.19
  */
 trait CommandStdStreamTrait
 {
