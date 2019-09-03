@@ -15,9 +15,16 @@ namespace luya\testsuite\traits;
  *      public function testUserAbort()
  *      {
  *          $controller = new ControllerStub();
+ *
+ *          // send a user input for the first prompt
+ *          $controller->sendInput('yes');
+ *          // send a user input for the second prompt
+ *          $controller->sendInput('no');
+ *
  *          $controller->actionIndex();
  *
- *          $this->assertEquals('Abort by user.', $controller->readOutput());
+ *          $this->assertEquals('User answer with yes.', $controller->readOutput());
+ *          $this->assertEquals('User answer with no.', $controller->readOutput());
  *      }
  * }
  * ```
