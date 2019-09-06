@@ -8,11 +8,9 @@ use luya\testsuite\fixtures\ActiveRecordFixture;
 use luya\base\Boot;
 use luya\helpers\ArrayHelper;
 use luya\testsuite\fixtures\NgRestModelFixture;
-use luya\admin\models\User;
 use luya\admin\models\UserOnline;
-use luya\admin\models\Group;
 use luya\admin\models\NgrestLog;
-use luya\testsuite\traits\RestApiAdminPermission;
+use luya\testsuite\traits\RestApiAdminPermissionTrait;
 use yii\base\Controller;
 
 /**
@@ -97,7 +95,7 @@ use yii\base\Controller;
  */
 abstract class NgRestTestCase extends WebApplicationTestCase
 {
-    use RestApiAdminPermission;
+    use RestApiAdminPermissionTrait;
 
     /**
      * @const int
@@ -242,50 +240,17 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      */
     protected function mockBasicAdminModels()
     {
-        // user
-        $this->userFixture = new NgRestModelFixture([
-            'modelClass' => User::class,
-            'schema' => [
-                'firstname' => 'text',
-                'lastname' => 'text',
-                'email' => 'text',
-                'is_deleted' => 'int(11)',
-                'is_api_user' => 'boolean',
-                'api_last_activity' => 'int(11)',
-                'auth_token' => 'text',
-                'is_request_logger_enabled' => 'boolean',
-            ],
-            'fixtureData' => [
-                'user1' => [
-                    'id' => self::ID_USER_TESTER,
-                    'firstname' => 'John',
-                    'lastname' => 'Doe',
-                    'email' => 'john@example.com',
-                    'is_deleted' => 0,
-                    'is_api_user' => true,
-                    'api_last_activity' => time(),
-                    'auth_token' => 'TestAuthToken',
-                    'is_request_logger_enabled' => false,
-                ]
-            ]
-        ]);
-       
         // generate raw tables for missing active records
         $this->createAdminUserGroupTable();
         $this->createAdminGroupAuthTable();
         $this->createAdminAuthTable();
         $this->createAdminUserAuthNotificationTable();
 
+        // user
+        $this->userFixture = $this->createUserFixture(self::ID_USER_TESTER);
+
         // user group
-        $this->userGroupFixture = new NgRestModelFixture([
-            'modelClass' => Group::class,
-            'fixtureData' => [
-                'tester' => [
-                    'id' => self::ID_GROUP_TESTER,
-                    'name' => 'Tester',
-                ],
-            ],
-        ]);
+        $this->userGroupFixture =  $this->createGroupFixture(self::ID_GROUP_TESTER);
         
         // login the user
         $this->app->adminuser->login($this->userFixture->getModel('user1'));
@@ -295,6 +260,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         
         // ngrest logger
         $this->ngrestLogFixture = new ActiveRecordFixture(['modelClass' => NgrestLog::class]);
+
         $this->app->db->createCommand()->insert('admin_user_group', [
             'user_id' => self::ID_USER_TESTER,
             'group_id' => self::ID_GROUP_TESTER,
@@ -310,6 +276,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             'is_crud' => 1,
             'api' => $apiEndpoint,
         ])->execute();
+
         $this->app->db->createCommand()->insert('admin_auth', [
             'id' => self::ID_AUTH_CONTROLLER,
             'module_name' => $this->app->id,
@@ -409,10 +376,11 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->userGroupFixture->cleanup();
         $this->userOnlineFixture->cleanup();
         $this->ngrestLogFixture->cleanup();
-        $this->app->db->createCommand()->dropTable('admin_auth')->execute();
-        $this->app->db->createCommand()->dropTable('admin_group_auth')->execute();
-        $this->app->db->createCommand()->dropTable('admin_user_group')->execute();
-        $this->app->db->createCommand()->dropTable('admin_user_auth_notification')->execute();
+
+        $this->dropTableIfExists('admin_auth');
+        $this->dropTableIfExists('admin_group_auth');
+        $this->dropTableIfExists('admin_user_group');
+        $this->dropTableIfExists('admin_user_auth_notification');
     }
 
     /**
@@ -488,7 +456,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             'id' => self::ID_GROUP_AUTH_API,
             'group_id' => self::ID_GROUP_TESTER,
             'auth_id' => self::ID_AUTH_API,
-        ], $state),
+            ], $state),
             $state
         )->execute();
         return $this;
