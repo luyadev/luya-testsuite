@@ -25,8 +25,12 @@ trait AdminDatabaseTableTrait
         return $this->app->db;
     }
 
-    // routes
-
+    /**
+     * Add permission route.
+     *
+     * @param string $route
+     * @return integer The number of affected rows.
+     */
     public function addPermissionRoute($route)
     {
         return $this->insertRow('admin_auth', [
@@ -36,6 +40,12 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Remove permission route
+     *
+     * @param string $route
+     * @return integer The number of affected rows.
+     */
     public function removePermissionRoute($route)
     {
         return $this->deleteRow('admin_auth', [
@@ -43,6 +53,16 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Assigne a group to an auth entry.
+     *
+     * @param integer $groupId
+     * @param integer $authId
+     * @param boolean $canCreate
+     * @param boolean $canUpdate
+     * @param boolean $canDelete
+     * @return integer The number of affected rows.
+     */
     public function assignGroupAuth($groupId, $authId, $canCreate = true, $canUpdate = true, $canDelete = true)
     {
         return $this->insertRow('admin_group_auth', [
@@ -54,6 +74,13 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Unassigne a group from auth
+     *
+     * @param integer $groupId
+     * @param integer $authId
+     * @return integer The number of affected rows.
+     */
     public function unAssignGroupAuth($groupId, $authId)
     {
         return $this->deleteRow('admin_group_auth', [
@@ -62,8 +89,13 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
-    // apis
-
+    /**
+     * Add permission api entry
+     *
+     * @param string $api
+     * @param boolean $isCrud
+     * @return integer The number of affected rows.
+     */
     public function addPermissionApi($api, $isCrud = true)
     {
         return $this->insertRow('admin_auth', [
@@ -74,6 +106,12 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Remove permission api entry.
+     *
+     * @param string $api
+     * @return integer The number of affected rows.
+     */
     public function removePermissionApi($api)
     {
         return $this->deleteRow('admin_auth', [
@@ -81,14 +119,24 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
-    // table handling
-
+    /**
+     * Create a table if not exists
+     *
+     * @param string $table
+     * @param array $columns
+     */
     public function createTableIfNotExists($table, array $columns)
     {
         if ($this->getDatabaseComponent()->getTableSchema($table, true) === null) {
             $this->getDatabaseComponent()->createCommand()->createTable($table, $columns)->execute();
         }
     }
+
+    /**
+     * Drop a table if not exists.
+     *
+     * @param string $table
+     */
     public function dropTableIfExists($table)
     {
         if ($this->getDatabaseComponent()->getTableSchema($table, true) !== null) {
@@ -96,6 +144,9 @@ trait AdminDatabaseTableTrait
         }
     }
 
+    /**
+     * Create the admin auth table.
+     */
     public function createAdminAuthTable()
     {
         $this->createTableIfNotExists('admin_auth', [
@@ -108,11 +159,17 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Drop the admin auth table.
+     */
     public function dropAdminAuthTable()
     {
         $this->dropTableIfExists('admin_auth');
     }
 
+    /**
+     * Create the admin group auth table.
+     */
     public function createAdminGroupAuthTable()
     {
         $this->createTableIfNotExists('admin_group_auth', [
@@ -125,11 +182,17 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Drop the admin group auth table.
+     */
     public function dropAdminGroupAuthTable()
     {
         $this->dropTableIfExists('admin_group_auth');
     }    
 
+    /**
+     * Create the admin user group table.
+     */
     public function createAdminUserGroupTable()
     {
         $this->createTableIfNotExists('admin_user_group', [
@@ -139,11 +202,17 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Drop the admin user group table.
+     */
     public function dropAdminUserGroupTable()
     {
         $this->dropTableIfExists('admin_user_group');   
     }
 
+    /**
+     * Create the admin user auth notification table.
+     */
     public function createAdminUserAuthNotificationTable()
     {
         $this->createTableIfNotExists('admin_user_auth_notification', [
@@ -158,6 +227,9 @@ trait AdminDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Drop the admin user auth notification table.
+     */
     public function dropAdminUserAuthNotificationTable()
     {
         $this->dropTableIfExists('admin_user_auth_notification');
@@ -187,17 +259,33 @@ trait AdminDatabaseTableTrait
         return $this->getDatabaseComponent()->createCommand()->delete($table, $condition)->execute();
     }
 
+    /**
+     * Create the NgRest Log Fixture.
+     *
+     * @return ActiveRecordFixture
+     */
     public function createNgRestLogFixture()
     {
         return new ActiveRecordFixture(['modelClass' => NgrestLog::class]);
     }
 
+    /**
+     * Create the User Online Fixture.
+     *
+     * @return ActiveRecordFixture
+     */
     public function createUserOnlineFixture()
     {
         return new ActiveRecordFixture(['modelClass' => UserOnline::class]);
     }
 
-    public function createUserFixture(array $fixtureData,$isApiUser = true)
+    /**
+     * Create the User Fixture with given fixture Data.
+     *
+     * @param array $fixtureData
+     * @return NgRestModelFixture
+     */
+    public function createUserFixture(array $fixtureData)
     {
         return new NgRestModelFixture([
             'modelClass' => User::class,
@@ -215,6 +303,12 @@ trait AdminDatabaseTableTrait
         ]);
     }
     
+    /**
+     * Create the Group Fixture with given ID.
+     *
+     * @param integer $id
+     * @return NgRestModelFixture
+     */
     public function createGroupFixture($id)
     {
         return new NgRestModelFixture([

@@ -150,27 +150,52 @@ class PermissionScope
 
     private $_routeAuthId;
 
+    /**
+     * Create a route in permission system
+     *
+     * @param string $route
+     */
     public function createRoute($route)
     {
         $this->_routeAuthId = $this->addPermissionRoute($route);
     }
 
+    /**
+     * Create a route in permission system and directly allow the route.
+     *
+     * @param string $route
+     */
     public function createAndAllowRoute($route)
     {
         $this->createRoute($route);
         $this->allowRoute($route);
     }
 
+    /**
+     * Remove the route from the permission system.
+     *
+     * @param string $route
+     */
     public function removeRoute($route)
     {
         return $this->removePermissionRoute($route);
     }
 
+    /**
+     * Allow the route for the current user and group.
+     *
+     * @param string $route
+     */
     public function allowRoute($route)
     {
         return $this->assignGroupAuth($this->groupId, $this->_routeAuthId);
     }
 
+    /**
+     * Deny the route for the given user and group (removes the group assigment).
+     *
+     * @param string $route
+     */
     public function denyRoute($route)
     {
         return $this->unAssignGroupAuth($this->groupId, $this->_routeAuthId);
@@ -180,34 +205,66 @@ class PermissionScope
 
     private $_apiAuthId;
 
+    /**
+     * Create an Api in permission system. (ActiveRestController).
+     *
+     * @param string $api
+     */
     public function createApi($api)
     {
         $this->_apiAuthId = $this->addPermissionApi($api, true);
     }
 
+    /**
+     * Create the Api in the permission system and directly allow the api with given permissions.
+     *
+     * @param string $api
+     * @param boolean $canCreate
+     * @param boolean $canUpdate
+     * @param boolean $canDelete
+     */
     public function createAndAllowApi($api, $canCreate = true, $canUpdate = true, $canDelete = true)
     {
         $this->createApi($api);
         $this->allowApi($api, $canCreate, $canUpdate, $canDelete);
     }
 
+    /**
+     * Remove the api from permission system.
+     *
+     * @param string $api
+     */
     public function removeApi($api)
     {
         return $this->removePermissionApi($api);
     }
 
+    /**
+     * Assign the Api permission to the current user and group with given permissions.
+     *
+     * @param string $api
+     * @param boolean $canCreate
+     * @param boolean $canUpdate
+     * @param boolean $canDelete
+     */
     public function allowApi($api, $canCreate = true, $canUpdate = true, $canDelete = true)
     {
         return $this->assignGroupAuth($this->groupId, $this->_apiAuthId, $canCreate, $canUpdate, $canDelete);
     }
 
+    /**
+     * Deny the Api, which deletes the api permission entry.
+     *
+     * @param string $api
+     */
     public function denyApi($api)
     {
         return $this->unAssignGroupAuth($this->groupId, $this->_apiAuthId);
     }
 
-    // scope methods
-
+    /**
+     * Method to update the application config with requrired componenets.
+     */
     public function updateApplicationConfig()
     {
         $this->_app->set('session',['class' => 'yii\web\CacheSession']);
@@ -216,19 +273,26 @@ class PermissionScope
         $this->_app->set('db', ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:']);
     }
 
+    /**
+     * Login the the given user into the admin user system.
+     * 
+     * > this is only used for WEB controller request with session based auth.
+     *
+     * @return boolean Whether login was successfull or not.
+     */
     public function loginUser()
     {
         return $this->_app->adminuser->login($this->userFixture->getModel('user'));
     }
 
     /**
-     * Undocumented function
+     * Make a call to a controllers action with params and request method defintion.
      *
      * @param Controller $controller
-     * @param [type] $action
+     * @param string $action
      * @param array $params
      * @param string $method GET, POST, HEAD, PUT, PATCH, DELETE
-     * @return void
+     * @return mixed
      */
     public function runControllerAction(Controller $controller, $action, array $params = [], $method = 'GET')
     {
@@ -245,6 +309,12 @@ class PermissionScope
         return $controller->runAction($action, $params);
     }
 
+    /**
+     * Set authentification query.
+     *
+     * @param boolean $value
+     * @param string $token
+     */
     public function setQueryAuthToken($value = true, $token = null)
     {
         if ($value) {
@@ -254,8 +324,6 @@ class PermissionScope
             $this->_app->request->setQueryParams(['access-token' => null]);
         }
     }
-
-
 
     /**
      * This method is called before the callback runs in order to prepare and setup the permission scope.
@@ -297,11 +365,20 @@ class PermissionScope
         ]);
     }
 
+    /**
+     * Run the provided callable function
+     *
+     * @param PermissionScope $scope
+     * @return mixed
+     */
     public function runCallable(PermissionScope $scope)
     {
         return call_user_func_array($this->_fn, [$scope]);
     }
 
+    /**
+     * Clean up tables and fixtures.
+     */
     public function cleanup()
     {
         $this->userFixture->cleanup();
@@ -314,9 +391,17 @@ class PermissionScope
         $this->dropAdminUserAuthNotificationTable();
     }
     
-    public static function run($db, callable $fn, callable $invoke = null)
+    /**
+     * Run a given function inside a permission scope.
+     *
+     * @param yii\base\Application $app
+     * @param callable $fn The function to run.
+     * @param callable $invoke The function to configure the scope.
+     * @return mixed
+     */
+    public static function run(Application $app, callable $fn, callable $invoke = null)
     {
-        $scope = new self($db, $fn, $invoke);
+        $scope = new self($app, $fn, $invoke);
         $scope->prepare();
         $response = $scope->runCallable($scope);
         $scope->cleanup();
