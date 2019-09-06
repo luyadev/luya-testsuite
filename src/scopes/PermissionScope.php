@@ -61,6 +61,21 @@ use yii\rest\Controller as RestController;
  * }
  * ```
  * 
+ * In order to configure the scope use the second argument in run():
+ * 
+ * ```php
+ * PermissionScop::run($this->app, function(PermissionScope $scope) {
+ *     // do stuff
+ * }, function(PermissionScope $setupScope) {
+ *     // the setup scope allows you to configre scoped details before the call scope runs.
+ *     $setupScope->userId = 1000;
+ *     $scopeScope->userFixture = [
+ *          'firstname' => 'Jane',
+ *          'is_api_user' => false,
+ *     ]
+ * });
+ * ```
+ * 
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.20
  */
@@ -84,10 +99,14 @@ class PermissionScope
 
     protected $ngRestLogFixture;
 
-    // cfg
-
+    /**
+     * @var integer The value which should be taken to generate the user.
+     */
     public $userId = 1;
 
+    /**
+     * @var integer The value which should be taken to generate the group.
+     */
     public $groupId = 1;
 
     /**
@@ -103,6 +122,13 @@ class PermissionScope
      */
     public $userFixtureData = [];
 
+    /**
+     * Permission Scope contstructor.
+     *
+     * @param Application $app
+     * @param callable $fn
+     * @param callable $invoke
+     */
     public function __construct(Application $app, callable $fn, callable $invoke = null)
     {
         $this->_app = $app;
@@ -110,43 +136,14 @@ class PermissionScope
         $this->_fn = $fn;    
     }
 
+    /**
+     * Returns the application database componenet.
+     *
+     * @return \yii\db\Connection
+     */
     public function getDatabaseComponent()
     {
         return $this->_app->db;
-    }
-
-    public function prepare()
-    {
-        if ($this->_invoke) {
-            call_user_func_array($this->_invoke, [$this]);
-        }
-
-        $this->userFixture = $this->createUserFixture([
-            'user' => array_merge([
-                'id' => $this->userId,
-                'firstname' => 'John',
-                'lastname' => 'Doe',
-                'email' => 'john@example.com',
-                'is_deleted' => 0,
-                'is_api_user' => 1,
-                'api_last_activity' => 12345678,
-                'auth_token' => 'TestAuthToken',
-                'is_request_logger_enabled' => false,
-            ], $this->userFixtureData),
-        ]);
-        $this->groupFixture = $this->createGroupFixture($this->groupId);
-        $this->userOnlineFixture = $this->createUserOnlineFixture();
-        $this->ngRestLogFixture = $this->createNgRestLogFixture();
-
-        $this->createAdminUserGroupTable();
-        $this->createAdminGroupAuthTable();
-        $this->createAdminAuthTable();
-        $this->createAdminUserAuthNotificationTable();
-
-        $this->userGroupId = $this->insertRow('admin_user_group', [
-            'user_id' => $this->userId,
-            'group_id' => $this->groupId,
-        ]);
     }
 
     // route permissions
@@ -216,6 +213,7 @@ class PermissionScope
         $this->_app->set('session',['class' => 'yii\web\CacheSession']);
         $this->_app->set('cache', ['class' => 'yii\caching\DummyCache']);
         $this->_app->set('adminuser', ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false]);
+        $this->_app->set('db', ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:']);
     }
 
     public function loginUser()
@@ -257,6 +255,48 @@ class PermissionScope
         }
     }
 
+
+
+    /**
+     * This method is called before the callback runs in order to prepare and setup the permission scope.
+     */
+    public function prepare()
+    {
+        if ($this->_invoke) {
+            call_user_func_array($this->_invoke, [$this]);
+        }
+        
+        // ensure the given and required application components are available.
+        $this->updateApplicationConfig();
+
+        $this->userFixture = $this->createUserFixture([
+            'user' => array_merge([
+                'id' => $this->userId,
+                'firstname' => 'John',
+                'lastname' => 'Doe',
+                'email' => 'john@example.com',
+                'is_deleted' => 0,
+                'is_api_user' => 1,
+                'api_last_activity' => 12345678,
+                'auth_token' => 'TestAuthToken',
+                'is_request_logger_enabled' => false,
+            ], $this->userFixtureData),
+        ]);
+        $this->groupFixture = $this->createGroupFixture($this->groupId);
+        $this->userOnlineFixture = $this->createUserOnlineFixture();
+        $this->ngRestLogFixture = $this->createNgRestLogFixture();
+
+        $this->createAdminUserGroupTable();
+        $this->createAdminGroupAuthTable();
+        $this->createAdminAuthTable();
+        $this->createAdminUserAuthNotificationTable();
+
+        $this->userGroupId = $this->insertRow('admin_user_group', [
+            'user_id' => $this->userId,
+            'group_id' => $this->groupId,
+        ]);
+    }
+
     public function runCallable(PermissionScope $scope)
     {
         return call_user_func_array($this->_fn, [$scope]);
@@ -278,7 +318,6 @@ class PermissionScope
     {
         $scope = new self($db, $fn, $invoke);
         $scope->prepare();
-        $scope->updateApplicationConfig();
         $response = $scope->runCallable($scope);
         $scope->cleanup();
         return $response;

@@ -86,18 +86,19 @@ trait AdminDatabaseTableTrait
     public function createTableIfNotExists($table, array $columns)
     {
         if ($this->getDatabaseComponent()->getTableSchema($table, true) === null) {
-            return $this->getDatabaseComponent()->createCommand()->createTable($table, $columns)->execute();
+            $this->getDatabaseComponent()->createCommand()->createTable($table, $columns)->execute();
         }
-        return true;
     }
     public function dropTableIfExists($table)
     {
-        return $this->getDatabaseComponent()->createCommand()->dropTable($table)->execute();
+        if ($this->getDatabaseComponent()->getTableSchema($table, true) !== null) {
+            $this->getDatabaseComponent()->createCommand()->dropTable($table)->execute();
+        }
     }
 
     public function createAdminAuthTable()
     {
-        return $this->createTableIfNotExists('admin_auth', [
+        $this->createTableIfNotExists('admin_auth', [
             'id' => 'INT(11) PRIMARY KEY',
             'alias_name' => 'text',
             'module_name' => 'text',
@@ -109,12 +110,12 @@ trait AdminDatabaseTableTrait
 
     public function dropAdminAuthTable()
     {
-        return $this->dropTableIfExists('admin_auth');
+        $this->dropTableIfExists('admin_auth');
     }
 
     public function createAdminGroupAuthTable()
     {
-        return $this->createTableIfNotExists('admin_group_auth', [
+        $this->createTableIfNotExists('admin_group_auth', [
             'id' => 'INT(11) PRIMARY KEY',
             'group_id' => 'int(11)',
             'auth_id' => 'int(11)',
@@ -126,12 +127,12 @@ trait AdminDatabaseTableTrait
 
     public function dropAdminGroupAuthTable()
     {
-        return $this->dropTableIfExists('admin_group_auth');
+        $this->dropTableIfExists('admin_group_auth');
     }    
 
     public function createAdminUserGroupTable()
     {
-        return $this->createTableIfNotExists('admin_user_group', [
+        $this->createTableIfNotExists('admin_user_group', [
             'id' => 'INT(11) PRIMARY KEY',
             'user_id' => 'int(11)',
             'group_id' => 'int(11)',
@@ -140,12 +141,12 @@ trait AdminDatabaseTableTrait
 
     public function dropAdminUserGroupTable()
     {
-        return $this->dropTableIfExists('admin_user_group');   
+        $this->dropTableIfExists('admin_user_group');   
     }
 
     public function createAdminUserAuthNotificationTable()
     {
-        return $this->createTableIfNotExists('admin_user_auth_notification', [
+        $this->createTableIfNotExists('admin_user_auth_notification', [
             'id' => 'INT(11) PRIMARY KEY',
             'user_id' => 'int(11)',
             'auth_id' => 'int(11)',
@@ -159,14 +160,28 @@ trait AdminDatabaseTableTrait
 
     public function dropAdminUserAuthNotificationTable()
     {
-        return $this->dropTableIfExists('admin_user_auth_notification');
+        $this->dropTableIfExists('admin_user_auth_notification');
     }
 
+    /**
+     * Insert row
+     *
+     * @param string $table
+     * @param array $values
+     * @return integer returns the number of rows inserted.
+     */
     public function insertRow($table, array $values)
     {
         return $this->getDatabaseComponent()->createCommand()->insert($table, $values)->execute();
     }
 
+    /**
+     * Delete row
+     *
+     * @param string $table
+     * @param array $condition
+     * @return integer returns the number of rows deleted.
+     */
     public function deleteRow($table, array $condition)
     {
         return $this->getDatabaseComponent()->createCommand()->delete($table, $condition)->execute();
@@ -199,6 +214,7 @@ trait AdminDatabaseTableTrait
             'fixtureData' => $fixtureData,
         ]);
     }
+    
     public function createGroupFixture($id)
     {
         return new NgRestModelFixture([

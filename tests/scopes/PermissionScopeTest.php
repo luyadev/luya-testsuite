@@ -70,4 +70,12 @@ class PermissionScopeTest extends WebApplicationTestCase
             $scope->runControllerAction($api, 'delete', ['id' => 1], 'DELETE');
         });
     }
+
+    public function testCustomToken()
+    {
+        PermissionScope::run($this->app, function(PermissionScope $scope) {
+            $scope->setQueryAuthToken(false);
+            $this->assertNull($this->app->request->getQueryParams()['access-token']); 
+        });
+    }
 }
