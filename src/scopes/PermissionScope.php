@@ -27,7 +27,7 @@ use yii\rest\Controller as RestController;
  *      {
  *          $controller = new RestController('id', $this->app);
  * 
- *          $assert = PermissionScope::run($this->app, function($scope) use ($controller) {
+ *          $assert = PermissionScope::run($this->app, function(PermissionScope $scope) use ($controller) {
  *              // there is now a permission for this route
  *              $scope->createRoute('module/controller/action');
  * 
@@ -52,11 +52,11 @@ use yii\rest\Controller as RestController;
  * {
  *      $api = new RestActiveController('id', $this->app);
  * 
- *      PermissionScope::run($this->app, function($scope) use ($api) {
+ *      PermissionScope::run($this->app, function(PermissionScope $scope) use ($api) {
  *          $scope->createApiAndAllow('api-test-action', true, true, false); // create the route and also allocate the permission create and update but not delete.
  * 
  *          $this->expectException('yii\web\ForbiddenHttpRequest');
- *          $scope->runControllerAction($api, 'delete', 'DELETE');
+ *          $scope->runControllerAction($api, 'delete', ['id' => 1], 'DELETE');
  *      });
  * }
  * ```

@@ -26,7 +26,6 @@ class PermissionScopeTest extends WebApplicationTestCase
         ];
     }
 
-    /*
     public function testBuild()
     {
         $this->assertSame('foo', PermissionScope::run($this->app, function() {
@@ -60,7 +59,6 @@ class PermissionScopeTest extends WebApplicationTestCase
             $scope->userId = 1000;
         });
     }
-    */
 
     public function testApiDeleteMethod()
     {
