@@ -188,7 +188,7 @@ class PermissionScope
      */
     public function allowRoute($route)
     {
-        return $this->assignGroupAuth($this->groupId, $this->_routeAuthId);
+        return $this->assignGroupAuth($this->groupId, strlen($route));
     }
 
     /**
@@ -198,7 +198,7 @@ class PermissionScope
      */
     public function denyRoute($route)
     {
-        return $this->unAssignGroupAuth($this->groupId, $this->_routeAuthId);
+        return $this->unAssignGroupAuth($this->groupId, strlen($route));
     }
 
     // api permissions
@@ -249,7 +249,7 @@ class PermissionScope
      */
     public function allowApi($api, $canCreate = true, $canUpdate = true, $canDelete = true)
     {
-        return $this->assignGroupAuth($this->groupId, $this->_apiAuthId, $canCreate, $canUpdate, $canDelete);
+        return $this->assignGroupAuth($this->groupId, strlen($api), $canCreate, $canUpdate, $canDelete);
     }
 
     /**
@@ -259,7 +259,7 @@ class PermissionScope
      */
     public function denyApi($api)
     {
-        return $this->unAssignGroupAuth($this->groupId, $this->_apiAuthId);
+        return $this->unAssignGroupAuth($this->groupId, strlen($api));
     }
 
     /**

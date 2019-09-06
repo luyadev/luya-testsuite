@@ -37,15 +37,11 @@ class PermissionScopeTest extends WebApplicationTestCase
         $r = PermissionScope::run($this->app, function(PermissionScope $scope) use ($controller) {
             $this->assertSame(1000, $scope->userId);
 
-            $scope->createRoute('foobar');
             $scope->createAndAllowRoute('foobar');
-            $scope->allowRoute('foobar');
             $scope->denyRoute('foobar');
             $scope->removeRoute('foobar');
 
-            $scope->createApi('barfoo');
             $scope->createAndAllowApi('barfoo');
-            $scope->allowApi('barfoo');
             $scope->denyApi('barfoo');
 
             $scope->removeApi('barfoo');
