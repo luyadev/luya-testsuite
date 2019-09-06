@@ -2,7 +2,11 @@
 
 namespace luya\testsuite\traits;
 
-trait RestApiAdminPermission
+use luya\admin\models\Group;
+use luya\admin\models\User;
+use luya\testsuite\fixtures\NgRestModelFixture;
+
+trait RestApiAdminPermissionTrait
 {
     public function routePermission($route, $allowed = true)
     {
@@ -21,6 +25,11 @@ trait RestApiAdminPermission
         }
 
         return true;
+    }
+
+    public function dropTableIfExists($table)
+    {
+        return $this->app->db->createCommand()->dropTable($table)->execute();
     }
 
     public function createAdminAuthTable()
@@ -67,6 +76,49 @@ trait RestApiAdminPermission
             'model_class' => 'text',
             'created_at' => 'int(11)',
             'updated_at' => 'int(11)',
+        ]);
+    }
+
+    public function createUserFixture($id)
+    {
+        return new NgRestModelFixture([
+            'modelClass' => User::class,
+            'schema' => [
+                'firstname' => 'text',
+                'lastname' => 'text',
+                'email' => 'text',
+                'is_deleted' => 'int(11)',
+                'is_api_user' => 'boolean',
+                'api_last_activity' => 'int(11)',
+                'auth_token' => 'text',
+                'is_request_logger_enabled' => 'boolean',
+            ],
+            'fixtureData' => [
+                'user1' => [
+                    'id' => $id,
+                    'firstname' => 'John',
+                    'lastname' => 'Doe',
+                    'email' => 'john@example.com',
+                    'is_deleted' => 0,
+                    'is_api_user' => true,
+                    'api_last_activity' => time(),
+                    'auth_token' => 'TestAuthToken',
+                    'is_request_logger_enabled' => false,
+                ]
+            ]
+        ]);
+    }
+
+    public function createGroupFixture($id)
+    {
+        return new NgRestModelFixture([
+            'modelClass' => Group::class,
+            'fixtureData' => [
+                'tester' => [
+                    'id' => $id,
+                    'name' => 'Tester',
+                ],
+            ],
         ]);
     }
 }
