@@ -3,7 +3,9 @@
 namespace luya\testsuite\scopes;
 
 use luya\testsuite\traits\AdminDatabaseTableTrait;
+use yii\base\Application;
 use yii\base\Controller;
+use yii\web\Controller as YiiController;
 
 /**
  * Generate a permission Scope for a Rest Call.
@@ -76,7 +78,7 @@ class PermissionScope
 
     private $_invoke;
 
-    private $_db;
+    private $_app;
 
     protected $userGroupId;
 
@@ -107,16 +109,16 @@ class PermissionScope
      */
     public $userFixtureData = [];
 
-    public function __construct($db, callable $fn, callable $invoke = null)
+    public function __construct(Application $app, callable $fn, callable $invoke = null)
     {
-        $this->_db = $db;
+        $this->_app = $app;
         $this->_invoke = $invoke;
         $this->_fn = $fn;    
     }
 
     public function getDatabaseComponent()
     {
-        return $this->_db;
+        return $this->_app->db;
     }
 
     public function prepare()
@@ -192,6 +194,12 @@ class PermissionScope
         $this->_apiAuthId = $this->addPermissionApi($api, true);
     }
 
+    public function createAndAllowApi($api, $canCreate = true, $canUpdate = true, $canDelete = true)
+    {
+        $this->createApi($api);
+        $this->allowApi($api, $canCreate, $canUpdate, $canDelete);
+    }
+
     public function removeApi($api)
     {
         return $this->removePermissionApi($api);
@@ -211,7 +219,11 @@ class PermissionScope
 
     public function loginUser()
     {
-        return $this->app->adminuser->login($this->userFixture->getModel('user'));
+        $this->_app->set('session',['class' => 'yii\web\CacheSession']);
+        $this->_app->set('cache', ['class' => 'yii\caching\DummyCache']);
+        $this->_app->set('adminuser', ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false]);
+
+        return $this->_app->adminuser->login($this->userFixture->getModel('user'));
     }
 
     /**
@@ -226,8 +238,14 @@ class PermissionScope
     public function runControllerAction(Controller $controller, $action, array $params = [], $method = 'GET')
     {
         $_SERVER['REQUEST_METHOD'] = strtoupper($method);
-        Yii::$app->controller = $controller;
-        $this->setQueryAuthToken();
+        $this->_app->controller = $controller;
+
+        if ($controller instanceof YiiController) {
+            $controller->enableCsrfValidation = false;
+        } else {
+            $this->setQueryAuthToken();
+        }
+        
         return $controller->runAction($action, $params);
     }
 
@@ -235,9 +253,9 @@ class PermissionScope
     {
         if ($value) {
             $accessToken = $token ? $token : $this->userFixture->getModel('user')->auth_token;
-            Yii::$app->request->setQueryParams(['access-token' => $accessToken]);
+            $this->_app->request->setQueryParams(['access-token' => $accessToken]);
         } else {
-            Yii::$app->request->setQueryParams(['access-token' => null]);
+            $this->_app->request->setQueryParams(['access-token' => null]);
         }
     }
 
