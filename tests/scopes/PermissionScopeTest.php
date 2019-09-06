@@ -4,6 +4,7 @@ namespace luya\testsuite\tests\scopes;
 
 use luya\testsuite\cases\WebApplicationTestCase;
 use luya\testsuite\scopes\PermissionScope;
+use luya\testsuite\tests\data\NgRestTestApi;
 use luya\testsuite\tests\data\NgRestTestController;
 
 class PermissionScopeTest extends WebApplicationTestCase
@@ -13,6 +14,9 @@ class PermissionScopeTest extends WebApplicationTestCase
         return [
             'id' => 'ngresttest',
             'basePath' => dirname(__DIR__),
+            'modules' => [
+                'admin' => 'luya\admin\Module',
+            ],
             'components' => [
                 'db' => [
                         'class' => 'yii\db\Connection',
@@ -22,6 +26,7 @@ class PermissionScopeTest extends WebApplicationTestCase
         ];
     }
 
+    /*
     public function testBuild()
     {
         $this->assertSame('foo', PermissionScope::run($this->app, function() {
@@ -42,7 +47,8 @@ class PermissionScopeTest extends WebApplicationTestCase
             $scope->createApi('barfoo');
             $scope->createAndAllowApi('barfoo');
             $scope->allowApi('barfoo');
-            $scope->denyRoute('barfoo');
+            $scope->denyApi('barfoo');
+
             $scope->removeApi('barfoo');
 
             $scope->loginUser();
@@ -52,6 +58,18 @@ class PermissionScopeTest extends WebApplicationTestCase
 
         }, function(PermissionScope $scope) {
             $scope->userId = 1000;
+        });
+    }
+    */
+
+    public function testApiDeleteMethod()
+    {
+        $api = new NgRestTestApi('testapi', $this->app);
+
+        PermissionScope::run($this->app, function(PermissionScope $scope) use($api) {
+            // this might change with version 2.2 as then its a forbidden exception.
+            $this->expectException('yii\base\InvalidConfigException');
+            $scope->runControllerAction($api, 'delete', ['id' => 1], 'DELETE');
         });
     }
 }

@@ -5,7 +5,7 @@ namespace luya\testsuite\scopes;
 use luya\testsuite\traits\AdminDatabaseTableTrait;
 use yii\base\Application;
 use yii\base\Controller;
-use yii\web\Controller as YiiController;
+use yii\rest\Controller as RestController;
 
 /**
  * Generate a permission Scope for a Rest Call.
@@ -15,12 +15,6 @@ use yii\web\Controller as YiiController;
  * ```php
  * 'modules' => [
  *      'admin' => ['class' => 'luya\admin\Module']
- * ],
- * 'components' => [
- *      'session' => ['class' => 'yii\web\CacheSession'],
- *      'cache' => ['class' => 'yii\caching\DummyCache'],
- *      'adminuser' => ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false],
- *      'db' => ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:'],
  * ]
  * ```
  * 
@@ -33,7 +27,7 @@ use yii\web\Controller as YiiController;
  *      {
  *          $controller = new RestController('id', $this->app);
  * 
- *          $assert = PermissionScope::run($this->app->db, function($scope) use ($controller) {
+ *          $assert = PermissionScope::run($this->app, function($scope) use ($controller) {
  *              // there is now a permission for this route
  *              $scope->createRoute('module/controller/action');
  * 
@@ -58,7 +52,7 @@ use yii\web\Controller as YiiController;
  * {
  *      $api = new RestActiveController('id', $this->app);
  * 
- *      PermissionScope::run($this->app->db, function($scope) use ($api) {
+ *      PermissionScope::run($this->app, function($scope) use ($api) {
  *          $scope->createApiAndAllow('api-test-action', true, true, false); // create the route and also allocate the permission create and update but not delete.
  * 
  *          $this->expectException('yii\web\ForbiddenHttpRequest');
@@ -217,12 +211,15 @@ class PermissionScope
 
     // scope methods
 
-    public function loginUser()
+    public function updateApplicationConfig()
     {
         $this->_app->set('session',['class' => 'yii\web\CacheSession']);
         $this->_app->set('cache', ['class' => 'yii\caching\DummyCache']);
         $this->_app->set('adminuser', ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false]);
+    }
 
+    public function loginUser()
+    {
         return $this->_app->adminuser->login($this->userFixture->getModel('user'));
     }
 
@@ -240,10 +237,11 @@ class PermissionScope
         $_SERVER['REQUEST_METHOD'] = strtoupper($method);
         $this->_app->controller = $controller;
 
-        if ($controller instanceof YiiController) {
-            $controller->enableCsrfValidation = false;
-        } else {
+        if ($controller instanceof RestController) {
             $this->setQueryAuthToken();
+        } else {
+            $this->loginUser();
+            $controller->enableCsrfValidation = false;
         }
         
         return $controller->runAction($action, $params);
@@ -280,6 +278,7 @@ class PermissionScope
     {
         $scope = new self($db, $fn, $invoke);
         $scope->prepare();
+        $scope->updateApplicationConfig();
         $response = $scope->runCallable($scope);
         $scope->cleanup();
         return $response;
