@@ -152,6 +152,7 @@ class PermissionScope
      * Create a route in permission system
      *
      * @param string $route
+     * @return integer Returns the id of the admin_auth table entry.
      */
     public function createRoute($route)
     {
@@ -205,6 +206,7 @@ class PermissionScope
      * Create an Api in permission system. (ActiveRestController).
      *
      * @param string $api
+     * @return integer Returns the id of the admin_auth table entry.
      */
     public function createApi($api)
     {
