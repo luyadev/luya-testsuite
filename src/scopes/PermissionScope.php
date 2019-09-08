@@ -148,8 +148,6 @@ class PermissionScope
 
     // route permissions
 
-    private $_routeAuthId;
-
     /**
      * Create a route in permission system
      *
@@ -157,7 +155,7 @@ class PermissionScope
      */
     public function createRoute($route)
     {
-        $this->_routeAuthId = $this->addPermissionRoute($route);
+        return $this->addPermissionRoute(strlen($route), $route);
     }
 
     /**
@@ -203,8 +201,6 @@ class PermissionScope
 
     // api permissions
 
-    private $_apiAuthId;
-
     /**
      * Create an Api in permission system. (ActiveRestController).
      *
@@ -212,7 +208,7 @@ class PermissionScope
      */
     public function createApi($api)
     {
-        $this->_apiAuthId = $this->addPermissionApi($api, true);
+        return $this->addPermissionApi(strlen($api), $api, true);
     }
 
     /**
