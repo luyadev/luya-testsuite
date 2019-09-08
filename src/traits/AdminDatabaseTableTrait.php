@@ -294,6 +294,7 @@ trait AdminDatabaseTableTrait
         return new NgRestModelFixture([
             'modelClass' => User::class,
             'schema' => [
+                'title' => 'int(11)',
                 'firstname' => 'text',
                 'lastname' => 'text',
                 'email' => 'text',
@@ -302,6 +303,19 @@ trait AdminDatabaseTableTrait
                 'api_last_activity' => 'int(11)',
                 'auth_token' => 'text',
                 'is_request_logger_enabled' => 'boolean',
+                'email_verification_token_timestamp' => 'int(11)',
+                'login_attempt_lock_expiration' => 'int(11)',
+                'login_attempt' => 'int(11)',
+                'email_verification_token' => 'text',
+                'api_allowed_ips' => 'text',
+                'api_rate_limit' => 'int(11)',
+                'cookie_token' => 'text',
+                'settings' => 'text',
+                'force_reload' => 'int(11)',
+                'secure_token_timestamp' => 'int(11)',
+                'secure_token' => 'text',
+                'password' => 'text',
+                'password_salt' => 'text',
             ],
             'fixtureData' => $fixtureData,
         ]);
