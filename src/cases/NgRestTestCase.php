@@ -12,6 +12,7 @@ use luya\admin\models\User;
 use luya\admin\models\UserOnline;
 use luya\admin\models\Group;
 use luya\admin\models\NgrestLog;
+use luya\testsuite\traits\AdminDatabaseTableTrait;
 use yii\base\Controller;
 
 /**
@@ -96,6 +97,8 @@ use yii\base\Controller;
  */
 abstract class NgRestTestCase extends WebApplicationTestCase
 {
+    use AdminDatabaseTableTrait;
+
     /**
      * @const int
      *
@@ -239,90 +242,59 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      */
     protected function mockBasicAdminModels()
     {
+        $this->createAdminUserGroupTable();
+        $this->createAdminGroupAuthTable();
+        $this->createAdminAuthTable();
+        $this->createAdminUserAuthNotificationTable();
+        
         // user
-        $this->userFixture = new NgRestModelFixture([
-            'modelClass' => User::class,
-            'schema' => [
-                'firstname' => 'text',
-                'lastname' => 'text',
-                'email' => 'text',
-                'is_deleted' => 'int(11)',
-                'is_api_user' => 'boolean',
-                'api_last_activity' => 'int(11)',
-                'auth_token' => 'text',
-                'is_request_logger_enabled' => 'boolean',
-            ],
-            'fixtureData' => [
-                'user1' => [
-                    'id' => self::ID_USER_TESTER,
-                    'firstname' => 'John',
-                    'lastname' => 'Doe',
-                    'email' => 'john@example.com',
-                    'is_deleted' => 0,
-                    'is_api_user' => true,
-                    'api_last_activity' => time(),
-                    'auth_token' => 'TestAuthToken',
-                    'is_request_logger_enabled' => false,
-                ]
+        $this->userFixture = $this->createUserFixture([
+            'user1' => [
+                'id' => self::ID_USER_TESTER,
+                'firstname' => 'John',
+                'lastname' => 'Doe',
+                'email' => 'john@example.com',
+                'is_deleted' => 0,
+                'is_api_user' => true,
+                'api_last_activity' => time(),
+                'auth_token' => 'TestAuthToken',
+                'is_request_logger_enabled' => false,
             ]
         ]);
        
-        // generate raw tables for missing active records
-        $this->app->db->createCommand()->createTable('admin_user_group', ['id' => 'INT(11) PRIMARY KEY', 'user_id' => 'int(11)', 'group_id' => 'int(11)'])->execute();
-        $this->app->db->createCommand()->createTable('admin_group_auth', ['id' => 'INT(11) PRIMARY KEY', 'group_id' => 'int(11)', 'auth_id' => 'int(11)', 'crud_create' => 'int(11)', 'crud_update' => 'int(11)', 'crud_delete' => 'int(11)'])->execute();
-        $this->app->db->createCommand()->createTable('admin_auth', ['id' => 'INT(11) PRIMARY KEY', 'alias_name' => 'text', 'module_name' => 'text', 'is_crud' => 'int(11)', 'route' => 'text', 'api' => 'text'])->execute();
-        
-        $this->app->db->createCommand()->createTable('admin_user_auth_notification', [
-            'id' => 'INT(11) PRIMARY KEY',
-            'user_id' => 'int(11)',
-            'auth_id' => 'int(11)',
-            'is_muted' => 'int(11)',
-            'model_latest_pk_value' => 'text',
-            'model_class' => 'text',
-            'created_at' => 'int(11)',
-            'updated_at' => 'int(11)',
-        ])->execute();
-
-
         // user group
-        $this->userGroupFixture = new NgRestModelFixture([
-            'modelClass' => Group::class,
-            'fixtureData' => [
-                'tester' => [
-                    'id' => self::ID_GROUP_TESTER,
-                    'name' => 'Tester',
-                ],
-            ],
-        ]);
+        $this->userGroupFixture = $this->createGroupFixture(self::ID_GROUP_TESTER);
         
         // login the user
         $this->app->adminuser->login($this->userFixture->getModel('user1'));
         
         // user online table
-        $this->userOnlineFixture = new ActiveRecordFixture(['modelClass' => UserOnline::class]);
+        $this->userOnlineFixture = $this->createUserOnlineFixture();
         
         // ngrest logger
-        $this->ngrestLogFixture = new ActiveRecordFixture(['modelClass' => NgrestLog::class]);
-        $this->app->db->createCommand()->insert('admin_user_group', [
+        $this->ngrestLogFixture = $this->createNgRestLogFixture();
+
+        $this->insertRow('admin_user_group', [
             'user_id' => self::ID_USER_TESTER,
             'group_id' => self::ID_GROUP_TESTER,
-        ])->execute();
+        ]);
 
         $apiEndpoint = $this->modelClass::ngRestApiEndpoint();
         list(, , $alias) = explode('-', $apiEndpoint);
         
-        $this->app->db->createCommand()->insert('admin_auth', [
+        $this->insertRow('admin_auth', [
             'id' => self::ID_AUTH_API,
             'alias_name' => $alias,
             'module_name' => $this->app->id,
             'is_crud' => 1,
             'api' => $apiEndpoint,
-        ])->execute();
-        $this->app->db->createCommand()->insert('admin_auth', [
+        ]);
+        
+        $this->insertRow('admin_auth', [
             'id' => self::ID_AUTH_CONTROLLER,
             'module_name' => $this->app->id,
             'is_crud' => 0,
-        ])->execute();
+        ]);
     }
     
     /**
@@ -417,10 +389,11 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->userGroupFixture->cleanup();
         $this->userOnlineFixture->cleanup();
         $this->ngrestLogFixture->cleanup();
-        $this->app->db->createCommand()->dropTable('admin_auth')->execute();
-        $this->app->db->createCommand()->dropTable('admin_group_auth')->execute();
-        $this->app->db->createCommand()->dropTable('admin_user_group')->execute();
-        $this->app->db->createCommand()->dropTable('admin_user_auth_notification')->execute();
+
+        $this->dropAdminAuthTable();
+        $this->dropAdminGroupAuthTable();
+        $this->dropAdminUserGroupTable();
+        $this->dropAdminUserAuthNotificationTable();
     }
 
     /**

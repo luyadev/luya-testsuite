@@ -31,12 +31,11 @@ trait AdminDatabaseTableTrait
      * @param string $route
      * @return integer Returns the fake id for the auth entry.
      */
-    public function addPermissionRoute($route)
+    public function addPermissionRoute($id, $route, $moduleName = '@app')
     {
-        $id = strlen($route);
         $this->insertRow('admin_auth', [
             'id' => $id,
-            'module_name' => '@app',
+            'module_name' => $moduleName,
             'alias_name' => $route,
             'route' => $route,
         ]);
@@ -99,11 +98,10 @@ trait AdminDatabaseTableTrait
      * @param boolean $isCrud
      * @return integer Returns the "fake" id fro the given api
      */
-    public function addPermissionApi($api, $isCrud = true)
+    public function addPermissionApi($id, $api, $isCrud = true)
     {
-        $id = strlen($api);
         $this->insertRow('admin_auth', [
-            'id' => strlen($api),
+            'id' => $id,
             'module_name' => '@app',
             'alias_name' => $api,
             'is_crud' => (int) $isCrud,
