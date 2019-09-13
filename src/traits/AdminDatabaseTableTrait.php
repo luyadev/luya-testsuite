@@ -160,6 +160,7 @@ trait AdminDatabaseTableTrait
             'is_crud' => 'int(11)',
             'route' => 'text',
             'api' => 'text',
+            'pool' => 'text',
         ]);
     }
 
