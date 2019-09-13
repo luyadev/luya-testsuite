@@ -3,9 +3,13 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.20.2 (13. September 2019)
+
++ Added missing `admin_auth` table `pool` field in `AdminDatabaseTableTrait`.
+
 ## 1.0.20.1 (8. September 2019)
 
-+ Added missing use fixture fields for `createUserFixture` in `AdminDatabaseTableTrait`.
++ Added missing user fixture fields for `createUserFixture` in `AdminDatabaseTableTrait`.
 
 ## 1.0.20 (8. September 2019)
 
