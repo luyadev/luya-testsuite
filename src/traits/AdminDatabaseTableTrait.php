@@ -3,6 +3,7 @@
 namespace luya\testsuite\traits;
 
 use luya\admin\models\Group;
+use luya\admin\models\Lang;
 use luya\admin\models\NgrestLog;
 use luya\admin\models\User;
 use luya\admin\models\UserOnline;
@@ -17,13 +18,7 @@ use luya\testsuite\fixtures\NgRestModelFixture;
  */
 trait AdminDatabaseTableTrait
 {
-    /**
-     * @return \yii\db\Connection
-     */
-    public function getDatabaseComponent()
-    {
-        return $this->app->db;
-    }
+    use DatabaseTableTrait;
 
     /**
      * Add permission route.
@@ -124,31 +119,6 @@ trait AdminDatabaseTableTrait
     }
 
     /**
-     * Create a table if not exists
-     *
-     * @param string $table
-     * @param array $columns
-     */
-    public function createTableIfNotExists($table, array $columns)
-    {
-        if ($this->getDatabaseComponent()->getTableSchema($table, true) === null) {
-            $this->getDatabaseComponent()->createCommand()->createTable($table, $columns)->execute();
-        }
-    }
-
-    /**
-     * Drop a table if not exists.
-     *
-     * @param string $table
-     */
-    public function dropTableIfExists($table)
-    {
-        if ($this->getDatabaseComponent()->getTableSchema($table, true) !== null) {
-            $this->getDatabaseComponent()->createCommand()->dropTable($table)->execute();
-        }
-    }
-
-    /**
      * Create the admin auth table.
      */
     public function createAdminAuthTable()
@@ -241,30 +211,6 @@ trait AdminDatabaseTableTrait
     }
 
     /**
-     * Insert row
-     *
-     * @param string $table
-     * @param array $values
-     * @return integer returns the number of rows inserted.
-     */
-    public function insertRow($table, array $values)
-    {
-        return $this->getDatabaseComponent()->createCommand()->insert($table, $values)->execute();
-    }
-
-    /**
-     * Delete row
-     *
-     * @param string $table
-     * @param array $condition
-     * @return integer returns the number of rows deleted.
-     */
-    public function deleteRow($table, array $condition)
-    {
-        return $this->getDatabaseComponent()->createCommand()->delete($table, $condition)->execute();
-    }
-
-    /**
      * Create the NgRest Log Fixture.
      *
      * @return ActiveRecordFixture
@@ -338,6 +284,21 @@ trait AdminDatabaseTableTrait
                     'name' => 'Test Group',
                 ],
             ],
+        ]);
+    }
+
+    /**
+     * Create admin language fixture
+     *
+     * @param array $fixtureData
+     * @return NgRestModelFixture
+     * @since 1.0.21
+     */
+    public function createAdminLangFixture(array $fixtureData)
+    {
+        return new NgRestModelFixture([
+            'modelClass' => Lang::class,
+            'fixtureData' => $fixtureData,
         ]);
     }
 }

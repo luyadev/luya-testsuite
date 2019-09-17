@@ -3,7 +3,6 @@
 namespace luya\testsuite\scopes;
 
 use luya\testsuite\traits\AdminDatabaseTableTrait;
-use yii\base\Application;
 use yii\base\Controller;
 use yii\rest\Controller as RestController;
 
@@ -79,16 +78,10 @@ use yii\rest\Controller as RestController;
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.20
  */
-class PermissionScope
+class PermissionScope extends BaseScope
 {
     use AdminDatabaseTableTrait;
-
-    private $_fn;
-
-    private $_invoke;
-
-    private $_app;
-
+    
     protected $userGroupId;
 
     protected $userFixture;
@@ -122,19 +115,6 @@ class PermissionScope
      */
     public $userFixtureData = [];
 
-    /**
-     * Permission Scope contstructor.
-     *
-     * @param Application $app
-     * @param callable $fn
-     * @param callable $invoke
-     */
-    public function __construct(Application $app, callable $fn, callable $invoke = null)
-    {
-        $this->_app = $app;
-        $this->_invoke = $invoke;
-        $this->_fn = $fn;    
-    }
 
     /**
      * Returns the application database componenet.
@@ -143,7 +123,7 @@ class PermissionScope
      */
     public function getDatabaseComponent()
     {
-        return $this->_app->db;
+        return $this->getApp()->db;
     }
 
     // route permissions
@@ -265,10 +245,10 @@ class PermissionScope
      */
     public function updateApplicationConfig()
     {
-        $this->_app->set('session',['class' => 'yii\web\CacheSession']);
-        $this->_app->set('cache', ['class' => 'yii\caching\DummyCache']);
-        $this->_app->set('adminuser', ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false]);
-        $this->_app->set('db', ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:']);
+        $this->getApp()->set('session',['class' => 'yii\web\CacheSession']);
+        $this->getApp()->set('cache', ['class' => 'yii\caching\DummyCache']);
+        $this->getApp()->set('adminuser', ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false]);
+        $this->getApp()->set('db', ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:']);
     }
 
     /**
@@ -280,7 +260,7 @@ class PermissionScope
      */
     public function loginUser()
     {
-        return $this->_app->adminuser->login($this->userFixture->getModel('user'));
+        return $this->getApp()->adminuser->login($this->userFixture->getModel('user'));
     }
 
     /**
@@ -295,7 +275,7 @@ class PermissionScope
     public function runControllerAction(Controller $controller, $action, array $params = [], $method = 'GET')
     {
         $_SERVER['REQUEST_METHOD'] = strtoupper($method);
-        $this->_app->controller = $controller;
+        $this->getApp()->controller = $controller;
 
         if ($controller instanceof RestController) {
             $this->setQueryAuthToken();
@@ -317,9 +297,9 @@ class PermissionScope
     {
         if ($value) {
             $accessToken = $token ? $token : $this->userFixture->getModel('user')->auth_token;
-            $this->_app->request->setQueryParams(['access-token' => $accessToken]);
+            $this->getApp()->request->setQueryParams(['access-token' => $accessToken]);
         } else {
-            $this->_app->request->setQueryParams(['access-token' => null]);
+            $this->getApp()->request->setQueryParams(['access-token' => null]);
         }
     }
 
@@ -328,10 +308,6 @@ class PermissionScope
      */
     public function prepare()
     {
-        if ($this->_invoke) {
-            call_user_func_array($this->_invoke, [$this]);
-        }
-        
         // ensure the given and required application components are available.
         $this->updateApplicationConfig();
 
@@ -364,17 +340,6 @@ class PermissionScope
     }
 
     /**
-     * Run the provided callable function
-     *
-     * @param PermissionScope $scope
-     * @return mixed
-     */
-    public function runCallable(PermissionScope $scope)
-    {
-        return call_user_func_array($this->_fn, [$scope]);
-    }
-
-    /**
      * Clean up tables and fixtures.
      */
     public function cleanup()
@@ -387,22 +352,5 @@ class PermissionScope
         $this->dropAdminGroupAuthTable();
         $this->dropAdminUserGroupTable();
         $this->dropAdminUserAuthNotificationTable();
-    }
-    
-    /**
-     * Run a given function inside a permission scope.
-     *
-     * @param yii\base\Application $app
-     * @param callable $fn The function to run.
-     * @param callable $invoke The function to configure the scope.
-     * @return mixed
-     */
-    public static function run(Application $app, callable $fn, callable $invoke = null)
-    {
-        $scope = new self($app, $fn, $invoke);
-        $scope->prepare();
-        $response = $scope->runCallable($scope);
-        $scope->cleanup();
-        return $response;
     }
 }
