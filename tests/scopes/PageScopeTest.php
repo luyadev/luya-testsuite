@@ -39,10 +39,11 @@ class PageScopeTest extends WebApplicationTestCase
 
             $page = NavItemPage::findOne($scope->pageId);
 
-            $scope->createAdminGroupAuthTable([]);
             $scope->createCmsBlockGroupFixture([]);
             $scope->createCmsNavPermissionFixture([]);
+            $scope->createCmsRedirectFixture([]);
             $scope->createCmsPropertyFixture([]);
+            $scope->createAdminLangFixture([]);
 
             $this->assertSameTrimmed('<h1>view file</h1>
 
