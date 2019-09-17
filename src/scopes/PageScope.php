@@ -209,6 +209,12 @@ class PageScope extends BaseScope
         return $this;
     }
 
+    /**
+     * Add a cms block to the list of blocks.
+     *
+     * @param string $blockClass
+     * @return Block
+     */
     public function addBlock($blockClass)
     {
         $model = $this->blockFixture->newModel;
@@ -220,6 +226,15 @@ class PageScope extends BaseScope
         return $model;
     }
 
+    /**
+     * Add the content for a given block id.
+     *
+     * @param integer $blockId
+     * @param string $layoutPlacholderVar
+     * @param array $values
+     * @param array $cfgs
+     * @return self
+     */
     public function addContent($blockId, $layoutPlacholderVar, array $values = [], array $cfgs = [])
     {
         /** @var \luya\cms\models\NavItemPageBlockItem $model */
@@ -234,10 +249,20 @@ class PageScope extends BaseScope
         $model->update_user_id = 0;
         $model->is_dirty = 0;
         $model->is_hidden = 0;
+        $model->save();
 
-        return $model->save();
+        return $this;
     }
 
+    /**
+     * Combination of add block and add content.
+     *
+     * @param string $blockClass
+     * @param string $layoutPlacholderVar
+     * @param array $values
+     * @param array $cfgs
+     * @return self
+     */
     public function addBlockAndContent($blockClass, $layoutPlacholderVar, array $values = [], array $cfgs = [])
     {
         $block = $this->addBlock($blockClass);
