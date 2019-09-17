@@ -61,7 +61,7 @@ trait CmsDatabaseTableTrait
         ]);
     }
 
-    public function createCmsNavItemModuleFixture(arrray $fixtureData)
+    public function createCmsNavItemModuleFixture(array $fixtureData)
     {
         return new ActiveRecordFixture([
             'modelClass' => NavItemModule::class,

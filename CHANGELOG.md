@@ -5,6 +5,8 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 1.0.21
 
++ Added new PageScope test system for CMS Pages.
+
 ## 1.0.20.2 (13. September 2019)
 
 + Added missing `admin_auth` table `pool` field in `AdminDatabaseTableTrait`.

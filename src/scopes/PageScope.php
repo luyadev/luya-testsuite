@@ -50,7 +50,11 @@ class PageScope extends BaseScope
 
     protected $blockFixture;
 
-    protected $navItemPageBlockItem;
+    protected $navItemPageBlockItemFixture;
+
+    protected $navItemRedirectFixture;
+
+    protected $navItemModuleFixture;
 
     // configs
 
@@ -66,6 +70,14 @@ class PageScope extends BaseScope
         return $this->getApp()->db;
     }
 
+    /**
+     * Create a CMS Page with title, path to layout file and layout file placholders.
+     *
+     * @param string $title
+     * @param string $layoutViewFile The path to the cmslayout file, for example: `@app/views/cmslayouts/main.php`.
+     * @param array $layoutPlaceholders An array only containing the available placeholders like: `['content', 'sidebar']`.
+     * @return $this
+     */
     public function createPage($title, $layoutViewFile, array $layoutPlaceholders)
     {
         $json = [];
@@ -107,7 +119,7 @@ class PageScope extends BaseScope
         ]);
 
         $this->navItemFixture = $this->createCmsNavItemFixture([
-            'navItem1' => [
+            'navItemPage1' => [
                 'id' => 1,
                 'nav_id' => 1,
                 'lang_id' => 1,
@@ -124,7 +136,43 @@ class PageScope extends BaseScope
                 'title_tag' => $title,
                 'image_id' => 0,
                 'is_url_strict_parsing_disabled' => 0,
-            ]
+            ],
+            'navItemPage1' => [
+                'id' => 2,
+                'nav_id' => 1,
+                'lang_id' => 1,
+                'nav_item_type' => NavItem::TYPE_MODULE,
+                'nav_item_type_id' => 1,
+                'create_user_id' => 0,
+                'update_user_id' => 0,
+                'timestamp_create' => 123123,
+                'timestamp_update' => 1231231,
+                'title' => $title,
+                'alias' => Inflector::slug($title),
+                'description' => $title,
+                'keywords' => $title,
+                'title_tag' => $title,
+                'image_id' => 0,
+                'is_url_strict_parsing_disabled' => 0,
+            ],
+            'navItemPage1' => [
+                'id' => 3,
+                'nav_id' => 1,
+                'lang_id' => 1,
+                'nav_item_type' => NavItem::TYPE_REDIRECT,
+                'nav_item_type_id' => 1,
+                'create_user_id' => 0,
+                'update_user_id' => 0,
+                'timestamp_create' => 123123,
+                'timestamp_update' => 1231231,
+                'title' => $title,
+                'alias' => Inflector::slug($title),
+                'description' => $title,
+                'keywords' => $title,
+                'title_tag' => $title,
+                'image_id' => 0,
+                'is_url_strict_parsing_disabled' => 0,
+            ],
         ]);
         
         $this->navItemPageFixture = $this->createCmsNavItemPageFixture([
@@ -137,6 +185,26 @@ class PageScope extends BaseScope
                 'version_alias' => $title,
             ]
         ]);
+
+        $this->navItemRedirectFixture = $this->createCmsNavItemRedirectFixture([
+            'redirect1' => [
+                'id' => 1,
+                'type' => 1,
+                'value' => 'luya.io',
+                'target' => '_blank',
+            ]
+        ]);
+
+        $this->navItemModuleFixture = $this->createCmsNavItemModuleFixture([
+            'module1' => [
+                'id' => 1,
+                'module_name' => 'test',
+                'controller_name' => 'test',
+                'action_name' => 'test',
+                'action_params' => '',
+            ]
+        ]);
+        
 
         return $this;
     }
@@ -155,7 +223,7 @@ class PageScope extends BaseScope
     public function addContent($blockId, $layoutPlacholderVar, array $values = [], array $cfgs = [])
     {
         /** @var \luya\cms\models\NavItemPageBlockItem $model */
-        $model = $this->navItemPageBlockItem->newModel;
+        $model = $this->navItemPageBlockItemFixture->newModel;
         $model->json_config_values = $values;
         $model->json_config_cfg_values = $cfgs;
         $model->block_id = $blockId;
@@ -183,7 +251,7 @@ class PageScope extends BaseScope
     {
         $this->logFixture = $this->createCmsLog([]);
         $this->blockFixture = $this->createCmsBlockFixture([]);
-        $this->navItemPageBlockItem = $this->createCmsNavItemPageBlockItemFixture([]);
+        $this->navItemPageBlockItemFixture = $this->createCmsNavItemPageBlockItemFixture([]);
         $this->ngRestLogFixture = $this->createNgRestLogFixture();
     }
 
@@ -193,11 +261,13 @@ class PageScope extends BaseScope
     public function cleanup()
     {
         $this->blockFixture->cleanup();
-        $this->navItemPageBlockItem->cleanup();
+        $this->navItemPageBlockItemFixture->cleanup();
         $this->logFixture->cleanup();
         $this->cleanupFixture($this->navContainerFixture);
         $this->cleanupFixture($this->navFixture);
         $this->cleanupFixture($this->navItemFixture);
         $this->cleanupFixture($this->navItemPageFixture);
+        $this->cleanupFixture($this->navItemRedirectFixture);
+        $this->cleanupFixture($this->navItemModuleFixture);
     }
 }
