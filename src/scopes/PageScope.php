@@ -48,6 +48,14 @@ class PageScope extends BaseScope
 
     protected $layoutFixture;
 
+    protected $blockFixture;
+
+    protected $navItemPageBlockItem;
+
+    // configs
+
+    public $pageId = 1;
+
     /**
      * Returns the application database componenet.
      *
@@ -57,8 +65,6 @@ class PageScope extends BaseScope
     {
         return $this->getApp()->db;
     }
-
-    public $pageId = 1;
 
     public function createPage($title, $layoutViewFile, array $layoutPlaceholders)
     {
@@ -135,8 +141,6 @@ class PageScope extends BaseScope
         return $this;
     }
 
-    protected $blockFixture;
-
     public function addBlock($blockClass)
     {
         $model = $this->blockFixture->newModel;
@@ -147,8 +151,6 @@ class PageScope extends BaseScope
 
         return $model;
     }
-
-    protected $navItemPageBlockItem;
 
     public function addContent($blockId, $layoutPlacholderVar, array $values = [], array $cfgs = [])
     {
@@ -174,6 +176,9 @@ class PageScope extends BaseScope
         return $this->addContent($block->id, $layoutPlacholderVar, $values, $cfgs);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function prepare()
     {
         $this->logFixture = $this->createCmsLog([]);
@@ -182,6 +187,9 @@ class PageScope extends BaseScope
         $this->ngRestLogFixture = $this->createNgRestLogFixture();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function cleanup()
     {
         $this->blockFixture->cleanup();
