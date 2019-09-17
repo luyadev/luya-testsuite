@@ -35,7 +35,14 @@ class PageScopeTest extends WebApplicationTestCase
                 'html' => '<p>foobar</p>',
             ]);
 
+            $this->assertInstanceOf('yii\db\Connection', $scope->getDatabaseComponent());
+
             $page = NavItemPage::findOne($scope->pageId);
+
+            $scope->createAdminGroupAuthTable([]);
+            $scope->createCmsBlockGroupFixture([]);
+            $scope->createCmsNavPermissionFixture([]);
+            $scope->createCmsPropertyFixture([]);
 
             $this->assertSameTrimmed('<h1>view file</h1>
 
