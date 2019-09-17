@@ -62,7 +62,7 @@ class PermissionScopeTest extends WebApplicationTestCase
 
         PermissionScope::run($this->app, function(PermissionScope $scope) use($api) {
             // this might change with version 2.2 as then its a forbidden exception.
-            $this->expectException('yii\base\InvalidConfigException');
+            $this->expectException('yii\web\ForbiddenHttpException');
             $scope->runControllerAction($api, 'delete', ['id' => 1], 'DELETE');
         });
     }
