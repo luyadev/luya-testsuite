@@ -7,6 +7,10 @@ use luya\testsuite\traits\DatabaseTableTrait;
 use yii\base\Application;
 
 /**
+ * Base Class for Scoped Actions.
+ * 
+ * @author Basil Suter <basil@nadar.io>
+ * @since 1.0.21
  */
 abstract class BaseScope
 {
@@ -40,29 +44,26 @@ abstract class BaseScope
         $this->_fn = $fn;    
     }
 
+    /**
+     * Returns the Application instance.
+     * 
+     * Getter method to access the private object.
+     *
+     * @return Application
+     */
     public function getApp()
     {
         return $this->_app;
     }
 
     /**
-     * Run the provided callable function
+     * A helper method to cleanup fixtures.
+     * 
+     * If the given fixture property is not an instance of ActiveRecordFixture nothing happens,
+     * otherwise the cleanup() will be run.
      *
-     * @param PermissionScope $scope
-     * @return mixed
+     * @param mixed $fixture
      */
-    public function runCallable(BaseScope $scope)
-    {
-        return call_user_func_array($this->_fn, [$scope]);
-    }
-
-    public function configure()
-    {
-        if ($this->_invoke) {
-            call_user_func_array($this->_invoke, [$this]);
-        }
-    }
-
     public function cleanupFixture($fixture)
     {
         if ($fixture instanceof ActiveRecordFixture) {
@@ -86,5 +87,26 @@ abstract class BaseScope
         $response = $scope->runCallable($scope);
         $scope->cleanup();
         return $response;
+    }
+
+    /**
+     * Run the provided callable function
+     *
+     * @param PermissionScope $scope
+     * @return mixed
+     */
+    public function runCallable(BaseScope $scope)
+    {
+        return call_user_func_array($this->_fn, [$scope]);
+    }
+
+    /**
+     * Configured is used before prepare which allows you to configure the current scope.
+     */
+    public function configure()
+    {
+        if ($this->_invoke) {
+            call_user_func_array($this->_invoke, [$this]);
+        }
     }
 }

@@ -115,7 +115,6 @@ class PermissionScope extends BaseScope
      */
     public $userFixtureData = [];
 
-
     /**
      * Returns the application database componenet.
      *
@@ -304,7 +303,7 @@ class PermissionScope extends BaseScope
     }
 
     /**
-     * This method is called before the callback runs in order to prepare and setup the permission scope.
+     * {@inheritDoc}
      */
     public function prepare()
     {
@@ -340,7 +339,7 @@ class PermissionScope extends BaseScope
     }
 
     /**
-     * Clean up tables and fixtures.
+     * {@inheritDoc}
      */
     public function cleanup()
     {

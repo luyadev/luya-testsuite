@@ -9,25 +9,25 @@ use luya\helpers\Json;
 use luya\testsuite\traits\CmsDatabaseTableTrait;
 
 /**
- * Create a CMS Page Scoped view:
+ * Create a CMS Page Scope.
  * 
  * ```php
  * PageScope::run($this->app, function(PageScope $scope) {
  * 
- *           $scope
- *               ->createPage('home', '@app/data/cmslayoutviewfile.php', ['content'])
- *               ->addBlockAndContent(HtmlBlock::class, 'content', [
- *                   'html' => '<p>foobar</p>',
- *               ]);
+ *     $scope
+ *          >createPage('home', '@app/data/cmslayoutviewfile.php', ['content'])
+*          ->addBlockAndContent(HtmlBlock::class, 'content', [
+ *             'html' => '<p>foobar</p>',
+ *          ]);
  *
- *           $page = NavItemPage::findOne($scope->pageId);
- *           $content = $page->getContent();
+ *     $page = NavItemPage::findOne($scope->pageId);
+ *     $content = $page->getContent();
  *
- *           $this->assertSameTrimmed('<h1>view file</h1>
- *
- *           <p>foobar</p>', $content);
+ *     $this->assertSame('<h1>view file</h1>p>foobar</p>', $content);
  * });
  * ```
+ * 
+ * 
  * 
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.21
@@ -56,8 +56,9 @@ class PageScope extends BaseScope
 
     protected $navItemModuleFixture;
 
-    // configs
-
+    /**
+     * @var integer The page id which will be created.
+     */
     public $pageId = 1;
 
     /**
@@ -71,12 +72,22 @@ class PageScope extends BaseScope
     }
 
     /**
+     * Method to update the application config with requrired componenets.
+     */
+    public function updateApplicationConfig()
+    {
+        $this->getApp()->set('session',['class' => 'yii\web\CacheSession']);
+        $this->getApp()->set('cache', ['class' => 'yii\caching\DummyCache']);
+        $this->getApp()->set('db', ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:']);
+    }
+
+    /**
      * Create a CMS Page with title, path to layout file and layout file placholders.
      *
      * @param string $title
      * @param string $layoutViewFile The path to the cmslayout file, for example: `@app/views/cmslayouts/main.php`.
      * @param array $layoutPlaceholders An array only containing the available placeholders like: `['content', 'sidebar']`.
-     * @return $this
+     * @return self
      */
     public function createPage($title, $layoutViewFile, array $layoutPlaceholders)
     {
@@ -274,6 +285,7 @@ class PageScope extends BaseScope
      */
     public function prepare()
     {
+        $this->updateApplicationConfig();
         $this->logFixture = $this->createCmsLog([]);
         $this->blockFixture = $this->createCmsBlockFixture([]);
         $this->navItemPageBlockItemFixture = $this->createCmsNavItemPageBlockItemFixture([]);
