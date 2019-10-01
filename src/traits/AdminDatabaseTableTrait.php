@@ -215,9 +215,12 @@ trait AdminDatabaseTableTrait
      *
      * @return ActiveRecordFixture
      */
-    public function createNgRestLogFixture()
+    public function createNgRestLogFixture(array $fixtureData = [])
     {
-        return new ActiveRecordFixture(['modelClass' => NgrestLog::class]);
+        return new ActiveRecordFixture([
+            'modelClass' => NgrestLog::class,
+            'fixtureData' => $fixtureData,
+        ]);
     }
 
     /**
@@ -225,9 +228,12 @@ trait AdminDatabaseTableTrait
      *
      * @return ActiveRecordFixture
      */
-    public function createUserOnlineFixture()
+    public function createUserOnlineFixture(array $fixtureData = [])
     {
-        return new ActiveRecordFixture(['modelClass' => UserOnline::class]);
+        return new ActiveRecordFixture([
+            'modelClass' => UserOnline::class,
+            'fixtureData' => $fixtureData,
+        ]);
     }
 
     /**
@@ -236,7 +242,7 @@ trait AdminDatabaseTableTrait
      * @param array $fixtureData
      * @return NgRestModelFixture
      */
-    public function createUserFixture(array $fixtureData)
+    public function createUserFixture(array $fixtureData = [])
     {
         return new NgRestModelFixture([
             'modelClass' => User::class,
@@ -294,7 +300,7 @@ trait AdminDatabaseTableTrait
      * @return NgRestModelFixture
      * @since 1.0.21
      */
-    public function createAdminLangFixture(array $fixtureData)
+    public function createAdminLangFixture(array $fixtureData = [])
     {
         return new NgRestModelFixture([
             'modelClass' => Lang::class,
