@@ -128,7 +128,27 @@ class PermissionScope extends BaseScope
     // route permissions
 
     /**
-     * Create a route in permission system
+     * Create a route in permission system.
+     * 
+     * Assuming the application has id "myapp" (`['id' => 'myapp']`) and controller defined is mycontroller and the action is helloworld
+     * the route would be `myapp/mycontroller/helloworld`.
+     * 
+     * ```php
+     * $app = new Application(['id' => 'myapp']);
+     * 
+     * PermissionScope::run($app, function($scope) use ($app) {
+     *    
+     *    $controller = new MyController('mycontroller', $app);
+     *    
+     *    $scope->runControllerAction($controller, 'helloworld');
+     * }); 
+     * ```
+     * 
+     * The above example would nee to set:
+     * 
+     * ```php
+     * $scope->createRoute('myapp/mycontroller/helloworld');
+     * ```
      *
      * @param string $route
      * @return integer Returns the id of the admin_auth table entry.
@@ -140,6 +160,8 @@ class PermissionScope extends BaseScope
 
     /**
      * Create a route in permission system and directly allow the route.
+     * 
+     * > Read more about details of the route and how its build in {{createRoute()}} method.
      *
      * @param string $route
      */
