@@ -56,10 +56,18 @@ class PageScope extends BaseScope
 
     protected $navItemModuleFixture;
 
+    protected $propertyFixture;
+
     /**
      * @var integer The page id which will be created.
      */
     public $pageId = 1;
+
+    /**
+     * @var array An array with fixture data for page properties
+     * @since 1.0.22
+     */
+    public $pagePropertyFixtureData = [];
 
     /**
      * Returns the application database componenet.
@@ -216,6 +224,8 @@ class PageScope extends BaseScope
             ]
         ]);
         
+
+        $this->propertyFixture = $this->createCmsPropertyFixture($this->pagePropertyFixtureData);
 
         return $this;
     }

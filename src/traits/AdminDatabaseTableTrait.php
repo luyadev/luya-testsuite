@@ -5,6 +5,8 @@ namespace luya\testsuite\traits;
 use luya\admin\models\Group;
 use luya\admin\models\Lang;
 use luya\admin\models\NgrestLog;
+use luya\admin\models\Tag;
+use luya\admin\models\TagRelation;
 use luya\admin\models\User;
 use luya\admin\models\UserOnline;
 use luya\testsuite\fixtures\ActiveRecordFixture;
@@ -304,6 +306,36 @@ trait AdminDatabaseTableTrait
     {
         return new NgRestModelFixture([
             'modelClass' => Lang::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * Create admin tag fixture
+     *
+     * @param array $fixtureData
+     * @return NgRestModelFixture
+     * @since 1.0.22
+     */
+    public function createAdminTagFixture(array $fixtureData = [])
+    {
+        return new NgRestModelFixture([
+            'modelClass' => Tag::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * Create admin tag relation fixture
+     *
+     * @param array $fixtureData
+     * @return NgRestModelFixture
+     * @since 1.0.22
+     */
+    public function createAdminTagRelationFixture(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => TagRelation::class,
             'fixtureData' => $fixtureData,
         ]);
     }
