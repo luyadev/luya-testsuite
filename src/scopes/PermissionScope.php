@@ -75,6 +75,68 @@ use yii\rest\Controller as RestController;
  * });
  * ```
  * 
+ * An example of how to test a POST (save) action of an {{luya\admin\ngrest\base\Api}} controller with JWT enabled:
+ * 
+ * 
+ * ```php
+ * class MyNgRestTest extends NgRestTestCase
+ * {
+ *     public $modelClass = MyTestModel::class;
+ * 
+ *     public $apiClass = MyTestModelController::class;
+ * 
+ *     public $controllerClass = MyTestModelController::class;
+ * 
+ *     public function getConfigArray()
+ *     {
+ *         return [
+ *             'id' => 'MyTestModel',
+ *             'basePath' => dirname(__FILE__),
+ *             'modules' => [
+ *                 'admin' => [
+ *                     'class' => 'luya\admin\Module',
+ *                     'cors' => true
+ *                 ],
+ *                 'myadminmodel' => 'myadminmodel\admin\Module',
+ *             ],
+ *             'components' => [
+ *                 'jwt' => [
+ *                     'class' => 'luya\admin\components\Jwt',
+ *                     'key' => '123',
+ *                     'apiUserEmail' => 'unknown',
+ *                     'identityClass' => 'myadminmodel\models\User',
+ *                 ],
+ *             ]
+ *         ];
+ *     }
+ * 
+ *     public function testSaveEntry()
+ *     {
+ *         $user = new NgRestModelFixture([
+ *             'modelClass' => User::class,
+ *         ]);
+ *         $model = $user->newModel;
+ *         $model->id = 1;
+ *         // set the jwt identity model 
+ *         $this->app->jwt->identity = $model;
+ * 
+ *         PermissionScope::run($this->app, function(PermissionScope $scope) {
+ *             $fixture = new NgRestModelFixture([
+ *                 'modelClass' => MyTestModel::class,
+ *             ]);
+ *             $scope->createAndAllowApi('MyTestModel');
+ *             $ctrl = new MyTestModelController('MyTestModel', $this->app);
+ *             $this->app->request->setBodyParams([
+ *                 'field' => 'value',
+ *                 // ... other post vlaues
+ *             ]);
+ *             $response = $scope->runControllerAction($ctrl, 'create', [], 'POST');
+ *             // assert response content
+ *         });
+ *     }
+ * }
+ * ```
+ * 
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.20
  */
