@@ -4,7 +4,7 @@ namespace luya\testsuite\cases;
 
 use luya\Boot;
 
-require_once 'vendor/autoload.php';
+@include_once('vendor/autoload.php');
 
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
