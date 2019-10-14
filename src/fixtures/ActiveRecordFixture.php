@@ -68,6 +68,35 @@ use yii\db\sqlite\Schema;
  *
  * > In order to support compisite primary keys on sqlite you have to define primaryKey property as followed:
  * > `'primaryKey' => ['user_id' => 'int(11)', 'group_id' => 'int(11)', 'PRIMARY KEY (user_id, group_id)']`
+ * 
+ * An example which provides data and schema from a extended fixture class:
+ * 
+ * ```php
+ * class MyApiModelFixture extends ActiveRecordFixture
+ * {
+ *     public $modelClass = MyApiModel::class;
+ * 
+ *     public function getSchema()
+ *     {
+ *         return [
+ *             'id' => 'int(11)',
+ *             'access_token' => 'text',
+ *             'name' => 'text',
+ *         ];
+ *     }
+ * 
+ *     public function getData()
+ *     {
+ *         return [
+ *             1 => [
+ *                 'id' => 1,
+ *                 'access_token' => '123123123',
+ *                 'name' => 'masterapi',
+ *             ]
+ *         ];
+ *     }
+ * }
+ * ```
  *
  * @property array $schema
  * @property array $primaryKey
@@ -285,6 +314,18 @@ class ActiveRecordFixture extends ActiveFixture
         // try to find from labels
         return $fields;
     }
+
+    /**
+     * Decided whether table name should be resolved from property or model (if $tableName is empty).
+     *
+     * @return string
+     * @since 1.0.23
+     */
+    public function getTableName()
+    {
+        $class = $this->modelClass;
+        return $this->tableName ? $this->tableName : $class::tableName();
+    }
     
     /**
      * Create the table based on the schema with primary keys
@@ -296,15 +337,13 @@ class ActiveRecordFixture extends ActiveFixture
         foreach ($this->getPrimaryKey() as $key => $value) {
             $fields[$key] = $value;
         }
-        $class = $this->modelClass;
-
         // if skipIfExists is enabled, the table will only be created when the table does notexists.
         if ($this->skipIfExists) {
-            if (!$this->db->schema->getTableSchema($class::tableName())) {
-                $this->db->createCommand()->createTable($class::tableName(), $fields)->execute();
+            if (!$this->db->schema->getTableSchema($this->getTableName())) {
+                $this->db->createCommand()->createTable($this->getTableName(), $fields)->execute();
             }
         } else {
-            $this->db->createCommand()->createTable($class::tableName(), $fields)->execute();
+            $this->db->createCommand()->createTable($this->getTableName(), $fields)->execute();
         }
     }
     
@@ -313,13 +352,10 @@ class ActiveRecordFixture extends ActiveFixture
      */
     public function createColumns()
     {
-        $class = $this->modelClass;
-        $tableName = $class::tableName();
-        
         foreach ($this->getSchema() as $column => $type) {
-            $tableColumns = $this->db->schema->getTableSchema($tableName, true);
+            $tableColumns = $this->db->schema->getTableSchema($this->getTableName(), true);
             if (!$tableColumns->getColumn($column)) {
-                $this->db->createCommand()->addColumn($tableName, $column, $type)->execute();
+                $this->db->createCommand()->addColumn($this->getTableName(), $column, $type)->execute();
             }
         }
     }
@@ -330,7 +366,7 @@ class ActiveRecordFixture extends ActiveFixture
     public function cleanup()
     {
         $class = $this->modelClass;
-        $tableName = $class::tableName();
+        $tableName = $this->getTableName();
         // ensure the table exists before dropping
         if ($this->db->schema->getTableSchema($tableName)) {
             $this->db->createCommand()->dropTable($tableName)->execute();
