@@ -5,6 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 1.0.23
 
++ [#29](https://github.com/luyadev/luya-testsuite/pull/29) Add new getTableName() method to make ActiveRecord fixture usable without $modelClass property.
 
 ## 1.0.22 (3. October 2019)
 
