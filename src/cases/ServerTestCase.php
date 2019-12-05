@@ -268,18 +268,34 @@ abstract class ServerTestCase extends BaseTestSuite
         return $url;
     }
     
+    protected function debugMessage($url, Curl $curl)
+    {
+        echo PHP_EOL;
+        echo "======================================================";
+        echo "REQUEST: " . $url . PHP_EOL;
+        print_r($curl->request_headers) . PHP_EOL;
+        echo "------------------------------------------------------";
+        echo "RESPONSE" . PHP_EOL;
+        echo $curl->response;
+        echo "------------------------------------------------------";
+        echo "RESPONSE HEADERS" . PHP_EOL;
+        print_r($curl->response_headers) . PHP_EOL;
+        echo "======================================================";
+        echo PHP_EOL;
+    }
+
     /**
      * @param string $url
      * @return \Curl\Curl
      * @since 1.0.3
      */
-    protected function createGetCurl($url, array $params = [])
+    public function createGetCurl($url, array $params = [])
     {
         $callUrl = $this->buildCallUrl($url, $params);
         $curl = (new Curl())->get($callUrl);
         
         if ($this->debug) {
-            echo "GET DEBUG '$callUrl': " . $curl->response;
+            $this->debugMessage($callUrl, $curl);
         }
         
         return $curl;
@@ -292,13 +308,13 @@ abstract class ServerTestCase extends BaseTestSuite
      * @return \Curl\Curl
      * @since 1.0.3
      */
-    protected function createPostCurl($url, array $data = [], array $params = [])
+    public function createPostCurl($url, array $data = [], array $params = [])
     {
         $callUrl = $this->buildCallUrl($url, $params);
         $curl = (new Curl())->post($callUrl, $data);
         
         if ($this->debug) {
-            echo "POST DEBUG '$callUrl': " . $curl->response;
+            $this->debugMessage($callUrl, $curl);
         }
         
         return $curl;
