@@ -328,7 +328,7 @@ class PermissionScope extends BaseScope
      */
     public function updateApplicationConfig()
     {
-        $this->getApp()->set('session',['class' => 'yii\web\CacheSession']);
+        $this->getApp()->set('session',['class' => 'luya\testsuite\components\DummySession']);
         $this->getApp()->set('cache', ['class' => 'yii\caching\DummyCache']);
         $this->getApp()->set('adminuser', ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false]);
         $this->getApp()->set('db', ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:']);

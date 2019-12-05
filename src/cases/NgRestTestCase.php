@@ -308,7 +308,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                 'admin' => ['class' => 'luya\admin\Module']
             ],
             'components' => [
-                'session' => ['class' => 'yii\web\CacheSession'],
+                'session' => ['class' => 'luya\testsuite\components\DummySession'],
                 'cache' => ['class' => 'yii\caching\DummyCache'],
                 'adminuser' => ['class' => 'luya\admin\components\AdminUser', 'enableSession' => false],
                 'db' => ['class' => 'yii\db\Connection', 'dsn' => 'sqlite::memory:'],
