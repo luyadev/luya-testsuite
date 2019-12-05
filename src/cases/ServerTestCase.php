@@ -268,19 +268,28 @@ abstract class ServerTestCase extends BaseTestSuite
         return $url;
     }
     
+    /**
+     * Print a echoing debug message for a curl request.
+     * 
+     * @param string $url
+     * @param Curl $curl 
+     * @since 1.0.24
+     */
     protected function debugMessage($url, Curl $curl)
     {
         echo PHP_EOL;
-        echo "======================================================";
-        echo "REQUEST: " . $url . PHP_EOL;
+        echo "======================================================" . PHP_EOL;
+        echo "REQUEST URL: " . $url . PHP_EOL;
+        echo "------------------------------------------------------" . PHP_EOL;
+        echo "REQUEST HEADERS:" . PHP_EOL;
         print_r($curl->request_headers) . PHP_EOL;
-        echo "------------------------------------------------------";
-        echo "RESPONSE" . PHP_EOL;
+        echo "------------------------------------------------------" . PHP_EOL;
+        echo "RESPONSE:" . PHP_EOL;
         echo $curl->response;
-        echo "------------------------------------------------------";
-        echo "RESPONSE HEADERS" . PHP_EOL;
+        echo "------------------------------------------------------" . PHP_EOL;
+        echo "RESPONSE HEADERS:" . PHP_EOL;
         print_r($curl->response_headers) . PHP_EOL;
-        echo "======================================================";
+        echo "======================================================" . PHP_EOL;
         echo PHP_EOL;
     }
 

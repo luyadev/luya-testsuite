@@ -2,6 +2,7 @@
 
 namespace luya\testsuite\tests\cases;
 
+use Curl\Curl;
 use luya\testsuite\cases\ServerTestCase;
 
 final class ServerTestCaseTest extends ServerTestCase
@@ -32,5 +33,10 @@ final class ServerTestCaseTest extends ServerTestCase
         $this->assertSame('localhost:1337/api/path?foo=bar', $this->buildCallUrl('api/path', ['foo' => 'bar']));
         $this->assertSame('localhost:1337/api/path?foo=bar', $this->buildCallUrl(['api/path', 'foo' => 'bar']));
         $this->assertSame('localhost:1337/api/path?foo=baz', $this->buildCallUrl(['api/path', 'foo' => 'bar'], ['foo' => 'baz']));
+    }
+
+    public function testDebug()
+    {
+        $this->debugMessage('url', (new Curl())->get('url'));
     }
 }

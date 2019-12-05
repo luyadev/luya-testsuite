@@ -6,6 +6,8 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 ## 1.0.24
 
 + Added new dummy session component.
++ Added travis php 7.4 support
++ Improve server test case debug message
 
 ## 1.0.23 (22. October 2019)
 
