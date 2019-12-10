@@ -10,7 +10,7 @@ use yii\base\InvalidConfigException;
  * Testing a CMS Block for the CMS Layout. Example usage:
  *
  * ```php
- * class TextBlockTest extends WebApplicationTestCase
+ * class TextBlockTest extends CmsBlockTestCase
  * {
  *     public $blockClass = 'luya\generic\blocks\TextBlock';
  *
