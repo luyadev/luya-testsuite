@@ -8,10 +8,6 @@ use luya\testsuite\fixtures\ActiveRecordFixture;
 use luya\base\Boot;
 use luya\helpers\ArrayHelper;
 use luya\testsuite\fixtures\NgRestModelFixture;
-use luya\admin\models\User;
-use luya\admin\models\UserOnline;
-use luya\admin\models\Group;
-use luya\admin\models\NgrestLog;
 use luya\testsuite\traits\AdminDatabaseTableTrait;
 use yii\base\Controller;
 
@@ -333,7 +329,11 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->assertNotNull($class::tableName());
         $this->assertTrue(is_array($this->modelFixture->newModel->ngRestAttributeTypes()));
         $this->assertNotNull($this->modelFixture->newModel->attributeLabels());
+        $this->assertTrue(is_array($this->modelFixture->newModel->attributeHints()));
         $this->assertTrue(is_array($this->modelFixture->newModel->ngRestScopes()));
+        $this->assertTrue(is_array($this->modelFixture->newModel->ngRestActiveButtons()));
+        $this->assertTrue(is_array($this->modelFixture->newModel->ngRestActiveWindows()));
+        $this->assertTrue(is_array($this->modelFixture->newModel->ngRestRelations()));
         
         if ($this->api) {
             $this->assertInstanceOf('luya\admin\ngrest\base\NgRestModel', $this->api->model);
