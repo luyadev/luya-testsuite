@@ -128,7 +128,7 @@ EOL;
             'testClass',
             $command->generateData($schema, 'hb_test_schema', $command->db),
             'test',
-            null,
+            null
         ));
 
         $content = <<<'EOL'
@@ -190,7 +190,7 @@ EOL;
             'testClass',
             $command->generateData($schema, 'hb_test_schema', $command->db),
             null,
-            'tableName',
+            'tableName'
         ));
     }
 }
