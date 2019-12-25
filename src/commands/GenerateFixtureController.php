@@ -91,7 +91,7 @@ class GenerateFixtureController extends Command
         }
 
         if ($this->data === null) {
-            $this->data = $this->confirm("Add current table data?");
+            $this->data = $this->confirm("Add current table data?", true);
         }
 
         $className = $this->mode == self::MODE_TABLE ? $this->table : $this->model;
@@ -108,7 +108,7 @@ class GenerateFixtureController extends Command
         );
 
         $folder = Yii::getAlias('@app/tests');
-        $filePath = Yii::getAlias('@app/tests/'.$className.'.php');
+        $filePath = Yii::getAlias('@app/tests/fixtures/'.$className.'.php');
 
         if (FileHelper::createDirectory($folder) && FileHelper::writeFile($filePath, $fixtureClassContent)) {
             return $this->outputSuccess("fixture file {$filePath} has been created.");
