@@ -40,7 +40,12 @@
 	"extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
-        }
+		},
+		"luya" : {
+			"bootstrap": [
+				"luya\\testsuite\\Bootstrap"
+			]
+		}
     },
     "repositories": [
 		{
