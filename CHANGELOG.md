@@ -3,9 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 1.0.25
+## 1.0.25 (25. December 2019)
 
 + [#31](https://github.com/luyadev/luya-testsuite/issues/31) Added new `generatefixture` console command which will be auto boostraped in order to generate fixtures based on existing models or table names.
++ Added more ngrest test case default api controller action tests.
 
 ## 1.0.24 (5. December 2019)
 
