@@ -9,7 +9,7 @@
 echo "<?php\n";
 ?>
 
-namespace app\tests;
+namespace app\tests\fixtures;
 
 use luya\testsuite\fixtures\NgRestModelFixture;
 
