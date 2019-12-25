@@ -22,7 +22,7 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app instanceof Application) {
-            $app->controllerMap['testsuite-generate-fixture'] = [
+            $app->controllerMap['generatefixture'] = [
                 'class' => GenerateFixtureController::class,
             ];
         }
