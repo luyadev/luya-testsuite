@@ -4,6 +4,7 @@
  * @var string $className
  * @var string $modelClass
  * @var array $data
+ * @var string $tableName
  */
 echo "<?php\n";
 ?>
@@ -12,10 +13,29 @@ namespace app\tests;
 
 use luya\testsuite\fixtures\NgRestModelFixture;
 
+/**
+ * <?= $className; ?> Fixture
+ */
 class <?= $className; ?> extends NgRestModelFixture
 {
+<?php if ($modelClass): ?>
+    /**
+     * {@inheritDoc}
+     */
     public $modelClass = '<?= $modelClass; ?>';
+<?php elseif ($tableName): ?>
+    /**
+     * {@inheritDoc}
+     */
+    public function getTableName()
+    {
+        return '<?= $tableName; ?>';
+    }
+<?php endif; ?>
 
+    /**
+     * {@inheritDoc}
+     */
     public function getSchema()
     {
         return [
@@ -25,6 +45,9 @@ class <?= $className; ?> extends NgRestModelFixture
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getData()
     {
         return [
