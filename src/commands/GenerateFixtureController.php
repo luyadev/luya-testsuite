@@ -11,6 +11,12 @@ use yii\db\TableSchema;
 use yii\db\Query;
 use yii\di\Instance;
 
+/**
+ * Generate Fixtures.
+ * 
+ * @since 1.0.25
+ * @author Basil Suter <basil@nadar.io>
+ */
 class GenerateFixtureController extends Command
 {
     const MODE_MODEL = 'model';
