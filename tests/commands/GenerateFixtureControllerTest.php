@@ -2,6 +2,7 @@
 
 namespace luya\testsuite\tests\commands;
 
+use luya\testsuite\Bootstrap;
 use luya\testsuite\cases\ConsoleApplicationTestCase;
 use luya\testsuite\commands\GenerateFixtureController;
 use luya\testsuite\fixtures\ActiveRecordFixture;
@@ -65,11 +66,13 @@ class GenerateFixtureControllerTest extends ConsoleApplicationTestCase
         $command = new GenerateFixtureController('id', Yii::$app);
         $command->table = 'hb_test_schema';
         $command->mode = GenerateFixtureController::MODE_TABLE;
+        $command->data = true;
         $command->actionIndex();
 
         $command = new GenerateFixtureController('id', Yii::$app);
         $command->mode = GenerateFixtureController::MODE_MODEL;
         $command->model = TestModel::class;
+        $command->data = true;
         $command->actionIndex();
 
         $content = <<<'EOL'
@@ -128,7 +131,8 @@ EOL;
             'testClass',
             $command->generateData($schema, 'hb_test_schema', $command->db),
             'test',
-            null
+            null,
+            true
         ));
 
         $content = <<<'EOL'
@@ -190,7 +194,58 @@ EOL;
             'testClass',
             $command->generateData($schema, 'hb_test_schema', $command->db),
             null,
-            'tableName'
+            'tableName',
+            true
         ));
+
+        $content = <<<'EOL'
+<?php
+
+namespace app\tests;
+
+use luya\testsuite\fixtures\NgRestModelFixture;
+
+/**
+ * testClass Fixture
+ */
+class testClass extends NgRestModelFixture
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function getTableName()
+    {
+        return 'tableName';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSchema()
+    {
+        return [
+            'id' => 'integer',
+            'name' => 'text',
+            'is_active' => 'int(11)',
+        ];
+    }
+}
+EOL;
+
+        $schema = $command->getSchema('hb_test_schema');
+        $this->assertSame($content, $command->generateClassFile(
+            $schema,
+            'testClass',
+            $command->generateData($schema, 'hb_test_schema', $command->db),
+            null,
+            'tableName',
+            false
+        ));
+    }
+
+    public function testBootstrap()
+    {
+        $bootstrap = new Bootstrap();
+        $this->assertNull($bootstrap->bootstrap($this->app));
     }
 }

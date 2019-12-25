@@ -44,6 +44,7 @@ class <?= $className; ?> extends NgRestModelFixture
 <?php endforeach; ?>
         ];
     }
+<?php if ($addData): ?>
 
     /**
      * {@inheritDoc}
@@ -60,4 +61,5 @@ class <?= $className; ?> extends NgRestModelFixture
 <?php endforeach; ?>
         ];
     }
+<?php endif; ?>
 }
