@@ -107,7 +107,7 @@ class GenerateFixtureController extends Command
             $this->data
         );
 
-        $folder = Yii::getAlias('@app/tests');
+        $folder = Yii::getAlias('@app/tests/fixtures');
         $filePath = Yii::getAlias('@app/tests/fixtures/'.$className.'.php');
 
         if (FileHelper::createDirectory($folder) && FileHelper::writeFile($filePath, $fixtureClassContent)) {
