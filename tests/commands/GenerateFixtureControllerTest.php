@@ -78,7 +78,7 @@ class GenerateFixtureControllerTest extends ConsoleApplicationTestCase
         $content = <<<'EOL'
 <?php
 
-namespace app\tests;
+namespace app\tests\fixtures;
 
 use luya\testsuite\fixtures\NgRestModelFixture;
 
@@ -138,7 +138,7 @@ EOL;
         $content = <<<'EOL'
 <?php
 
-namespace app\tests;
+namespace app\tests\fixtures;
 
 use luya\testsuite\fixtures\NgRestModelFixture;
 
@@ -201,7 +201,7 @@ EOL;
         $content = <<<'EOL'
 <?php
 
-namespace app\tests;
+namespace app\tests\fixtures;
 
 use luya\testsuite\fixtures\NgRestModelFixture;
 
