@@ -97,7 +97,7 @@ class GenerateFixtureController extends Command
         $className = $this->mode == self::MODE_TABLE ? $this->table : $this->model;
 
         $schema = $this->getSchema($this->table);
-        $className = Inflector::classify($className.'Fixture');
+        $className = $this->generateClassName($className);
         $fixtureClassContent = $this->generateClassFile(
             $schema,
             $className,
@@ -126,6 +126,17 @@ class GenerateFixtureController extends Command
     public function getSchema($table)
     {
         return $this->db->getTableSchema($table);
+    }
+
+    /**
+     * Gnerate class name
+     *
+     * @param string $className
+     * @return string
+     */
+    public function generateClassName($className)
+    {
+        return Inflector::classify($className.'Fixture');
     }
 
     /**
