@@ -52,7 +52,7 @@ class GenerateFixtureControllerTest extends ConsoleApplicationTestCase
             'fixtureData' => [
                 1 => [
                     'id' => 1,
-                    'name' => 'John Doe',
+                    'name' => 'John Doe\'s',
                     'is_active' => true,
                 ],
                 2 => [
@@ -111,14 +111,14 @@ class testClass extends NgRestModelFixture
     {
         return [
             1 => [
-                'id' => 1,
-                'name' => 'John Doe',
-                'is_active' => 1,
+                'id' => '1',
+                'name' => 'John Doe\'s',
+                'is_active' => '1',
             ],
             2 => [
-                'id' => 2,
+                'id' => '2',
                 'name' => 'Jane Doe',
-                'is_active' => 0,
+                'is_active' => '0',
             ],
         ];
     }
@@ -174,14 +174,14 @@ class testClass extends NgRestModelFixture
     {
         return [
             1 => [
-                'id' => 1,
-                'name' => 'John Doe',
-                'is_active' => 1,
+                'id' => '1',
+                'name' => 'John Doe\'s',
+                'is_active' => '1',
             ],
             2 => [
-                'id' => 2,
+                'id' => '2',
                 'name' => 'Jane Doe',
-                'is_active' => 0,
+                'is_active' => '0',
             ],
         ];
     }

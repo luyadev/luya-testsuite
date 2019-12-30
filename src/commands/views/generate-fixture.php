@@ -53,9 +53,9 @@ class <?= $className; ?> extends NgRestModelFixture
     {
         return [
 <?php foreach ($data as $index => $items): ?>
-            <?= $index; ?> => [
+            <?= is_integer($index) ? $index : "'{$index}'"; ?> => [
 <?php foreach ($items as $key => $item): ?>
-                '<?= $key; ?>' => <?= is_numeric($item) ? $item : "'{$item}'" ?>,
+                '<?= $key; ?>' => <?= is_integer($item) ? $item : "'".str_replace("'", "\\'", $item)."'" ?>,
 <?php endforeach; ?>
             ],
 <?php endforeach; ?>
