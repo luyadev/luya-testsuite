@@ -8,6 +8,7 @@ use luya\admin\models\NgrestLog;
 use luya\admin\models\Tag;
 use luya\admin\models\TagRelation;
 use luya\admin\models\User;
+use luya\admin\models\UserLogin;
 use luya\admin\models\UserOnline;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use luya\testsuite\fixtures\NgRestModelFixture;
@@ -271,7 +272,20 @@ trait AdminDatabaseTableTrait
                 'secure_token' => 'text',
                 'password' => 'text',
                 'password_salt' => 'text',
+                'login_2fa_enabled' => 'int(11)',
+                'login_2fa_secret' => 'text',
+                'login_2fa_backup_key' => 'text',
+                'password_verification_token' => 'text',
+                'password_verification_token_timestamp' => 'int(11)',
             ],
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    public function createUserLoginFixture(array $fixtureData = [])
+    {
+        return new NgRestModelFixture([
+            'modelClass' => UserLogin::class,
             'fixtureData' => $fixtureData,
         ]);
     }
