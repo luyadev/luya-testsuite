@@ -299,7 +299,7 @@ class PageScope extends BaseScope
         $this->logFixture = $this->createCmsLog([]);
         $this->blockFixture = $this->createCmsBlockFixture([]);
         $this->navItemPageBlockItemFixture = $this->createCmsNavItemPageBlockItemFixture([]);
-        $this->ngRestLogFixture = $this->createNgRestLogFixture();
+        $this->ngRestLogFixture = $this->createAdminNgRestLogFixture();
     }
 
     /**
