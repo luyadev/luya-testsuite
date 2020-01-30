@@ -5,10 +5,14 @@ namespace luya\testsuite\traits;
 use luya\admin\models\Group;
 use luya\admin\models\Lang;
 use luya\admin\models\NgrestLog;
+use luya\admin\models\QueueLog;
+use luya\admin\models\QueueLogError;
 use luya\admin\models\Tag;
 use luya\admin\models\TagRelation;
 use luya\admin\models\User;
+use luya\admin\models\UserDevice;
 use luya\admin\models\UserLogin;
+use luya\admin\models\UserLoginLockout;
 use luya\admin\models\UserOnline;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use luya\testsuite\fixtures\NgRestModelFixture;
@@ -217,8 +221,20 @@ trait AdminDatabaseTableTrait
      * Create the NgRest Log Fixture.
      *
      * @return ActiveRecordFixture
+     * @deprecated 1.0.27
      */
     public function createNgRestLogFixture(array $fixtureData = [])
+    {
+        trigger_error('use createAdminNgRestLogFixture() instead', E_USER_DEPRECATED);
+        return $this->createAdminNgRestLogFixture($fixtureData);
+    }
+
+    /**
+     * Create the NgRest Log Fixture.
+     *
+     * @return ActiveRecordFixture
+     */
+    public function createAdminNgRestLogFixture(array $fixtureData = [])
     {
         return new ActiveRecordFixture([
             'modelClass' => NgrestLog::class,
@@ -230,8 +246,20 @@ trait AdminDatabaseTableTrait
      * Create the User Online Fixture.
      *
      * @return ActiveRecordFixture
+     * @deprecated 1.0.27
      */
     public function createUserOnlineFixture(array $fixtureData = [])
+    {
+        trigger_error('use createAdminUserOnlineFixture() instead', E_USER_DEPRECATED);
+        return $this->createAdminUserOnlineFixture($fixtureData);
+    }
+
+    /**
+     * Create the User Online Fixture.
+     *
+     * @return ActiveRecordFixture
+     */
+    public function createAdminUserOnlineFixture(array $fixtureData = [])
     {
         return new ActiveRecordFixture([
             'modelClass' => UserOnline::class,
@@ -244,12 +272,25 @@ trait AdminDatabaseTableTrait
      *
      * @param array $fixtureData
      * @return NgRestModelFixture
+     * @deprecated 1.0.27
      */
     public function createUserFixture(array $fixtureData = [])
     {
+        trigger_error('use createAdminUserFixture() instead', E_USER_DEPRECATED);
+        return $this->createAdminUserFixture($fixtureData);
+    }
+
+    /**
+     * Create the User Fixture with given fixture Data.
+     *
+     * @param array $fixtureData
+     * @return NgRestModelFixture
+     */
+    public function createAdminUserFixture(array $fixtureData = [], $defaultSchema = true)
+    {
         return new NgRestModelFixture([
             'modelClass' => User::class,
-            'schema' => [
+            'schema' => $defaultSchema ? [
                 'title' => 'int(11)',
                 'firstname' => 'text',
                 'lastname' => 'text',
@@ -277,12 +318,19 @@ trait AdminDatabaseTableTrait
                 'login_2fa_backup_key' => 'text',
                 'password_verification_token' => 'text',
                 'password_verification_token_timestamp' => 'int(11)',
-            ],
+            ] : null,
             'fixtureData' => $fixtureData,
         ]);
     }
 
-    public function createUserLoginFixture(array $fixtureData = [])
+    /**
+     * Admin User Fixture
+     *
+     * @param array $fixtureData
+     * @return NgRestModelFixture
+     * @since 1.0.27
+     */
+    public function createAdminUserLoginFixture(array $fixtureData = [])
     {
         return new NgRestModelFixture([
             'modelClass' => UserLogin::class,
@@ -295,8 +343,21 @@ trait AdminDatabaseTableTrait
      *
      * @param integer $id
      * @return NgRestModelFixture
+     * @deprecated 1.0.27
      */
     public function createGroupFixture($id)
+    {
+        trigger_error('use createAdimGroupFixture() instead', E_USER_DEPRECATED);
+        return $this->createAdimGroupFixture($id);
+    }
+
+    /**
+     * Create the Group Fixture with given ID.
+     *
+     * @param integer $id
+     * @return NgRestModelFixture
+     */
+    public function createAdimGroupFixture($id)
     {
         return new NgRestModelFixture([
             'modelClass' => Group::class,
@@ -343,13 +404,73 @@ trait AdminDatabaseTableTrait
      * Create admin tag relation fixture
      *
      * @param array $fixtureData
-     * @return NgRestModelFixture
+     * @return ActiveRecordFixture
      * @since 1.0.22
      */
     public function createAdminTagRelationFixture(array $fixtureData = [])
     {
         return new ActiveRecordFixture([
             'modelClass' => TagRelation::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * User Device
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since 1.0.27
+     */
+    public function createAdminUserDeviceFixture(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => UserDevice::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * User Login Lockout
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since 1.0.27
+     */
+    public function createAdminUserLoginLockout(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => UserLoginLockout::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * Queue Log
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since @since 1.0.27
+     */
+    public function createAdminQueueLog(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => QueueLog::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * Queue Log Error
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since @since 1.0.27
+     */
+    public function createAdminQueueLogError(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => QueueLogError::class,
             'fixtureData' => $fixtureData,
         ]);
     }
