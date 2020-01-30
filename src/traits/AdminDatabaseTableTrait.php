@@ -347,8 +347,8 @@ trait AdminDatabaseTableTrait
      */
     public function createGroupFixture($id)
     {
-        trigger_error('use createAdimGroupFixture() instead', E_USER_DEPRECATED);
-        return $this->createAdimGroupFixture($id);
+        trigger_error('use createAdminGroupFixture() instead', E_USER_DEPRECATED);
+        return $this->createAdminGroupFixture($id);
     }
 
     /**
@@ -357,7 +357,7 @@ trait AdminDatabaseTableTrait
      * @param integer $id
      * @return NgRestModelFixture
      */
-    public function createAdimGroupFixture($id)
+    public function createAdminGroupFixture($id)
     {
         return new NgRestModelFixture([
             'modelClass' => Group::class,
@@ -437,7 +437,7 @@ trait AdminDatabaseTableTrait
      * @return ActiveRecordFixture
      * @since 1.0.27
      */
-    public function createAdminUserLoginLockout(array $fixtureData = [])
+    public function createAdminUserLoginLockoutFixture(array $fixtureData = [])
     {
         return new ActiveRecordFixture([
             'modelClass' => UserLoginLockout::class,
@@ -452,7 +452,7 @@ trait AdminDatabaseTableTrait
      * @return ActiveRecordFixture
      * @since @since 1.0.27
      */
-    public function createAdminQueueLog(array $fixtureData = [])
+    public function createAdminQueueLogFixture(array $fixtureData = [])
     {
         return new ActiveRecordFixture([
             'modelClass' => QueueLog::class,
@@ -467,7 +467,7 @@ trait AdminDatabaseTableTrait
      * @return ActiveRecordFixture
      * @since @since 1.0.27
      */
-    public function createAdminQueueLogError(array $fixtureData = [])
+    public function createAdminQueueLogErrorFixture(array $fixtureData = [])
     {
         return new ActiveRecordFixture([
             'modelClass' => QueueLogError::class,

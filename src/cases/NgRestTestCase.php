@@ -242,9 +242,10 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->createAdminGroupAuthTable();
         $this->createAdminAuthTable();
         $this->createAdminUserAuthNotificationTable();
+        $this->createAdminUserLoginLockoutFixture();
         
         // user
-        $this->userFixture = $this->createUserFixture([
+        $this->userFixture = $this->createAdminUserFixture([
             'user1' => [
                 'id' => self::ID_USER_TESTER,
                 'firstname' => 'John',
@@ -259,16 +260,16 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         ]);
        
         // user group
-        $this->userGroupFixture = $this->createGroupFixture(self::ID_GROUP_TESTER);
+        $this->userGroupFixture = $this->createAdminGroupFixture(self::ID_GROUP_TESTER);
         
         // login the user
         $this->app->adminuser->login($this->userFixture->getModel('user1'));
         
         // user online table
-        $this->userOnlineFixture = $this->createUserOnlineFixture();
+        $this->userOnlineFixture = $this->createAdminUserOnlineFixture();
         
         // ngrest logger
-        $this->ngrestLogFixture = $this->createNgRestLogFixture();
+        $this->ngrestLogFixture = $this->createAdminNgRestLogFixture();
 
         $this->insertRow('admin_user_group', [
             'user_id' => self::ID_USER_TESTER,

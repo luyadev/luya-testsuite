@@ -394,7 +394,7 @@ class PermissionScope extends BaseScope
         // ensure the given and required application components are available.
         $this->updateApplicationConfig();
 
-        $this->userFixture = $this->createUserFixture([
+        $this->userFixture = $this->createAdminUserFixture([
             'user' => array_merge([
                 'id' => $this->userId,
                 'firstname' => 'John',
@@ -407,14 +407,15 @@ class PermissionScope extends BaseScope
                 'is_request_logger_enabled' => false,
             ], $this->userFixtureData),
         ]);
-        $this->groupFixture = $this->createGroupFixture($this->groupId);
-        $this->userOnlineFixture = $this->createUserOnlineFixture();
-        $this->ngRestLogFixture = $this->createNgRestLogFixture();
+        $this->groupFixture = $this->createAdminGroupFixture($this->groupId);
+        $this->userOnlineFixture = $this->createAdminUserOnlineFixture();
+        $this->ngRestLogFixture = $this->createAdminNgRestLogFixture();
 
         $this->createAdminUserGroupTable();
         $this->createAdminGroupAuthTable();
         $this->createAdminAuthTable();
         $this->createAdminUserAuthNotificationTable();
+        $this->createAdminUserLoginLockoutFixture();
 
         $this->userGroupId = $this->insertRow('admin_user_group', [
             'user_id' => $this->userId,

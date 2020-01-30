@@ -22,7 +22,7 @@
 		"twig/twig" : "^1.0",
 		"luyadev/luya-core" : "*",
 		"luyadev/luya-module-cms" : "*",
-		"luyadev/luya-module-admin" : "dev-master"
+		"luyadev/luya-module-admin" : "*@dev"
 	},
 	"support" : {
 		"issues" : "https://github.com/luyadev/luya/issues"
