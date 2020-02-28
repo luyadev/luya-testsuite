@@ -154,6 +154,8 @@ class PermissionScope extends BaseScope
 
     protected $ngRestLogFixture;
 
+    protected $langFixture;
+
     /**
      * @var integer The value which should be taken to generate the user.
      */
@@ -410,9 +412,7 @@ class PermissionScope extends BaseScope
         $this->groupFixture = $this->createAdminGroupFixture($this->groupId);
         $this->userOnlineFixture = $this->createAdminUserOnlineFixture();
         $this->ngRestLogFixture = $this->createAdminNgRestLogFixture();
-
-        $this->createAdminUserGroupTable();
-        $this->createAdminLangFixture([
+        $this->langFixture = $this->createAdminLangFixture([
             1 => [
                 'id' => 1,
                 'short_code' => 'en',
@@ -421,6 +421,8 @@ class PermissionScope extends BaseScope
                 'is_deleted' => 0,
             ]
         ]);
+
+        $this->createAdminUserGroupTable();
         $this->createAdminGroupAuthTable();
         $this->createAdminAuthTable();
         $this->createAdminUserAuthNotificationTable();
@@ -441,6 +443,7 @@ class PermissionScope extends BaseScope
         $this->groupFixture->cleanup();
         $this->userOnlineFixture->cleanup();
         $this->ngRestLogFixture->cleanup();
+        $this->langFixture->cleanup();
         $this->dropAdminAuthTable();
         $this->dropAdminGroupAuthTable();
         $this->dropAdminUserGroupTable();
