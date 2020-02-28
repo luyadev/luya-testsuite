@@ -202,6 +202,8 @@ abstract class NgRestTestCase extends WebApplicationTestCase
      * @var ActiveRecordFixture
      */
     protected $ngrestLogFixture;
+
+    protected $langFixture;
     
     public function afterSetup()
     {
@@ -216,6 +218,8 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             'fixtureData' => $this->modelFixtureData,
             'schema' => $this->modelSchema,
         ]);
+
+        $this->mockBasicAdminModels();
         
         if ($this->apiClass) {
             $class = $this->apiClass;
@@ -229,8 +233,6 @@ abstract class NgRestTestCase extends WebApplicationTestCase
             $this->controllerId = strtolower(str_replace('Controller', '', $className));
             $this->controller = new $class($this->controllerId, $this->app);
         }
-        
-        $this->mockBasicAdminModels();
     }
     
     /**
@@ -241,7 +243,10 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->createAdminUserGroupTable();
         $this->createAdminGroupAuthTable();
         $this->createAdminAuthTable();
-        $this->createAdminLangFixture([
+        $this->createAdminUserAuthNotificationTable();
+        $this->createAdminUserLoginLockoutFixture();
+        
+        $this->langFixture = $this->createAdminLangFixture([
             1 => [
                 'id' => 1,
                 'short_code' => 'en',
@@ -250,9 +255,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
                 'is_deleted' => 0,
             ]
         ]);
-        $this->createAdminUserAuthNotificationTable();
-        $this->createAdminUserLoginLockoutFixture();
-        
+
         // user
         $this->userFixture = $this->createAdminUserFixture([
             'user1' => [
@@ -399,6 +402,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->userGroupFixture->cleanup();
         $this->userOnlineFixture->cleanup();
         $this->ngrestLogFixture->cleanup();
+        $this->langFixture->cleanup();
 
         $this->dropAdminAuthTable();
         $this->dropAdminGroupAuthTable();
