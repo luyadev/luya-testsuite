@@ -241,6 +241,15 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         $this->createAdminUserGroupTable();
         $this->createAdminGroupAuthTable();
         $this->createAdminAuthTable();
+        $this->createAdminLangFixture([
+            1 => [
+                'id' => 1,
+                'short_code' => 'en',
+                'name' => 'English',
+                'is_default' => 1,
+                'is_deleted' => 0,
+            ]
+        ]);
         $this->createAdminUserAuthNotificationTable();
         $this->createAdminUserLoginLockoutFixture();
         
