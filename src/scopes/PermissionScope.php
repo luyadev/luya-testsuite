@@ -412,6 +412,15 @@ class PermissionScope extends BaseScope
         $this->ngRestLogFixture = $this->createAdminNgRestLogFixture();
 
         $this->createAdminUserGroupTable();
+        $this->createAdminLangFixture([
+            1 => [
+                'id' => 1,
+                'short_code' => 'en',
+                'name' => 'English',
+                'is_default' => 1,
+                'is_deleted' => 0,
+            ]
+        ]);
         $this->createAdminGroupAuthTable();
         $this->createAdminAuthTable();
         $this->createAdminUserAuthNotificationTable();
