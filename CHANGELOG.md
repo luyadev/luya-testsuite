@@ -3,7 +3,11 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 1.0.27 (21. February 2019)
+## 1.0.28 (17. March 2020)
+
++ Add a default language for all permission scope and ngrest test case situations as they are required by luya admin version 3.1
+
+## 1.0.27 (21. February 2020)
 
 + Allow any version of LUYA dependencies.
 
