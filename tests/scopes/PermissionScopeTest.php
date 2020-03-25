@@ -22,9 +22,9 @@ class PermissionScopeTest extends WebApplicationTestCase
                     'cache' => null,
                 ],
                 'db' => [
-                        'class' => 'yii\db\Connection',
-                        'dsn' => 'sqlite::memory:',
-                    ]
+                    'class' => 'yii\db\Connection',
+                    'dsn' => 'sqlite::memory:',
+                ]
             ]
         ];
     }
@@ -35,9 +35,10 @@ class PermissionScopeTest extends WebApplicationTestCase
             return 'foo';
         }));
 
-        $controller = new NgRestTestController('testid', $this->app);
+        
 
-        $r = PermissionScope::run($this->app, function(PermissionScope $scope) use ($controller) {
+        $r = PermissionScope::run($this->app, function(PermissionScope $scope) {
+            $controller = new NgRestTestController('testid', $this->app);
             $this->assertSame(1000, $scope->userId);
 
             $scope->createAndAllowRoute('foobar');
@@ -61,9 +62,10 @@ class PermissionScopeTest extends WebApplicationTestCase
 
     public function testApiDeleteMethod()
     {
-        $api = new NgRestTestApi('testapi', $this->app);
+        
 
-        PermissionScope::run($this->app, function(PermissionScope $scope) use($api) {
+        PermissionScope::run($this->app, function(PermissionScope $scope) {
+            $api = new NgRestTestApi('testapi', $this->app);
             // this might change with version 2.2 as then its a forbidden exception.
             $this->expectException('yii\web\ForbiddenHttpException');
             $scope->runControllerAction($api, 'delete', ['id' => 1], 'DELETE');

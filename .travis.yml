@@ -14,7 +14,7 @@ matrix:
 install:
   - travis_retry composer self-update && composer --version
   - travis_retry composer clear-cache
-  - travis_retry composer install --no-interaction
+  - travis_retry composer install --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction
 before_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "7.1" ]]; then PHPUNIT_FLAGS="--coverage-clover build/logs/clover.xml"; fi
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter

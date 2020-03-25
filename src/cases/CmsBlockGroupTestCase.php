@@ -55,6 +55,11 @@ abstract class CmsBlockGroupTestCase extends WebApplicationTestCase
         return [
             'id' => 'blockGroupTest',
             'basePath' => dirname(__DIR__),
+            'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ]
+            ]
         ];
     }
 
