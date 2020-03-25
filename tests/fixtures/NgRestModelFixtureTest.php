@@ -15,6 +15,9 @@ class NgRestModelFixtureTest extends BaseTestSuite
             'id' => 'basetestcase',
             'basePath' => dirname(__DIR__),
             'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ],
                 'db' => [
                     'class' => 'yii\db\Connection',
                     'dsn' => 'sqlite::memory:',

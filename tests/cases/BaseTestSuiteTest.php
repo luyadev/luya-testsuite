@@ -13,6 +13,11 @@ final class BaseTestSuiteTest extends BaseTestSuite
         return [
             'id' => 'basetestcase',
             'basePath' => dirname(__DIR__),
+            'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ],
+            ]
         ];
     }
     

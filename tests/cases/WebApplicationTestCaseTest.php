@@ -12,6 +12,11 @@ final class WebApplicationTestCaseTest extends WebApplicationTestCase
         return [
             'id' => 'webapptestcase',
             'basePath' => dirname(__DIR__),
+            'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ],
+            ]
         ];
     }
 

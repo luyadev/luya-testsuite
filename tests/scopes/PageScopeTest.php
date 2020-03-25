@@ -20,6 +20,9 @@ class PageScopeTest extends WebApplicationTestCase
                 'cmsadmin' => 'luya\cms\admin\Module',
             ],
             'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ],
                 'db' => [
                         'class' => 'yii\db\Connection',
                         'dsn' => 'sqlite::memory:',

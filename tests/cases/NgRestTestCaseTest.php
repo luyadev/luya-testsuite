@@ -27,9 +27,12 @@ final class NgRestTestCaseTest extends NgRestTestCase
             'basePath' => dirname(__DIR__),
             'components' => [
                 'db' => [
-                        'class' => 'yii\db\Connection',
-                        'dsn' => 'sqlite::memory:',
-                    ]
+                    'class' => 'yii\db\Connection',
+                    'dsn' => 'sqlite::memory:',
+                ],
+                'urlManager' => [
+                    'cache' => null,
+                ],
             ]
         ];
     }

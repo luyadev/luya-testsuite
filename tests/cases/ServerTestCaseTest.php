@@ -14,6 +14,11 @@ final class ServerTestCaseTest extends ServerTestCase
         return [
             'id' => 'servertest',
             'basePath' => dirname(__DIR__),
+            'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ],
+            ]
         ];
     }
     

@@ -13,6 +13,11 @@ final class CmsBlockTestCaseTest extends CmsBlockTestCase
         return [
             'id' => 'cmsblocktestcase',
             'basePath' => dirname(__DIR__),
+            'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ],
+            ]
         ];
     }
 

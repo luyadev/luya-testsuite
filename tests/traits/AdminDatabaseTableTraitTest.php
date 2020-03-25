@@ -17,6 +17,9 @@ class AdminDatabaseTableTraitTest extends WebApplicationTestCase
                 'admin' => 'luya\admin\Module',
             ],
             'components' => [
+                'urlManager' => [
+                    'cache' => null,
+                ],
                 'db' => [
                         'class' => 'yii\db\Connection',
                         'dsn' => 'sqlite::memory:',
