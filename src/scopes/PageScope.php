@@ -4,6 +4,7 @@ namespace luya\testsuite\scopes;
 
 use Yii;
 use luya\cms\models\NavItem;
+use luya\helpers\ArrayHelper;
 use luya\helpers\Inflector;
 use luya\helpers\Json;
 use luya\testsuite\traits\CmsDatabaseTableTrait;
@@ -57,6 +58,8 @@ class PageScope extends BaseScope
     protected $navItemModuleFixture;
 
     protected $propertyFixture;
+    
+    protected $langFixture;
 
     /**
      * @var integer The page id which will be created.
@@ -95,17 +98,25 @@ class PageScope extends BaseScope
      * @param string $title
      * @param string $layoutViewFile The path to the cmslayout file, for example: `@app/views/cmslayouts/main.php`.
      * @param array $layoutPlaceholders An array only containing the available placeholders like: `['content', 'sidebar']`.
+     * @param array $options, options to pass in order to create differnet type of pages:
+     * + id: the id (default 1)
+     * + parentNavId: The parent nav id (default 0 = root level)
+     * + isHome: whether this page is home or not (default true)
      * @return self
      */
-    public function createPage($title, $layoutViewFile, array $layoutPlaceholders)
+    public function createPage($title, $layoutViewFile, array $layoutPlaceholders, array $options = [])
     {
+        $id = ArrayHelper::getValue($options, 'id', 1);
+        $parentNavId = ArrayHelper::getValue($options, 'parentNavId', 0);
+        $isHome = ArrayHelper::getValue($options, 'isHome', true);
+
         $json = [];
         foreach ($layoutPlaceholders as $c) {
             $json[] = ['label' => $c, 'var' => $c];
         }
         $this->layoutFixture = $this->createCmsLayoutFixture([
             'layout1' => [
-                'id' => 1,
+                'id' => $id,
                 'name' => 'layout1',
                 'view_file' => $layoutViewFile,
                 'json_config' => Json::encode(['placeholders' => [$json]]),
@@ -114,7 +125,7 @@ class PageScope extends BaseScope
 
         $this->navContainerFixture = $this->createCmsNavContainerFixture([
             'container1' => [
-                'id' => 1,
+                'id' => $id,
                 'name' => 'container',
                 'alias' => 'container',
             ],
@@ -122,14 +133,14 @@ class PageScope extends BaseScope
 
         $this->navFixture = $this->createCmsNavFixture([
             'nav1' => [
-                'id' => 1,
+                'id' => $id,
                 'nav_container_id' => 1,
-                'parent_nav_id' => 0,
-                'sort_index' => 1,
+                'parent_nav_id' => $parentNavId,
+                'sort_index' => $id,
                 'is_deleted' => 0,
                 'is_hidden' => 0,
                 'is_offline' => 0,
-                'is_home' => 1,
+                'is_home' => $isHome,
                 'is_draft' => 0,
                 'layout_file' => null,
                 'publish_from' => null,
@@ -137,10 +148,11 @@ class PageScope extends BaseScope
             ]
         ]);
 
+
         $this->navItemFixture = $this->createCmsNavItemFixture([
             'navItemPage1' => [
-                'id' => 1,
-                'nav_id' => 1,
+                'id' => "{$id}001",
+                'nav_id' => $id,
                 'lang_id' => 1,
                 'nav_item_type' => NavItem::TYPE_PAGE,
                 'nav_item_type_id' => 1,
@@ -157,7 +169,7 @@ class PageScope extends BaseScope
                 'is_url_strict_parsing_disabled' => 0,
             ],
             'navItemPage1' => [
-                'id' => 2,
+                'id' => "{$id}002",
                 'nav_id' => 1,
                 'lang_id' => 1,
                 'nav_item_type' => NavItem::TYPE_MODULE,
@@ -175,7 +187,7 @@ class PageScope extends BaseScope
                 'is_url_strict_parsing_disabled' => 0,
             ],
             'navItemPage1' => [
-                'id' => 3,
+                'id' => "{$id}003",
                 'nav_id' => 1,
                 'lang_id' => 1,
                 'nav_item_type' => NavItem::TYPE_REDIRECT,
@@ -198,7 +210,7 @@ class PageScope extends BaseScope
             'page1' => [
                 'id' => $this->pageId,
                 'layout_id' => 1,
-                'nav_item_id' => 1,
+                'nav_item_id' => $id,
                 'timestamp_create' => 123123,
                 'create_user_id' => 0,
                 'version_alias' => $title,
@@ -207,7 +219,7 @@ class PageScope extends BaseScope
 
         $this->navItemRedirectFixture = $this->createCmsNavItemRedirectFixture([
             'redirect1' => [
-                'id' => 1,
+                'id' => $id,
                 'type' => 1,
                 'value' => 'luya.io',
                 'target' => '_blank',
@@ -216,7 +228,7 @@ class PageScope extends BaseScope
 
         $this->navItemModuleFixture = $this->createCmsNavItemModuleFixture([
             'module1' => [
-                'id' => 1,
+                'id' => $id,
                 'module_name' => 'test',
                 'controller_name' => 'test',
                 'action_name' => 'test',
@@ -300,6 +312,15 @@ class PageScope extends BaseScope
         $this->blockFixture = $this->createCmsBlockFixture([]);
         $this->navItemPageBlockItemFixture = $this->createCmsNavItemPageBlockItemFixture([]);
         $this->ngRestLogFixture = $this->createAdminNgRestLogFixture();
+        $this->langFixture = $this->createAdminLangFixture([
+            1 => [
+                'id' => 1,
+                'short_code' => 'en',
+                'name' => 'English',
+                'is_default' => 1,
+                'is_deleted' => 0,
+            ]
+        ]);
     }
 
     /**
@@ -310,6 +331,7 @@ class PageScope extends BaseScope
         $this->blockFixture->cleanup();
         $this->navItemPageBlockItemFixture->cleanup();
         $this->logFixture->cleanup();
+        $this->langFixture->cleanup();
         $this->cleanupFixture($this->navContainerFixture);
         $this->cleanupFixture($this->navFixture);
         $this->cleanupFixture($this->navItemFixture);
