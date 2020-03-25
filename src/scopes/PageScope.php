@@ -102,6 +102,7 @@ class PageScope extends BaseScope
      * + id: the id (default 1)
      * + parentNavId: The parent nav id (default 0 = root level)
      * + isHome: whether this page is home or not (default true)
+     * + pageId: The page which will be created & associated with the menu item
      * @return self
      */
     public function createPage($title, $layoutViewFile, array $layoutPlaceholders, array $options = [])
@@ -109,6 +110,7 @@ class PageScope extends BaseScope
         $id = ArrayHelper::getValue($options, 'id', 1);
         $parentNavId = ArrayHelper::getValue($options, 'parentNavId', 0);
         $isHome = ArrayHelper::getValue($options, 'isHome', true);
+        $pageId = ArrayHelper::getValue($options, 'pageId', $this->pageId);
 
         $json = [];
         foreach ($layoutPlaceholders as $c) {
@@ -208,7 +210,7 @@ class PageScope extends BaseScope
         
         $this->navItemPageFixture = $this->createCmsNavItemPageFixture([
             'page1' => [
-                'id' => $this->pageId,
+                'id' => $pageId,
                 'layout_id' => 1,
                 'nav_item_id' => $id,
                 'timestamp_create' => 123123,
