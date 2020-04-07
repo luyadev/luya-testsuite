@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.29 (7. April 2020)
+
++ Fix issue with latest Yii Framework version (where cache was throwing an exception when not configured properly)
++ Fix issue with not configured language for unit tests.
+
 ## 1.0.28 (17. March 2020)
 
 + Add a default language for all permission scope and ngrest test case situations as they are required by luya admin version 3.1
