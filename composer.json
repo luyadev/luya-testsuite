@@ -18,7 +18,7 @@
 	],
 	"require" : {
 		"phpunit/phpunit" : "^6.0",
-		"curl/curl" : "^2.0 || ^1.0",
+		"curl/curl" : "*",
 		"twig/twig" : "^1.0",
 		"luyadev/luya-core" : "*",
 		"luyadev/luya-module-cms" : "*",
