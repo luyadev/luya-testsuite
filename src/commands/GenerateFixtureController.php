@@ -14,6 +14,8 @@ use yii\di\Instance;
 /**
  * Generate Fixtures.
  * 
+ * @property Connection $db The db component.
+ * 
  * @since 1.0.25
  * @author Basil Suter <basil@nadar.io>
  */
@@ -48,13 +50,27 @@ class GenerateFixtureController extends Command
      */
     public $data;
 
+    private $_db = 'db';
+
+
     /**
-     * {@inheritDoc}
+     * DB Component Setter
+     *
+     * @param string $db
      */
-    public function init()
+    public function setDb($db)
     {
-        parent::init();
-        $this->db = Instance::ensure($this->db, Connection::class);
+        $this->_db = $db;
+    }
+
+    /**
+     * DB Component Getter
+     *
+     * @return Connection
+     */
+    public function getDb()
+    {
+        return Instance::ensure($this->_db, Connection::class);
     }
 
     /**

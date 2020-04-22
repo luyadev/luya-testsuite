@@ -21,7 +21,7 @@ class Bootstrap implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        if ($app instanceof Application) {
+        if ($app instanceof Application && $app->enableCoreCommands) {
             $app->controllerMap['generatefixture'] = [
                 'class' => GenerateFixtureController::class,
             ];
