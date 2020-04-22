@@ -26,11 +26,6 @@ class GenerateFixtureController extends Command
     const MODE_TABLE = 'table';
 
     /**
-     * @var Connection|string
-     */
-    public $db = 'db';
-
-    /**
      * @var string The mode which will be taken to genrate the fixture either model or table.
      */
     public $mode;
