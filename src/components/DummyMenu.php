@@ -11,6 +11,9 @@ use luya\testsuite\traits\CmsDatabaseTableTrait;
  * LUYA CMS Dummy Menu Component.
  * 
  * A Component to create dummy menus using $items property for each language.
+ * 
+ * @author Basil Suter <git@nadar.io>
+ * @since 1.0.30
  */
 class DummyMenu extends Menu
 {
@@ -50,6 +53,9 @@ class DummyMenu extends Menu
      */
     public $items = [];
 
+    /**
+     * {@inheritDoc}
+     */
     public function init()
     {
         $langFixtures  = [];
@@ -69,6 +75,14 @@ class DummyMenu extends Menu
         parent::init();
     }
 
+    /**
+     * Generate a flat menu structure from items.
+     *
+     * @param array $items
+     * @param string $lang
+     * @param integer $parentNavId
+     * @return array
+     */
     protected function normalizeItems(array $items, $lang, $parentNavId = 0)
     {
         $data = [];
@@ -90,6 +104,14 @@ class DummyMenu extends Menu
         return $data;
     }
 
+    /**
+     * Generate Menu structure for item.
+     *
+     * @param string $item
+     * @param string $lang
+     * @param integer $parentNavId
+     * @return array
+     */
     protected function itemToStructure($item, $lang, $parentNavId)
     {
         $id = ArrayHelper::getValue($item, 'id');
@@ -101,23 +123,23 @@ class DummyMenu extends Menu
             'parent_nav_id' => ArrayHelper::getValue($item, 'parent_nav_id', $parentNavId),
             'link' => ArrayHelper::getValue($item, 'link', Inflector::slug($title)),
             'title' => $title,
-            'alias' => Inflector::slug($title),
-            'description' => '',
-            'keywords' => '',
-            'create_user_id' => 1,
-            'update_user_id' => 1,
-            'timestamp_create' => '1457091369',
-            'timestamp_update' => '1483367249',
+            'alias' => ArrayHelper::getValue($item, 'alias', Inflector::slug($title)),
+            'description' => ArrayHelper::getValue($item, 'description', ''),
+            'keywords' => ArrayHelper::getValue($item, 'keywords', ''),
+            'create_user_id' => ArrayHelper::getValue($item, 'create_user_id', 1),
+            'update_user_id' => ArrayHelper::getValue($item, 'update_user_id', 1),
+            'timestamp_create' => 1457091369,
+            'timestamp_update' => 1483367249,
             'is_home' => ArrayHelper::getValue($item, 'is_home', 0),
-            'sort_index' => 1,
-            'is_hidden' => 0,
+            'sort_index' => ArrayHelper::getValue($item, 'sort_index', $id),
+            'is_hidden' => ArrayHelper::getValue($item, 'is_hidden', 0),
             'type' => 1, // page
             'nav_item_type_id' => $id,
             'redirect' => false,
             'module_name' => false,
             'container' => ArrayHelper::getValue($item, 'container', 'default'),
-            'depth' => 1,
-            'image_id' => 0,
+            'depth' => ArrayHelper::getValue($item, 'depth', 1),
+            'image_id' => ArrayHelper::getValue($item, 'image_id', 0),
             'is_url_strict_parsing_disabled' => 1,
         ];
     }

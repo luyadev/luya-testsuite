@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.0.30 (22. April 2020)
+
++ [#35](https://github.com/luyadev/luya-testsuite/pull/35) New DummyMenu Component for LUYA CMS in order to build menu items more quickly.
+
 ## 1.0.29 (7. April 2020)
 
 + Fix issue with latest Yii Framework version (where cache was throwing an exception when not configured properly)
