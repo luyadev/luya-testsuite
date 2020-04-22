@@ -13,7 +13,7 @@ use luya\testsuite\traits\CmsDatabaseTableTrait;
  * A Component to create dummy menus using $items property for each language.
  * 
  * @author Basil Suter <git@nadar.io>
- * @since 1.0.30
+ * @since 1.0.31
  */
 class DummyMenu extends Menu
 {

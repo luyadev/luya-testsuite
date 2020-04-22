@@ -3,10 +3,14 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
-## 1.0.30 (22. April 2020)
+## 1.0.31 (22. April 2020)
 
 + [#33](https://github.com/luyadev/luya-testsuite/issues/33) Fix issue with lazy loading of testsuite console command.
 + [#35](https://github.com/luyadev/luya-testsuite/pull/35) New DummyMenu Component for LUYA CMS in order to build menu items more quickly.
+
+## 1.0.30
+
++ phpmod/curl dependency adjustment
 
 ## 1.0.29 (7. April 2020)
 
