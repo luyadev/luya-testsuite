@@ -146,7 +146,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     public function fixture($fixtureClass)
     {
         if (is_array($this->_fixtures)) {
-            return array_key_exists($this->_fixtures, $fixtureClass) ? $this->_fixtures[$fixtureClass] : false;
+            return array_key_exists($fixtureClass, $this->_fixtures) ? $this->_fixtures[$fixtureClass] : false;
         }
 
         return false;

@@ -12,24 +12,26 @@ use luya\testsuite\fixtures\NgRestModelFixture;
  * Setup sqlite for model access and runs ngrest model methods.
  * 
  * ```php
- * /**
- *  * @property City $model
- *  *
  * class CityTest extends NgRestModelTestCase
  * {
  *   public $modelClass = City::class;
  * 
  *   public function getConfigArray()
- *    {
+ *   {
  *        return [
  *           'id' => 'testmodelapp',
  *           'basePath' => dirname(__DIR__),
  *        ];
- *    }
- * }
- * ```  
+ *   }
  * 
- * @property NgRestModelFixture $fixture
+ *   public function testCreate()
+ *   {
+ *      $model = $this->getModel();
+ *      $model->title = 'foobar';
+ *      $this->assertTrue($model->save());
+ *   }
+ * }
+ * ```
  * 
  * @author Basil Suter <git@nadar.io>
  * @since 1.1.0
