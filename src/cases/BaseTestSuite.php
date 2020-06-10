@@ -63,7 +63,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     /**
      * Method which is executed before the setUp() method in order to inject data on before Setup.
      *
-     * Make sure to call the parent beforeSetup() method when overrding this method.
+     * Make sure to call the parent beforeSetup() method when overwriting this method.
      */
     public function beforeSetup()
     {
@@ -72,7 +72,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     /**
      * Method which is executed after the setUp() method in order to trigger post setup functions.
      *
-     * Make sure to call the parent afterSetup() method when overrding this method.
+     * Make sure to call the parent afterSetup() method when overwriting this method.
      *
      * @since 1.0.2
      */
