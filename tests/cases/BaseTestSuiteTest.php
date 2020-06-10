@@ -31,6 +31,9 @@ final class BaseTestSuiteTest extends BaseTestSuite
         $this->assertInstanceOf('luya\web\Application', Yii::$app);
         $this->assertInstanceOf('luya\base\Boot', $this->boot);
         $this->assertInstanceOf('luya\web\Application', $this->app);
+
+        $this->assertSame([], $this->fixtures());
+        $this->assertFalse($this->fixture('foobar'));
     }
     
     public function testTrimContent()

@@ -3,6 +3,8 @@
 namespace luya\testsuite\cases;
 
 use luya\Boot;
+use luya\testsuite\fixtures\ActiveRecordFixture;
+use Yii;
 
 @include_once('vendor/autoload.php');
 
@@ -61,21 +63,93 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     /**
      * Method which is executed before the setUp() method in order to inject data on before Setup.
      *
-     * Make sure to call the parent beforeSetup() method.
+     * Make sure to call the parent beforeSetup() method when overwriting this method.
      */
     public function beforeSetup()
     {
     }
     
     /**
-     * Method which is executed after the setUp() metho in order to trigger post setup functions.
+     * Method which is executed after the setUp() method in order to trigger post setup functions.
      *
-     * Make sure to call the parent afterSetup() method.
+     * Make sure to call the parent afterSetup() method when overwriting this method.
      *
      * @since 1.0.2
      */
     public function afterSetup()
     {
+    }
+
+    /**
+     * Defines a list of fixtures classes which can be loaded.
+     *
+     * Example fixtures list:
+     * 
+     * ```php
+     * public function fixtures()
+     * {
+     *    return [
+     *        'app\fixtures\MyTestFixture',
+     *        MySuperFixture::class,
+     *    ];
+     * }
+     * ```
+     * 
+     * @since 1.1.0
+     * @return array
+     */
+    public function fixtures()
+    {
+        return [];
+    }
+
+    private $_fixtures;
+
+    /**
+     * Create all fixtures from fixtures() list.
+     *
+     * @since 1.1.0
+     */
+    public function setupFixtures()
+    {
+        if ($this->_fixtures === null) {
+            $loadedFixtures = [];
+            foreach ($this->fixtures() as $fixtureClass) {
+                $loadedFixtures[$fixtureClass] = Yii::createObject($fixtureClass);
+            }
+
+            $this->_fixtures = $loadedFixtures;
+        }
+    }
+
+    /**
+     * Run cleanup() on all loaded fixtures.
+     * 
+     * @since 1.1.0
+     */
+    public function tearDownFixtures()
+    {
+        if (is_array($this->_fixtures)) {
+            /** @var ActiveRecordFixture $object */
+            foreach ($this->_fixtures as $object) {
+                $object->cleanup();
+            }
+        }
+    }
+
+    /**
+     * Get Fixture Object
+     *
+     * @param string $fixtureClass
+     * @return ActiveRecordFixture
+     */
+    public function fixture($fixtureClass)
+    {
+        if (is_array($this->_fixtures)) {
+            return array_key_exists($fixtureClass, $this->_fixtures) ? $this->_fixtures[$fixtureClass] : false;
+        }
+
+        return false;
     }
 
     /**
@@ -96,10 +170,11 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
         $this->app = $boot->app;
         
         $this->afterSetup();
+        $this->setupFixtures();
     }
 
     /**
-     * This methode is triggered before the application test case tearDown() method is running.
+     * This method is triggered before the application test case tearDown() method is running.
      *
      * @since 1.0.2
      */
@@ -108,18 +183,18 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     }
     
     /**
-     *
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
     protected function tearDown()
     {
         $this->beforeTearDown();
-        
+        $this->tearDownFixtures();
         unset($this->app, $this->boot);
     }
     
     /**
+     * No Spaces and No Newline
      * Trims the given text. Remove whitespaces, tabs and other chars in order to compare readable formated texts.
      *
      * @param string $text
@@ -131,6 +206,8 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     }
     
     /**
+     * No Spaces with Newline
+     * 
      * Removes tabs and spaces from a string. But keeps newlines.
      *
      * @param string $text

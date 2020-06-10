@@ -24,12 +24,12 @@ final class ServerTestCaseTest extends ServerTestCase
     
     public function afterSetup()
     {
-        // disable server boot by overriding this method
+        // disable server boot by overwriting this method
     }
     
     public function beforeTearDown()
     {
-        // disable server shutdown by overriding this method
+        // disable server shutdown by overwriting this method
     }
     
     public function testBuildCallUrl()
