@@ -13,7 +13,7 @@ use luya\helpers\ArrayHelper;
  * @author Basil Suter <git@nadar.io>
  * @since 1.1.0
  */
-class NgRestModelTestCase extends WebApplicationTestCase
+abstract class NgRestModelTestCase extends WebApplicationTestCase
 {
     /**
      * @var string The path to the ngrest model.
