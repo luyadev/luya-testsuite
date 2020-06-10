@@ -4,11 +4,32 @@ namespace luya\testsuite\cases;
 
 use luya\base\Boot;
 use luya\helpers\ArrayHelper;
+use luya\testsuite\fixtures\NgRestModelFixture;
 
 /**
  * A Test Case for Models.
  * 
  * Setup sqlite for model access and runs ngrest model methods.
+ * 
+ * ```php
+ * /**
+ *  * @property City $model
+ *  *
+ * class CityTest extends NgRestModelTestCase
+ * {
+ *   public $modelClass = City::class;
+ * 
+ *   public function getConfigArray()
+ *    {
+ *        return [
+ *           'id' => 'testmodelapp',
+ *           'basePath' => dirname(__DIR__),
+ *        ];
+ *    }
+ * }
+ * ```  
+ * 
+ * @property NgRestModelFixture $fixture
  * 
  * @author Basil Suter <git@nadar.io>
  * @since 1.1.0
@@ -39,5 +60,31 @@ abstract class NgRestModelTestCase extends WebApplicationTestCase
         
         // boot the application
         $boot->applicationWeb();
+    }
+
+    /**
+     * Get New model
+     *
+     * @return NgRestModelFixture
+     */
+    public function getModel()
+    {
+        return $this->getFixture()->newModel;
+    }
+
+    /**
+     * Get the current modelClass Fixture
+     *
+     * @return NgRestModelFixture
+     */
+    public function getFixture()
+    {
+        if ($this->fixture($this->modelClass)) {
+            return $this->fixture($this->modelClass);
+        }
+
+        return new NgRestModelFixture([
+            'modelClass' => $this->modelClass,
+        ]);
     }
 }

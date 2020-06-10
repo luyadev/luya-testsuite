@@ -138,6 +138,21 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Get Fixture Object
+     *
+     * @param string $fixtureClass
+     * @return ActiveRecordFixture
+     */
+    public function fixture($fixtureClass)
+    {
+        if (is_array($this->_fixtures)) {
+            return array_key_exists($this->_fixtures, $fixtureClass) ? $this->_fixtures[$fixtureClass] : false;
+        }
+
+        return false;
+    }
+
+    /**
      *
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::setUp()
