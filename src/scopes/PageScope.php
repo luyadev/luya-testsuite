@@ -2,6 +2,8 @@
 
 namespace luya\testsuite\scopes;
 
+use luya\cms\models\Website;
+use luya\testsuite\fixtures\NgRestModelFixture;
 use Yii;
 use luya\cms\models\NavItem;
 use luya\helpers\ArrayHelper;
@@ -37,6 +39,8 @@ class PageScope extends BaseScope
 {
     use CmsDatabaseTableTrait;
 
+    protected $websiteFixture;
+    
     protected $navContainerFixture;
     
     protected $navFixture;
@@ -124,12 +128,25 @@ class PageScope extends BaseScope
                 'json_config' => Json::encode(['placeholders' => [$json]]),
             ]
         ]);
-
+        
+        $this->websiteFixture = $this->createCmsWebsiteFixture([
+            'website1' => [
+                'id' => 1,
+                'name' => 'default',
+                'host' => '',
+                'aliases' => '',
+                'is_default' => 1,
+                'is_active' => 1,
+                'is_deleted' => 0,
+            ],
+        ]);
+        
         $this->navContainerFixture = $this->createCmsNavContainerFixture([
             'container1' => [
                 'id' => $id,
                 'name' => 'container',
                 'alias' => 'container',
+                'website_id' => 1,
             ],
         ]);
 
@@ -334,6 +351,8 @@ class PageScope extends BaseScope
         $this->navItemPageBlockItemFixture->cleanup();
         $this->logFixture->cleanup();
         $this->langFixture->cleanup();
+        $this->cleanupFixture($this->layoutFixture);
+        $this->cleanupFixture($this->websiteFixture);
         $this->cleanupFixture($this->navContainerFixture);
         $this->cleanupFixture($this->navFixture);
         $this->cleanupFixture($this->navItemFixture);
