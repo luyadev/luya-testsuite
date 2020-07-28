@@ -479,7 +479,7 @@ trait AdminDatabaseTableTrait
     /**
      * Create the Admin Queue Table
      *
-     * @since 1.1.0
+     * @since 1.1.1
      */
     public function createAdminQueueTable()
     {
