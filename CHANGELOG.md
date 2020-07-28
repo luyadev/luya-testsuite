@@ -5,6 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 1.1.0 (10. June 2020)
 
++ Add new `createAdminQueueTable()` table to `AdminDatabaseTableTrait`.
 + [#36](https://github.com/luyadev/luya-testsuite/pull/36) New `NgRestModelTestCase` and new `fixtures()` loader option in BaseTestSuite.
 
 ## 1.0.31 (22. April 2020)

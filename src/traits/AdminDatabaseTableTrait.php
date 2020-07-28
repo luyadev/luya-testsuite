@@ -474,4 +474,26 @@ trait AdminDatabaseTableTrait
             'fixtureData' => $fixtureData,
         ]);
     }
+
+
+    /**
+     * Create the Admin Queue Table
+     *
+     * @since 1.1.0
+     */
+    public function createAdminQueueTable()
+    {
+        return $this->createTableIfNotExists('admin_queue', [
+            'id' => 'INT(11) PRIMARY KEY',
+            'channel' => 'text',
+            'job' => 'blog',
+            'pushed_at' => 'int(11)',
+            'ttr' => 'int(11)',
+            'delay' => 'int(11)',
+            'priority' => 'int(11)',
+            'reserved_at' => 'int(11)',
+            'attempt' => 'int(11)',
+            'done_at' => 'int(11)',
+        ]);
+    }
 }
