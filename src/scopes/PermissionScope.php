@@ -382,9 +382,9 @@ class PermissionScope extends BaseScope
     {
         if ($value) {
             $accessToken = $token ? $token : $this->userFixture->getModel('user')->auth_token;
-            $this->getApp()->request->setQueryParams(['access-token' => $accessToken]);
+            $this->getApp()->request->setQueryParams(array_merge(['access-token' => $accessToken], $this->getApp()->request->getQueryParams()));
         } else {
-            $this->getApp()->request->setQueryParams(['access-token' => null]);
+            $this->getApp()->request->setQueryParams(array_merge(['access-token' => null], $this->getApp()->request->getQueryParams()));
         }
     }
 
