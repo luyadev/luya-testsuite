@@ -235,7 +235,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      */
     public function assertContainsTrimmed($needle, $haystack)
     {
-        return $this->assertContains($this->trimContent($needle), $this->trimContent($haystack));
+        return $this->assertStringContainsString($this->trimContent($needle), $this->trimContent($haystack));
     }
     
     /**
@@ -277,7 +277,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      */
     public function assertContainsNoSpace($needle, $haystack)
     {
-        return $this->assertContains($this->trimSpaces($needle), $this->trimSpaces($haystack));
+        return $this->assertStringContainsString($this->trimSpaces($needle), $this->trimSpaces($haystack));
     }
     
     /**

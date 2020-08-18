@@ -386,7 +386,7 @@ abstract class NgRestTestCase extends WebApplicationTestCase
         
         if ($this->controller) {
             $this->assertInstanceOf('luya\admin\ngrest\base\NgRestModel', $this->controller->getModel());
-            $this->assertContains('<script>zaa.bootstrap.register', $this->controller->actionIndex());
+            $this->assertStringContainsString('<script>zaa.bootstrap.register', $this->controller->actionIndex());
         }
     }
     

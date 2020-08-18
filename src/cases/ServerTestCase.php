@@ -160,7 +160,7 @@ abstract class ServerTestCase extends BaseTestSuite
     public function assertUrlGetResponseContains($url, $contains, array $params = [])
     {
         $curl = $this->createGetCurl($url, $params);
-        $this->assertContains($this->buildPartialJson($contains, true), $curl->response);
+        $this->assertStringContainsString($this->buildPartialJson($contains, true), $curl->response);
     }
     
     /**
@@ -194,7 +194,7 @@ abstract class ServerTestCase extends BaseTestSuite
     public function assertUrlPostResponseContains($url, $contains, array $data = [], array $params = [])
     {
         $curl = $this->createPostCurl($url, $data, $params);
-        $this->assertContains($this->buildPartialJson($contains, true), $curl->response);
+        $this->assertStringContainsString($this->buildPartialJson($contains, true), $curl->response);
     }
 
     /**
