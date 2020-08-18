@@ -7,7 +7,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 + [#]() PHPUnit 9 Requirement for PHP 7.4
 
-## 1.1.1
+## 1.1.1 (18. August 2020)
 
 + Add new `createAdminQueueTable()` table to `AdminDatabaseTableTrait`.
 
