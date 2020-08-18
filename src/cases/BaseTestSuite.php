@@ -157,7 +157,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->beforeSetup();
         
@@ -186,7 +186,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->beforeTearDown();
         $this->tearDownFixtures();
