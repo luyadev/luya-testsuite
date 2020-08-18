@@ -15,10 +15,10 @@
         </testsuite>
     </testsuites>
     <filter>
-		<blacklist>
+		<exclude>
 			<directory>./vendor</directory>
 			<directory>./tests</directory>
-		</blacklist>
+		</exclude>
 		<whitelist processUncoveredFilesFromWhitelist="false">
             <directory suffix=".php">./src</directory>
         </whitelist>
