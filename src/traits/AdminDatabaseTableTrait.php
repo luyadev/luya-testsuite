@@ -7,6 +7,10 @@ use luya\admin\models\Lang;
 use luya\admin\models\NgrestLog;
 use luya\admin\models\QueueLog;
 use luya\admin\models\QueueLogError;
+use luya\admin\models\StorageFile;
+use luya\admin\models\StorageFilter;
+use luya\admin\models\StorageFilterChain;
+use luya\admin\models\StorageImage;
 use luya\admin\models\Tag;
 use luya\admin\models\TagRelation;
 use luya\admin\models\User;
@@ -474,6 +478,68 @@ trait AdminDatabaseTableTrait
             'fixtureData' => $fixtureData,
         ]);
     }
+
+    /**
+     * Storage File
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since 1.2.0
+     */
+    public function createAdminStorageFileFixture(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => StorageFile::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * Storage Image
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since 1.2.0
+     */
+    public function createAdminStorageImageFixture(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => StorageImage::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * Storage Filter
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since 1.2.0
+     */
+    public function createAdminStorageFilterFixture(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => StorageFilter::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    /**
+     * Storage Filter Chain
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     * @since 1.2.0
+     */
+    public function createAdminStorageFilterChainFixture(array $fixtureData = [])
+    {
+        return new ActiveRecordFixture([
+            'modelClass' => StorageFilterChain::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+
+    
 
 
     /**

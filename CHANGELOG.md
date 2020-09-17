@@ -6,6 +6,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 ## 1.2.0
 
 + Added new dummy file system.
++ Add storage model fixtures
 
 ## 1.1.1 (18. August 2020)
 
