@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 1.2.0
+
++ Added new dummy file system.
+
 ## 1.1.1 (18. August 2020)
 
 + Add new `createAdminQueueTable()` table to `AdminDatabaseTableTrait`.
