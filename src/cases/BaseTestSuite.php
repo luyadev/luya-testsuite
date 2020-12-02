@@ -5,6 +5,7 @@ namespace luya\testsuite\cases;
 use luya\Boot;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use Yii;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 @include_once('vendor/autoload.php');
 
@@ -37,7 +38,7 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */
-abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
+abstract class BaseTestSuite extends TestCase
 {
     /**
      * @var \luya\Boot
