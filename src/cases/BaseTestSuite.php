@@ -5,6 +5,7 @@ namespace luya\testsuite\cases;
 use luya\Boot;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use Yii;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 @include_once('vendor/autoload.php');
@@ -40,6 +41,8 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
  */
 abstract class BaseTestSuite extends TestCase
 {
+    use AssertStringContains;
+
     /**
      * @var \luya\Boot
      */
@@ -190,7 +193,7 @@ abstract class BaseTestSuite extends TestCase
     protected function tear_down() {
         // Any clean up needed related to `set_up()`.
         parent::tear_down();
-        
+
         $this->beforeTearDown();
         $this->tearDownFixtures();
         unset($this->app, $this->boot);
@@ -238,7 +241,7 @@ abstract class BaseTestSuite extends TestCase
      */
     public function assertContainsTrimmed($needle, $haystack)
     {
-        return $this->assertContains($this->trimContent($needle), $this->trimContent($haystack));
+        return self::assertStringContainsString($this->trimContent($needle), $this->trimContent($haystack));
     }
     
     /**
@@ -280,7 +283,7 @@ abstract class BaseTestSuite extends TestCase
      */
     public function assertContainsNoSpace($needle, $haystack)
     {
-        return $this->assertContains($this->trimSpaces($needle), $this->trimSpaces($haystack));
+        return $this->assertStringContainsString($this->trimSpaces($needle), $this->trimSpaces($haystack));
     }
     
     /**
