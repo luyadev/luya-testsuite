@@ -5,6 +5,7 @@ namespace luya\testsuite\cases;
 use luya\Boot;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use Yii;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 @include_once('vendor/autoload.php');
 
@@ -37,7 +38,7 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
  * @author Basil Suter <basil@nadar.io>
  * @since 1.0.0
  */
-abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
+abstract class BaseTestSuite extends TestCase
 {
     /**
      * @var \luya\Boot
@@ -157,8 +158,8 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::setUp()
      */
-    protected function setUp()
-    {
+    protected function set_up() {
+        parent::set_up();
         $this->beforeSetup();
         
         $boot = new Boot();
@@ -186,8 +187,10 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
-    protected function tearDown()
-    {
+    protected function tear_down() {
+        // Any clean up needed related to `set_up()`.
+        parent::tear_down();
+
         $this->beforeTearDown();
         $this->tearDownFixtures();
         unset($this->app, $this->boot);
@@ -235,7 +238,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      */
     public function assertContainsTrimmed($needle, $haystack)
     {
-        return $this->assertContains($this->trimContent($needle), $this->trimContent($haystack));
+        return self::assertStringContainsString($this->trimContent($needle), $this->trimContent($haystack));
     }
     
     /**
@@ -277,7 +280,7 @@ abstract class BaseTestSuite extends \PHPUnit\Framework\TestCase
      */
     public function assertContainsNoSpace($needle, $haystack)
     {
-        return $this->assertContains($this->trimSpaces($needle), $this->trimSpaces($haystack));
+        return $this->assertStringContainsString($this->trimSpaces($needle), $this->trimSpaces($haystack));
     }
     
     /**

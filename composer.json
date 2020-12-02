@@ -17,12 +17,12 @@
       }
    ],
    "require":{
-      "phpunit/phpunit":"^6.0",
       "curl/curl":"*",
       "twig/twig":"^1.0",
       "luyadev/luya-core":"*",
       "luyadev/luya-module-cms":"*",
-      "luyadev/luya-module-admin":"*"
+      "luyadev/luya-module-admin":"*",
+      "yoast/phpunit-polyfills": "^0.2.0"
    },
    "support":{
       "issues":"https://github.com/luyadev/luya/issues"
