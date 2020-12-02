@@ -158,8 +158,8 @@ abstract class BaseTestSuite extends TestCase
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::setUp()
      */
-    protected function setUp()
-    {
+    protected function set_up() {
+        parent::set_up();
         $this->beforeSetup();
         
         $boot = new Boot();
@@ -187,8 +187,10 @@ abstract class BaseTestSuite extends TestCase
      * {@inheritDoc}
      * @see \PHPUnit\Framework\TestCase::tearDown()
      */
-    protected function tearDown()
-    {
+    protected function tear_down() {
+        // Any clean up needed related to `set_up()`.
+        parent::tear_down();
+        
         $this->beforeTearDown();
         $this->tearDownFixtures();
         unset($this->app, $this->boot);
