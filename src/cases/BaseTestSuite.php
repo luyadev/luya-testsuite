@@ -5,7 +5,6 @@ namespace luya\testsuite\cases;
 use luya\Boot;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use Yii;
-use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
 use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 @include_once('vendor/autoload.php');
@@ -41,8 +40,6 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
  */
 abstract class BaseTestSuite extends TestCase
 {
-    use AssertStringContains;
-
     /**
      * @var \luya\Boot
      */
