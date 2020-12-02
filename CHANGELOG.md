@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 2.0.0
+
++ [#39](https://github.com/luyadev/luya-testsuite/pull/39) Added PHPUnit Polyfill. Allows Testing from PHP 7 to 8. Replace `assertContains()` with `assertStringContainsString()` if needed.
+
 ## 1.2.0 (22. September 2020)
 
 + Added new dummy file system.
