@@ -10,3 +10,4 @@ This document will help you upgrading from a LUYA Test Suite version into anothe
 + Ensure you **don't ignore platform reqs in your CI!** `--ignore-platform-reqs` will result in insalling the wrong version of the phpunit polyfill.
 + Do not use `setUp`, use the LUYA Test Suite `afterSetup()` instead.
 + Replace `expectExceptionMessageRegExp()` with `expectExceptionMessageMatches()` when needed.
++ Under certain circumstances, when testing against multiple PHP versions, its required to ignore the composer.lock file (therefore add the composer.lock to .gitignore list)
