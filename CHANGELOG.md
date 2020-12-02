@@ -5,7 +5,7 @@ In order to read more about upgrading and BC breaks have a look at the [UPGRADE 
 
 ## 2.0.0 (2. December 2020)
 
-> This release contains new migrations and requires to run the migrate command after updating. Check the [UPGRADE document](UPGRADE.md) to read more about breaking changes.
+> This release contains breaking changes! Check the [UPGRADE document](UPGRADE.md) to read more.
 
 + [#39](https://github.com/luyadev/luya-testsuite/pull/39) Added PHPUnit Polyfill. Allows Testing from PHP 7 to 8. Replace `assertContains()` with `assertStringContainsString()` if needed. **[See the upgrade document](UPGRADE.md)**
 
