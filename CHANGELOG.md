@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 2.0.0 (2. December 2020)
+
+> This release contains breaking changes! Check the [UPGRADE document](UPGRADE.md) to read more.
+
++ [#39](https://github.com/luyadev/luya-testsuite/pull/39) Added PHPUnit Polyfill. Allows Testing from PHP 7 to 8. Replace `assertContains()` with `assertStringContainsString()` if needed. **[See the upgrade document](UPGRADE.md)**
+
+## 1.2.0 (22. September 2020)
+
++ Added new dummy file system.
++ Add storage model fixtures
+
+## 1.1.1 (18. August 2020)
+
++ Add new `createAdminQueueTable()` table to `AdminDatabaseTableTrait`.
+
 ## 1.1.0 (10. June 2020)
 
 + [#36](https://github.com/luyadev/luya-testsuite/pull/36) New `NgRestModelTestCase` and new `fixtures()` loader option in BaseTestSuite.

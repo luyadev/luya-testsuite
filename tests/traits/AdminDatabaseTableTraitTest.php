@@ -43,6 +43,8 @@ class AdminDatabaseTableTraitTest extends WebApplicationTestCase
 
         $this->assertEmpty($sub->dropTableIfExists('foobar'));
         $this->assertEmpty($sub->dropTableIfExists('foobar'));
+
+        $this->assertEmpty($sub->createAdminQueueTable());
     }
 }
 

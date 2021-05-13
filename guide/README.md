@@ -24,7 +24,7 @@ class MyTestCase extends WebApplicationTestCase
 }
 ```
 
-## Traits
+## Traits
 
 We have some easy to use traits which can help you in given situation to do repeatitiv jobs like checking if migration files have a createTable and dropTable state or see if any translations message keys are missing.
 
