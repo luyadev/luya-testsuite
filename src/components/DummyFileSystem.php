@@ -72,6 +72,14 @@ class DummyFileSystem extends BaseFileSystemStorage
     }
     
     /**
+     * {@inheritDoc}
+     */
+    public function fileSystemStream($fileName)
+    {
+        return $fileName;
+    }
+    
+    /**
      * Save the given file source as a new file with the given fileName on the filesystem.
      *
      * @param string $source The absolute file source path and filename, like `/tmp/upload/myfile.jpg`.
