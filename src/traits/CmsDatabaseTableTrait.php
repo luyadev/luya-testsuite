@@ -16,6 +16,7 @@ use luya\cms\models\NavItemRedirect;
 use luya\cms\models\NavPermission;
 use luya\cms\models\Property;
 use luya\cms\models\Redirect;
+use luya\cms\models\Website;
 use luya\testsuite\fixtures\ActiveRecordFixture;
 use luya\testsuite\fixtures\NgRestModelFixture;
 
@@ -43,6 +44,20 @@ trait CmsDatabaseTableTrait
         ]);
     }
 
+    /**
+     * Create Cms Website Fixture
+     *
+     * @param array $fixtureData
+     * @return ActiveRecordFixture
+     */
+    public function createCmsWebsiteFixture(array $fixtureData = [])
+    {
+        return new NgRestModelFixture([
+            'modelClass' => Website::class,
+            'fixtureData' => $fixtureData,
+        ]);
+    }
+    
     /**
      * Create Cms Nav Container Fixture
      *
