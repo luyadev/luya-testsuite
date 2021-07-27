@@ -19,9 +19,9 @@
    "require":{
       "curl/curl":"*",
       "twig/twig":"^1.0",
-      "luyadev/luya-core":"*",
-      "luyadev/luya-module-cms":"*",
-      "luyadev/luya-module-admin":"*",
+      "luyadev/luya-core":"^1.0|^2.0",
+      "luyadev/luya-module-cms":"^1.0|^2.0|^3.0",
+      "luyadev/luya-module-admin":"^1.0|^2.0|^3.0|^4.0",
       "yoast/phpunit-polyfills": "^0.2.0"
    },
    "support":{
