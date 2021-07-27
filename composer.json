@@ -20,7 +20,7 @@
       "curl/curl":"*",
       "twig/twig":"^1.0",
       "luyadev/luya-core":"*",
-      "luyadev/luya-module-cms":"dev-master",
+      "luyadev/luya-module-cms":"^4.0",
       "luyadev/luya-module-admin":">=3.0",
       "yoast/phpunit-polyfills": "^0.2.0"
    },
