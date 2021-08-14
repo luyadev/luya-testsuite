@@ -38,6 +38,9 @@
       }
    },
    "extra":{
+      "branch-alias": {
+         "dev-master": "3.0.x-dev"
+      },
       "luya":{
          "bootstrap":[
             "luya\\testsuite\\Bootstrap"
