@@ -19,10 +19,12 @@
    "require":{
       "curl/curl":"*",
       "twig/twig":"^1.0",
+      "yoast/phpunit-polyfills": "^0.2.0"
+   },
+   "require-dev" : {
       "luyadev/luya-core":"*",
       "luyadev/luya-module-cms":"^4.0",
-      "luyadev/luya-module-admin":">=3.0",
-      "yoast/phpunit-polyfills": "^0.2.0"
+      "luyadev/luya-module-admin":">=3.0"
    },
    "support":{
       "issues":"https://github.com/luyadev/luya/issues"
