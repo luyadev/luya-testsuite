@@ -18,7 +18,7 @@
    ],
    "require":{
       "curl/curl":"*",
-      "twig/twig":"^1.0",
+      "twig/twig":"^3.0",
       "yoast/phpunit-polyfills": "^0.2.0"
    },
    "require-dev" : {
@@ -54,5 +54,14 @@
          "type":"composer",
          "url":"https://asset-packagist.org"
       }
-   ]
+   ],
+   "config": {
+      "fxp-asset": {
+          "enabled": false
+      },
+      "allow-plugins": {
+          "yiisoft/yii2-composer": true,
+          "luyadev/luya-composer": true
+      }
+   }
 }

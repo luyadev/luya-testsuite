@@ -2,6 +2,8 @@
 
 namespace luya\testsuite\cases;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use yii\base\InvalidConfigException;
 
 /**
@@ -103,7 +105,7 @@ abstract class CmsBlockTestCase extends WebApplicationTestCase
      */
     public function renderAdmin()
     {
-        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem());
+        $twig = new Environment(new FilesystemLoader());
         $temp = $twig->createTemplate($this->block->renderAdmin());
         return $temp->render([
             'cfgs' => $this->block->getCfgValues(),
