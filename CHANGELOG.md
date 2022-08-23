@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](http://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.1 (23. August 2022)
+
++ Update to Twig version 3.0 because of PHP 8.1 compatibility
+
 ## 3.0 (27. July 2021)
 
 + Add compatibility for LUYA CMS 4.0 
