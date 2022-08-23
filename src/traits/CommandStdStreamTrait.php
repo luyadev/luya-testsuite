@@ -57,7 +57,7 @@ trait CommandStdStreamTrait
      */
     public function stdin($raw = false)
     {
-        return $raw ? array_shift($this->inputStream) : rtrim(array_shift($this->inputStream), PHP_EOL);
+        return $raw ? array_shift($this->inputStream) : rtrim((string) array_shift($this->inputStream), PHP_EOL);
     }
     
     /**
