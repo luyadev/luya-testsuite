@@ -65,6 +65,8 @@ class PageScope extends BaseScope
     
     protected $langFixture;
 
+    protected $ngRestLogFixture;
+
     /**
      * @var integer The page id which will be created.
      */
