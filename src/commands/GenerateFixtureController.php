@@ -160,7 +160,7 @@ class GenerateFixtureController extends Command
      * @param [type] $tableName
      * @return string
      */
-    public function generateClassFile(TableSchema $schema, $className, array $data, $modelClass = null, $tableName = null, $addData)
+    public function generateClassFile(TableSchema $schema, $className, array $data, $modelClass = null, $tableName = null, $addData = null)
     {
         return $this->view->renderFile(__DIR__ . '/views/generate-fixture.php', [
             'schema' => $schema,
