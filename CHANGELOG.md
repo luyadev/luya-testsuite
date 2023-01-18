@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file. This project adheres to [Semantic Versioning](https://semver.org/).
 In order to read more about upgrading and BC breaks have a look at the [UPGRADE Document](UPGRADE.md).
 
+## 3.1.3 (18. January 2022)
+
++ Fixed issues with php 8.2 tests
+
 ## 3.1.2 (15. December 2022)
 
 + Fixed issues raised for php 8.2 tests
