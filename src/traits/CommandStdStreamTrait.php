@@ -124,7 +124,7 @@ trait CommandStdStreamTrait
      *
      * @return mixed|string
      */
-    public function select($prompt, $options = [])
+    public function select($prompt, $options = [], $default = null)
     {
         return $this->stdin();
     }
